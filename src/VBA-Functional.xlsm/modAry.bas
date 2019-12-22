@@ -1,107 +1,70 @@
 Attribute VB_Name = "modAry"
+
 Function lenAry(ary As Variant, Optional dm = 1) As Long
-    
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
-    
 End Function
+
 Function getAryAt(ary, pos, Optional base = 1)
     Dim ret
-    
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
     Else
         idx = LBound(ary) + pos - base
-        
     End If
     ret = ary(idx)
-    
     getAryAt = ret
 End Function
+
 Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
-    
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
     Else
         idx = LBound(ary) + pos - base
-        
     End If
-    
     ary(idx) = vl
-    
-    
 End Sub
+
 Function conArys(ParamArray argArys())
-    
     arys = argArys
-    
     num = 0
-    
     For Each ary In arys
-        
         If IsArray(ary) Then
-            
             num = num + lenAry(ary)
-            
         Else
-            
             num = num + 1
-            
         End If
-        
     Next ary
-    
     ReDim ret(1 To num)
-    
     idx = 1
-    
     For Each ary In arys
-        
         If IsArray(ary) Then
-            
             For Each elm In ary
-                
                 ret(idx) = elm
                 idx = idx + 1
-                
             Next elm
-            
         Else
-            
             ret(idx) = ary
             idx = idx + 1
-            
         End If
-        
     Next ary
-    
     conArys = ret
-    
 End Function
+
 Function mkSameAry(vl, num)
-    
     ReDim ret(1 To num)
-    
     For i = 1 To num
-        
         ret(i) = vl
-        
     Next i
-    
     mkSameAry = ret
-    
 End Function
+
 Function mkSeq(ParamArray argAry())
-    
     ary = argAry
-    
     Dim first
     Dim last
     Dim step
-    
     argn = lenAry(ary)
-    
     Select Case argn
-            
         Case 1
             first = 1
             last = getAryAt(ary, 1)
@@ -117,124 +80,77 @@ Function mkSeq(ParamArray argAry())
             step = IIf(first <= last, step, -1 * step)
         Case Else
     End Select
-    
-    
     n = Int((last - first) / step) + 1
-    
     ReDim ret(1 To n)
-    
     For i = 1 To n
-        
         ret(i) = first + step * (i - 1)
-        
     Next i
-    
     mkSeq = ret
-    
 End Function
 
 Function dropAry(ary, num)
-    
     lng = lenAry(ary)
     sz = lng - Abs(num)
     Dim ret
-    
     If sz < 0 Then
         Call Err.Raise(1001, "dropAry", "num is larger than array length")
-        
     ElseIf sz = 0 Then
-        
         ret = Array()
-        
     ElseIf num > 0 Then
         ReDim ret(1 To sz)
-        
         lb = LBound(ary)
-        
         For i = 1 To sz
             ret(i) = getAryAt(ary, i + num)
         Next i
-        
     Else
         ReDim ret(1 To sz)
-        
         ub = UBound(ary)
-        
         For i = 1 To sz
             ret(i) = getAryAt(ary, i)
         Next i
     End If
-    
     dropAry = ret
-    
 End Function
 
-
 Function takeAry(ary, num)
-    
     lng = lenAry(ary)
     sz = Abs(num)
     Dim ret
-    
     If sz < 0 Then
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
     End If
-    
     If num > 0 Then
         ReDim ret(1 To sz)
-        
         lb = LBound(ary)
-        
         For i = 1 To sz
-            
             ret(i) = getAryAt(ary, i)
-            
         Next i
-        
     ElseIf num < 0 Then
         ReDim ret(1 To sz)
-        
         ub = UBound(ary)
-        
         For i = 1 To sz
-            
             ret(i) = getAryAt(ary, l - num + i)
-            
         Next i
-        
     Else
-        
         ret = Array()
-        
     End If
-    
-    
     takeAry = ret
-    
-    
 End Function
 
-
 Function revAry(ary)
-    
     num = lenAry(ary)
     ReDim ret(1 To num)
     lb = LBound(ary)
-    
     For i = 1 To num
-        
         ret(i) = getAryAt(num - i + 1)
-        
     Next i
     revAry = ret
 End Function
 
 Function zip(ParamArray argArys())
     arys = argArys
-    
     ret = zipAry(arys)
     zip = ret
-    
 End Function
 
 Function zipAry(arys)
@@ -242,67 +158,47 @@ Function zipAry(arys)
     cnum = lenAry(arys(LBound(arys)))
     ReDim ret(1 To cnum)
     lb = LBound(arys)
-    
     For c = 1 To cnum
         ReDim v(1 To rnum)
-        
         For r = 1 To rnum
             v(r) = getAryAt(arys(lb + r - 1), c)
-            
         Next r
         ret(c) = v
-        
     Next c
-    
     zipAry = ret
-    
 End Function
+
 Function prmAry(ParamArray argAry())
-    
     'flatten last elm
     ary = argAry
     ary1 = dropAry(ary, -1)
     ary2 = getAryAt(ary, -1)
     ret = conArys(ary1, ary2)
-    
     prmAry = ret
-    
 End Function
+
 Function inAry(ary As Variant, elm As Variant) As Boolean
-    
     Dim ret As Boolean
-    
     ret = False
-    
     For Each x In ary
-        
         If x = elm Then
             ret = True
             Exit For
         End If
-        
     Next x
-    
     inAry = ret
-    
 End Function
 Public Function dimAry(ByVal ary As Variant) As Long
-    
     On Error GoTo Catch
-    
     Dim idx As Long
     idx = 0
-    
     Do
         idx = idx + 1
-        
         Dim tmp As Long
         tmp = UBound(ary, idx)
-        
     Loop
 Catch:
     dimAry = idx - 1
-    
 End Function
 
 Function getAryShape(ary, Optional typ = "N")
@@ -311,61 +207,46 @@ Function getAryShape(ary, Optional typ = "N")
     For i = 1 To num
         Select Case UCase(typ)
             Case "N"
-                
                 tmp = lenAry(ary, i)
             Case "L"
                 tmp = LBound(ary, i)
             Case "U"
                 tmp = UBound(ary, i)
             Case Else
-                
         End Select
         Call setAryAt(ret, i, tmp)
     Next i
-    
     getAryShape = ret
-    
 End Function
+
 Function getAryNum(ary)
     Dim ret
     sp = getAryShape(ary)
     ret = reduceA("calc", sp, "*")
     getAryNum = ret
-    
 End Function
+
 Function mkIndex(num, shape, Optional lshape = Null)
-    
     n = lenAry(shape)
-    
     ReDim ret(1 To n)
-    
     r = num
-    
     For i = n To 1 Step -1
-        
         p = getAryAt(shape, i)
-        
         Call setAryAt(ret, i, r Mod p)
-        
         r = r \ p
-        
     Next i
-    
     If Not IsNull(lshape) Then
         For i = 1 To n
             Call setAryAt(ret, i, ret(i) + getAryAt(lshape, i))
         Next i
-        
     End If
     mkIndex = ret
 End Function
+
 Function getElm(ary, idx)
-    
     Dim ret
-    
     lb = LBound(idx)
     Select Case lenAry(idx)
-            
         Case 1: ret = ary(idx(lb))
         Case 2: ret = ary(idx(lb), idx(lb + 1))
         Case 3: ret = ary(idx(lb), idx(lb + 1), idx(lb + 2))
@@ -428,12 +309,11 @@ Function getElm(ary, idx)
         Case 60: ret = ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22), idx(lb + 23), idx(lb + 24), idx(lb + 25), idx(lb + 26), idx(lb + 27), idx(lb + 28), idx(lb + 29), idx(lb + 30), idx(lb + 31), idx(lb + 32), idx(lb + 33), idx(lb + 34), idx(lb + 35), idx(lb + 36), idx(lb + 37), idx(lb + 38), idx(lb + 39), idx(lb + 40), idx(lb + 41), idx(lb + 42), idx(lb + 43), idx(lb + 44), idx(lb + 45), idx(lb + 46), idx(lb + 47), idx(lb + 48), idx(lb + 49), idx(lb + 50), idx(lb + 51), idx(lb + 52), idx(lb + 53), idx(lb + 54), idx(lb + 55), idx(lb + 56), idx(lb + 57), idx(lb + 58), idx(lb + 59))
         Case Else:
     End Select
-    
     getElm = ret
 End Function
+
 Sub setElm(vl, ary, idx)
     lb = LBound(idx)
-    
     Select Case lenAry(idx)
         Case 1: ary(idx(lb)) = vl
         Case 2: ary(idx(lb), idx(lb + 1)) = vl
@@ -497,5 +377,4 @@ Sub setElm(vl, ary, idx)
         Case 60: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22), idx(lb + 23), idx(lb + 24), idx(lb + 25), idx(lb + 26), idx(lb + 27), idx(lb + 28), idx(lb + 29), idx(lb + 30), idx(lb + 31), idx(lb + 32), idx(lb + 33), idx(lb + 34), idx(lb + 35), idx(lb + 36), idx(lb + 37), idx(lb + 38), idx(lb + 39), idx(lb + 40), idx(lb + 41), idx(lb + 42), idx(lb + 43), idx(lb + 44), idx(lb + 45), idx(lb + 46), idx(lb + 47), idx(lb + 48), idx(lb + 49), idx(lb + 50), idx(lb + 51), idx(lb + 52), idx(lb + 53), idx(lb + 54), idx(lb + 55), idx(lb + 56), idx(lb + 57), idx(lb + 58), idx(lb + 59)) = vl
         Case Else:
     End Select
-    
 End Sub
