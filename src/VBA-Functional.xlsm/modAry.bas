@@ -132,68 +132,71 @@ Function mkSeq(ParamArray argAry())
     mkSeq = ret
     
 End Function
-Function dropAry(ary, sz, Optional tail = 0)
+
+Function dropAry(ary, num)
     
+    lng = lenAry(ary)
+    sz = lng - Abs(num)
     Dim ret
     
-    num = lenAry(ary) - Abs(sz) - tail
-    
-    If num <= 0 Then
+    If sz < 0 Then
+        Call Err.Raise(1001, "dropAry", "num is larger than array length")
+        
+    ElseIf sz = 0 Then
         
         ret = Array()
         
+    ElseIf num > 0 Then
+        ReDim ret(1 To sz)
         
+        lb = LBound(ary)
         
-    ElseIf sz > 0 Then
-        
-        ReDim ret(1 To num)
-        
-        For i = 1 To num
-            
-            ret(i) = getAryAt(ary, sz + i)
-            
+        For i = 1 To sz
+            ret(i) = getAryAt(ary, i + num)
         Next i
         
     Else
+        ReDim ret(1 To sz)
         
-        num = lenAry(ary) + sz
-        ReDim ret(1 To num)
+        ub = UBound(ary)
         
-        For i = 1 To num
-            
+        For i = 1 To sz
             ret(i) = getAryAt(ary, i)
-            
         Next i
-        
     End If
     
     dropAry = ret
     
 End Function
 
-Function takeAry(ary, sz)
-    l = lenAry(ary)
+
+Function takeAry(ary, num)
     
-    If sz > 0 Then
+    lng = lenAry(ary)
+    sz = Abs(num)
+    Dim ret
+    
+    If sz < 0 Then
+        Call Err.Raise(1001, "takeAry", "num is larger than array length")
+    End If
+    
+    If num > 0 Then
+        ReDim ret(1 To sz)
         
-        num = sz
-        ReDim ret(1 To num)
         lb = LBound(ary)
         
-        For i = 1 To num
+        For i = 1 To sz
             
             ret(i) = getAryAt(ary, i)
             
         Next i
         
+    ElseIf num < 0 Then
+        ReDim ret(1 To sz)
         
-    ElseIf sz < 0 Then
-        
-        num = -1 * sz
-        ReDim ret(1 To num)
         ub = UBound(ary)
         
-        For i = 1 To num
+        For i = 1 To sz
             
             ret(i) = getAryAt(ary, l - num + i)
             
@@ -203,7 +206,6 @@ Function takeAry(ary, sz)
         
         ret = Array()
         
-        
     End If
     
     
@@ -212,30 +214,7 @@ Function takeAry(ary, sz)
     
 End Function
 
-Function midAry(ary, pos, sz)
-    
-    l = lenAry(ary)
-    If sz > 0 Then
-        
-        num = sz
-        ReDim ret(1 To num)
-        
-        For i = 1 To num
-            
-            ret(i) = getAryAt(ary, pos + i - 1)
-            
-        Next i
-        
-    Else
-        
-        ret = Array()
-        
-    End If
-    
-    midAry = ret
-    
-    
-End Function
+
 Function revAry(ary)
     
     num = lenAry(ary)
@@ -325,6 +304,7 @@ Catch:
     dimAry = idx - 1
     
 End Function
+
 Function getAryShape(ary, Optional typ = "N")
     num = dimAry(ary)
     ReDim ret(1 To num)

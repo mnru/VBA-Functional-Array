@@ -98,35 +98,32 @@ Sub testDrop()
     
     ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
     
-    Dim ary1(1 To 10)
+    Dim ary1(1 To 9)
     
-    For i = 1 To 10
+    For i = 1 To 9
         
         ary1(i) = i
     Next
     
-    x = dropAry(ary, 2, 3)
-    y = dropAry(ary, 0, 2)
-    Z = dropAry(ary, 3)
-    w = dropAry(ary, -3)
+    x = dropAry(ary, 3)
+    y = dropAry(ary, 0)
+    Z = dropAry(ary, -3)
+    w = dropAry(ary, 9)
     
-    x1 = dropAry(ary1, 2, 3)
-    y1 = dropAry(ary1, 0, 2)
-    z1 = dropAry(ary1, 3)
-    w1 = dropAry(ary1, -3)
-    
+    x1 = dropAry(ary1, 3)
+    y1 = dropAry(ary1, 0)
+    z1 = dropAry(ary1, -3)
+    w1 = dropAry(ary1, 9)
     
     printAry (x)
     printAry (y)
     printAry (Z)
     printAry (w)
     
-    
     printAry (x1)
     printAry (y1)
     printAry (z1)
     printAry (w1)
-    
     
 End Sub
 
@@ -410,36 +407,6 @@ Sub testShape()
     
 End Sub
 
-Sub testMid()
-    
-    ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    
-    Dim ary1(1 To 10)
-    
-    For i = 1 To 10
-        
-        ary1(i) = i
-    Next
-    
-    x = midAry(ary, 2, 3)
-    y = midAry(ary, 1, 2)
-    Z = midAry(ary, 3, 4)
-    
-    x1 = midAry(ary1, 2, 3)
-    y1 = midAry(ary1, 1, 2)
-    z1 = midAry(ary1, 3, 4)
-    
-    
-    printAry (x)
-    printAry (y)
-    printAry (Z)
-    
-    printAry (x1)
-    printAry (y1)
-    printAry (z1)
-    
-End Sub
-
 Sub testApply()
     
     a = mkSeq(30)
@@ -529,6 +496,8 @@ Sub testZip()
 End Sub
 
 Sub testAry()
+    
+    
     
     Dim x(1 To 3, 1 To 3) As String
     
