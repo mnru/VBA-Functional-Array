@@ -81,14 +81,15 @@ Function getDlm(shape, idx)
     
     
     Select Case m
-            
-        Case n
-            ret = ","
         Case 0
             ret = "]"
+        Case n
+            ret = ","
+        Case n - 1
+            ret = ";" & vbCrLf
         Case Else
             
-            ret = String(n - m, ";")
+            ret = String(n - m, ";") & vbCrLf & vbCrLf
     End Select
     getDlm = ret
     
