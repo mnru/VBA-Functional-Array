@@ -2,6 +2,7 @@ vbac.wsf
 src/VBA-Functional.xlsm/modAnalyze.bas
 cmbine.bat
 decombine.bat
-bin/
+bin/VBA-Functional.xlsx
 説明.uvxml
-無題.txt
+
+bin/~$VBA-Functional.xlsm
