@@ -37,6 +37,7 @@ Function rangeToArys(rg, Optional rc As String = "r")
     End If
     rangeToArys = ret
 End Function
+
 Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Null) As Variant
     bkn = ActiveWorkbook.Name
     ThisWorkbook.Activate
@@ -57,6 +58,7 @@ lnError:
     TLookup = Null
     Workbooks(bkn).Activate
 End Function
+
 Public Sub TSetUp(vl, key, tbl As String, targetCol As String, Optional sourceCol As String = "")
     Application.Volatile
     On Error GoTo lnError
