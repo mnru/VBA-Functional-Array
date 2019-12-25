@@ -46,7 +46,7 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     fnAry = conArys(fnc, Null, ary)
     num = lenAry(seq)
     ReDim ret(1 To num)
-    Dim i As Long
+    Dim i   As Long
     For i = 1 To num
         Call setAryAt(fnAry, 2, getAryAt(seq, i))
         ret(i) = evalA(fnAry)
@@ -73,9 +73,30 @@ End Function
 
 Public Function foldA(fnc As String, seq As Variant, init As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
-    fnObj = Array(Array(1, 2), prmAry(fnc, Null, Null, ary))
-    ret = foldF(fnObj, seq, init)
+    ret = foldAryA(fnc, seq, init, ary)
     foldA = ret
+End Function
+
+Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As Variant
+    fnAry = prmAry(fnc, init, Null, ary)
+    n = lenAry(seq)
+    ret = init
+    For Each elm In seq
+        Call setAryAt(fnAry, 1, ret, 0)
+        Call setAryAt(fnAry, 2, elm, 0)
+        ret = evalA(fnAry)
+        
+    Next elm
+    foldAryA = ret
+End Function
+
+Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
+    ary = argAry
+    init = getAryAt(seq, 1)
+    seq1 = dropAry(seq, 1)
+    ret = foldAryA(fnc, seq1, init, ary)
+    
+    reduceA = ret
 End Function
 
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
@@ -91,13 +112,6 @@ Public Function reduceF(fnObj, seq As Variant) As Variant
     seq1 = dropAry(seq, 1)
     ret = foldF(fnObj, seq1, init)
     reduceF = ret
-End Function
-
-Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
-    ary = argAry
-    fnObj = Array(Array(1, 2), prmAry(fnc, Null, Null, ary))
-    ret = reduceF(fnObj, seq)
-    reduceA = ret
 End Function
 
 Function applyF(vl, fnObj, Optional argAsAry = False)

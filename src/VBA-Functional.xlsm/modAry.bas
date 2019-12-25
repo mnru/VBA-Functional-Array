@@ -1,4 +1,5 @@
 Attribute VB_Name = "modAry"
+Option Base 0
 
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
@@ -34,8 +35,8 @@ Function conArys(ParamArray argArys())
             num = num + 1
         End If
     Next ary
-    ReDim ret(1 To num)
-    idx = 1
+    ReDim ret(0 To num - 1)
+    idx = 0
     For Each ary In arys
         If IsArray(ary) Then
             For Each elm In ary
@@ -51,8 +52,8 @@ Function conArys(ParamArray argArys())
 End Function
 
 Function mkSameAry(vl, num)
-    ReDim ret(1 To num)
-    For i = 1 To num
+    ReDim ret(0 To num - 1)
+    For i = 0 To num - 1
         ret(i) = vl
     Next i
     mkSameAry = ret
@@ -81,9 +82,9 @@ Function mkSeq(ParamArray argAry())
         Case Else
     End Select
     n = Int((last - first) / step) + 1
-    ReDim ret(1 To n)
-    For i = 1 To n
-        ret(i) = first + step * (i - 1)
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1
+        ret(i) = first + step * i
     Next i
     mkSeq = ret
 End Function
@@ -97,16 +98,16 @@ Function dropAry(ary, num)
     ElseIf sz = 0 Then
         ret = Array()
     ElseIf num > 0 Then
-        ReDim ret(1 To sz)
+        ReDim ret(0 To sz - 1)
         lb = LBound(ary)
-        For i = 1 To sz
-            ret(i) = getAryAt(ary, i + num)
+        For i = 0 To sz - 1
+            ret(i) = getAryAt(ary, i + num, 0)
         Next i
     Else
-        ReDim ret(1 To sz)
+        ReDim ret(0 To sz - 1)
         ub = UBound(ary)
-        For i = 1 To sz
-            ret(i) = getAryAt(ary, i)
+        For i = 0 To sz - 1
+            ret(i) = getAryAt(ary, i, 0)
         Next i
     End If
     dropAry = ret
@@ -120,16 +121,16 @@ Function takeAry(ary, num)
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
     End If
     If num > 0 Then
-        ReDim ret(1 To sz)
+        ReDim ret(0 To sz - 1)
         lb = LBound(ary)
-        For i = 1 To sz
-            ret(i) = getAryAt(ary, i)
+        For i = 0 To sz - 1
+            ret(i) = getAryAt(ary, i, 0)
         Next i
     ElseIf num < 0 Then
-        ReDim ret(1 To sz)
-        ub = UBound(ary)
-        For i = 1 To sz
-            ret(i) = getAryAt(ary, l - num + i)
+        ReDim ret(0 To sz - 1)
+        ' ub = UBound(ary)
+        For i = 0 To sz - 1
+            ret(i) = getAryAt(ary, lng - sz + i, 0)
         Next i
     Else
         ret = Array()
@@ -139,10 +140,10 @@ End Function
 
 Function revAry(ary)
     num = lenAry(ary)
-    ReDim ret(1 To num)
+    ReDim ret(0 To num - 1)
     lb = LBound(ary)
-    For i = 1 To num
-        ret(i) = getAryAt(num - i + 1)
+    For i = 0 To num - 1
+        ret(i) = getAryAt(num - i - 1, 0)
     Next i
     revAry = ret
 End Function
@@ -156,12 +157,12 @@ End Function
 Function zipAry(arys)
     rnum = lenAry(arys)
     cnum = lenAry(arys(LBound(arys)))
-    ReDim ret(1 To cnum)
+    ReDim ret(0 To cnum - 1)
     lb = LBound(arys)
-    For c = 1 To cnum
-        ReDim v(1 To rnum)
-        For r = 1 To rnum
-            v(r) = getAryAt(arys(lb + r - 1), c)
+    For c = 0 To cnum - 1
+        ReDim v(0 To rnum - 1)
+        For r = 0 To rnum - 1
+            v(r) = getAryAt(arys(lb + r), c, 0)
         Next r
         ret(c) = v
     Next c
@@ -178,7 +179,7 @@ Function prmAry(ParamArray argAry())
 End Function
 
 Function inAry(ary As Variant, elm As Variant) As Boolean
-    Dim ret As Boolean
+    Dim ret     As Boolean
     ret = False
     For Each x In ary
         If x = elm Then
@@ -188,9 +189,10 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     Next x
     inAry = ret
 End Function
+
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
-    Dim idx As Long
+    Dim idx     As Long
     idx = 0
     Do
         idx = idx + 1
@@ -203,7 +205,7 @@ End Function
 
 Function getAryShape(ary, Optional typ = "N")
     num = dimAry(ary)
-    ReDim ret(1 To num)
+    ReDim ret(0 To num - 1)
     For i = 1 To num
         Select Case UCase(typ)
             Case "N"
@@ -228,7 +230,7 @@ End Function
 
 Function mkIndex(num, shape, Optional lshape = Null)
     n = lenAry(shape)
-    ReDim ret(1 To n)
+    ReDim ret(0 To n - 1)
     r = num
     For i = n To 1 Step -1
         p = getAryAt(shape, i)
@@ -237,7 +239,7 @@ Function mkIndex(num, shape, Optional lshape = Null)
     Next i
     If Not IsNull(lshape) Then
         For i = 1 To n
-            Call setAryAt(ret, i, ret(i) + getAryAt(lshape, i))
+            Call setAryAt(ret, i, getAryAt(ret, i) + getAryAt(lshape, i))
         Next i
     End If
     mkIndex = ret
@@ -378,3 +380,4 @@ Sub setElm(vl, ary, idx)
         Case Else:
     End Select
 End Sub
+
