@@ -17,10 +17,10 @@ Function toString(elm) As String
             ret = ret & "]"
         Else
             For i = 0 To aryNum - 1
-                idx0 = mkIndex(i, sp, lsp)
-                idx = mkIndex(i, sp)
-                vl = getElm(elm, idx0)
-                dlm = getDlm(sp, idx)
+                idx0 = mkIndex(i, sp)
+                idx = calcAry(idx0, lsp, "+")
+                vl = getElm(elm, idx)
+                dlm = getDlm(sp, idx0)
                 ret = ret & toString(vl) & dlm
             Next i
         End If
@@ -85,6 +85,35 @@ Function secToHMS(vl As Double)
     secToHMS = ret
 End Function
 
+
+Function clcToAry(clc As Collection)
+    cnt = clc.Count
+    ReDim ret(1 To cnt)
+    For i = 1 To cnt
+        ret(i) = clc.Item(i)
+    Next i
+    clcToAry = ret
+End Function
+
+Function flattenAry(ary)
+    Dim clc As Collection
+    Set clc = New Collection
+    
+    For Each elm In ary
+        If IsArray(elm) Then
+            For Each el In flattenAry(elm)
+                clc.Add el
+            Next el
+        Else
+            clc.Add elm
+        End If
+    Next elm
+    
+    ret = clcToAry(clc)
+    flattenAry = ret
+    
+End Function
+
 Function calc(num1, num2, symbol As String)
     Dim ret
     Select Case symbol
@@ -100,14 +129,15 @@ Function calc(num1, num2, symbol As String)
     calc = ret
 End Function
 
-Function clcToAry(clc As Collection)
-    cnt = clc.Count
-    ReDim ret(1 To cnt)
-    For i = 1 To cnt
-        ret(i) = clc.Item(i)
+Function calcAry(ary1, ary2, symbol As String)
+    n = lenAry(ary1)
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1
+        ret(i) = calc(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
     Next i
-    clcToAry = ret
+    calcAry = ret
 End Function
+
 
 Function mcLike(word As String, wildcard As String, Optional include As Boolean = True) As Boolean
     Dim bol As Boolean
