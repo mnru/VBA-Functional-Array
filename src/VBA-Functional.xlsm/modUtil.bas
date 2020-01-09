@@ -114,31 +114,6 @@ Function flattenAry(ary)
     
 End Function
 
-Function calc(num1, num2, symbol As String)
-    Dim ret
-    Select Case symbol
-        Case "+": ret = num1 + num2
-        Case "-": ret = num1 - num2
-        Case "*": ret = num1 * num2
-        Case "/": ret = num1 / num2
-        Case "\": ret = num1 \ num2
-        Case "%": ret = num1 Mod num2
-        Case "^": ret = num1 ^ num2
-        Case Else
-    End Select
-    calc = ret
-End Function
-
-Function calcAry(ary1, ary2, symbol As String)
-    n = lenAry(ary1)
-    ReDim ret(0 To n - 1)
-    For i = 0 To n - 1
-        ret(i) = calc(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
-    Next i
-    calcAry = ret
-End Function
-
-
 Function mcLike(word As String, wildcard As String, Optional include As Boolean = True) As Boolean
     Dim bol As Boolean
     bol = word Like wildcard

@@ -385,7 +385,7 @@ Sub setElm(vl, ary, idx)
     End Select
 End Sub
 
-Sub setMAryBySAry(mAry, sAry)
+Sub setAryMbyS(mAry, sAry)
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     n = getAryNum(mAry)
@@ -396,7 +396,7 @@ Sub setMAryBySAry(mAry, sAry)
     Next i
 End Sub
 
-Function mAryToSAry(mAry)
+Function getArySbyM(mAry)
     
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
@@ -408,8 +408,41 @@ Function mAryToSAry(mAry)
         vl = getElm(mAry, idx)
         Call setAryAt(ret, i, vl, 0)
     Next i
-    mAryToSAry = ret
+    getArySbyM = ret
 End Function
+
+Function reshapeAry(ary, sp)
+    n = lenAry(sp)
+    ret = mkAry(sp)
+    Call setAryMbyS(ret, ary)
+    reshapeAry = ret
+    
+End Function
+
+Function calc(num1, num2, symbol As String)
+    Dim ret
+    Select Case symbol
+        Case "+": ret = num1 + num2
+        Case "-": ret = num1 - num2
+        Case "*": ret = num1 * num2
+        Case "/": ret = num1 / num2
+        Case "\": ret = num1 \ num2
+        Case "%": ret = num1 Mod num2
+        Case "^": ret = num1 ^ num2
+        Case Else
+    End Select
+    calc = ret
+End Function
+
+Function calcAry(ary1, ary2, symbol As String)
+    n = lenAry(ary1)
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1
+        ret(i) = calc(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
+    Next i
+    calcAry = ret
+End Function
+
 
 Function mkAry(sp)
     n = lenAry(sp)
@@ -477,19 +510,11 @@ Function mkAry(sp)
             'Case 58: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1)
             'Case 59: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1)
             'Case 60
-        'ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1, sp(lb + 59)- 1)
+            'ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1, sp(lb + 59)
+            - 1)
         Case Else:
     End Select
     
     mkAry = ret
     
 End Function
-
-Function reshapeAry(ary, sp)
-    n = lenAry(sp)
-    ret = mkAry(sp)
-    Call setMAryBySAry(ret, ary)
-    reshapeAry = ret
-    
-End Function
-
