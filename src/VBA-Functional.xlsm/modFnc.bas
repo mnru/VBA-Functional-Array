@@ -167,7 +167,7 @@ Function zipApplyF(fnObj, ParamArray argAry())
     zipApplyF = ret
 End Function
 
-Sub setAryByF(ary, fnObj)
+Sub setAryMByF(ary, fnObj)
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     n = getAryNum(ary)
@@ -177,3 +177,16 @@ Sub setAryByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
+
+Sub setAryMByP(ary, fn, Optional base = 1)
+    sp = getAryShape(ary)
+    lsp = getAryShape(ary, "L")
+    n = getAryNum(ary)
+    For i0 = 0 To n - 1
+        i = i0 + base
+        idx = mkIndex(i, sp, lsp)
+        vl = Application.Run(fn, i)
+        Call setElm(vl, ary, idx)
+    Next i0
+End Sub
+

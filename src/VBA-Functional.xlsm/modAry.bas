@@ -25,6 +25,26 @@ Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
     ary(idx) = vl
 End Sub
 
+Function getMAryAt(ary, pos, Optional base = 1)
+    lsp = getAryShape(ary, "L")
+    n = lenAry(lsp)
+    bs = mkSameAry(base, n)
+    idx1 = calcAry(pos, bs, "-")
+    idx2 = calcAry(idx1, lsp, "+")
+    ret = getElm(ary, idx2)
+    getMAryAt = ret
+End Function
+
+Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
+    lsp = getAryShape(ary, "L")
+    n = lenAry(lsp)
+    bs = mkSameAry(base, n)
+    idx1 = calcAry(pos, bs, "-")
+    idx2 = calcAry(idx1, lsp, "+")
+    Call setElm(vl, ary, idx2)
+End Sub
+
+
 Function conArys(ParamArray argArys())
     arys = argArys
     num = 0
@@ -509,9 +529,8 @@ Function mkAry(sp)
             'Case 57: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1)
             'Case 58: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1)
             'Case 59: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1)
-            'Case 60
-            'ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1, sp(lb + 59)
-            - 1)
+        'Case 60
+        'ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1, sp(lb + 59)- 1)
         Case Else:
     End Select
     

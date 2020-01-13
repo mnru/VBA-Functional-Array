@@ -125,7 +125,7 @@ Sub testMapA()
     y = printTime("mapA", "calc", a, 2, "*")
     printAry (y)
     t1 = Time
-    z0 = mapA("calc", b, 1, "+")
+    Z0 = mapA("calc", b, 1, "+")
     t2 = Time
     Debug.Print "mapA: -" & Format(t2 - t1, "hh:nn:ss")
 End Sub
@@ -256,9 +256,9 @@ Sub testShape()
     Dim c(1 To 5)
     vl = 1
     fob = mkF(1, "calc", Null, 1, "+")
-    Call setAryByF(a, fob)
-    Call setAryByF(b, fob)
-    Call setAryByF(c, fob)
+    Call setAryMByF(a, fob)
+    Call setAryMByF(b, fob)
+    Call setAryMByF(c, fob)
     x = getAryShape(a)
     y = getAryShape(b)
     Z = getAryShape(c)
@@ -417,4 +417,49 @@ Sub testReshape()
     printTime "printAry", a
     
 End Sub
+
+Sub testSequence()
+    t1 = Time
+    y = reshapeAry(mkSeq(50000), Array(500, 100))
+    t2 = Time
+    Debug.Print Format(t2 - t1, "hh:mm;ss")
+    Call printTime("printAry", y)
+    Stop
+    t3 = Time
+    x = Application.WorksheetFunction.Sequence(500, 100)
+    t4 = Time
+    Debug.Print Format(t4 - t3, "hh:mm;ss")
+    Call printTime("printAry", x)
+    Stop
+    
+    
+End Sub
+
+Sub testMaryAccessor()
+
+   x = reshapeAry(mkSeq(100), Array(2, 3, 4))
+    printAry x
+    y = getMAryAt(x, Array(1, 1, 1))
+    Debug.Print y
+    Z = getMAryAt(x, Array(1, 1, 1), 0)
+    Debug.Print Z
+    Call setMAryAt(x, Array(1, 1, 1), -1)
+    Call setMAryAt(x, Array(1, 1, 1), -2, 0)
+    printAry x
+    
+    
+    x0 = Application.WorksheetFunction.Sequence(4, 5)
+    printAry x0
+    y0 = getMAryAt(x0, Array(1, 1))
+    Debug.Print y0
+    Z0 = getMAryAt(x0, Array(1, 1), 0)
+    Debug.Print Z0
+    Call setMAryAt(x0, Array(1, 1), -1)
+    Call setMAryAt(x0, Array(1, 1), -2, 0)
+    printAry x0
+    
+
+End Sub
+
+
 
