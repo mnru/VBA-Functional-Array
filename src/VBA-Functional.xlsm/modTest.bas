@@ -436,8 +436,8 @@ Sub testSequence()
 End Sub
 
 Sub testMaryAccessor()
-
-   x = reshapeAry(mkSeq(100), Array(2, 3, 4))
+    
+    x = reshapeAry(mkSeq(100), Array(2, 3, 4))
     printAry x
     y = getMAryAt(x, Array(1, 1, 1))
     Debug.Print y
@@ -458,8 +458,13 @@ Sub testMaryAccessor()
     Call setMAryAt(x0, Array(1, 1), -2, 0)
     printAry x0
     
-
+    
 End Sub
 
-
+Sub testToString2D()
+    
+    x = reshapeAry(mkSeq(100), Array(10, 10))
+    
+    Debug.Print toString2DAry(x)
+End Sub
 

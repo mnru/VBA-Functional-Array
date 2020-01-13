@@ -38,6 +38,32 @@ Function toString(elm) As String
     toString = ret
 End Function
 
+Function toString2DAry(ary)
+    ret = "["
+    lb1 = LBound(ary): ub1 = UBound(ary)
+    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
+    
+    For i1 = lb1 To ub1
+        For i2 = lb2 To ub2
+            
+            elm = CStr(ary(i1, i2))
+            If i2 < ub2 Then
+                dlm = ","
+            ElseIf i1 = ub1 Then
+                dlm = "]"
+            Else
+                dlm = ";" & vbCrLf
+            End If
+            
+            ret = ret & elm & dlm
+            
+        Next i2
+    Next i1
+    
+    toString2DAry = ret
+    
+End Function
+
 Function getDlm(shape, idx)
     Dim ret
     n = lenAry(shape)
