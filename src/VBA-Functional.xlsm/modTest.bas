@@ -420,17 +420,21 @@ End Sub
 
 Sub testSequence()
     t1 = Time
-    y = reshapeAry(mkSeq(50000), Array(500, 100))
+    r = 2000
+    c = 100
+    y = reshapeAry(mkSeq(r * c), Array(r, c))
     t2 = Time
     Debug.Print Format(t2 - t1, "hh:mm;ss")
     Call printTime("printAry", y)
     Stop
-    t3 = Time
-    x = Application.WorksheetFunction.Sequence(500, 100)
-    t4 = Time
-    Debug.Print Format(t4 - t3, "hh:mm;ss")
-    Call printTime("printAry", x)
+    Call printTime("print2DAry", y)
     Stop
+' t3 = Time
+' x = Application.WorksheetFunction.Sequence(500, 100)
+' t4 = Time
+' Debug.Print Format(t4 - t3, "hh:mm;ss")
+' Call printTime("printAry", x)
+' Stop
     
     
 End Sub
@@ -461,10 +465,13 @@ Sub testMaryAccessor()
     
 End Sub
 
-Sub testToString2D()
-    
-    x = reshapeAry(mkSeq(100), Array(10, 10))
-    
-    Debug.Print toString2DAry(x)
+Sub testl_()
+    Dim x As Variant
+    Dim y As Variant
+    x = l_(l_(l_(10, 11), l_(20, 21)), l_(l_(30, 31)), l_(l_(40, 41), l_(50, 51), l_(60, 61)))
+    y = l_()
+    printAry (x)
+    printAry (y)
+    Debug.Print TypeName(x)
+    Debug.Print TypeName(y)
 End Sub
-

@@ -4,6 +4,30 @@ Sub printAry(ary)
     Debug.Print toString(ary)
 End Sub
 
+Sub print2DAry(ary)
+    Debug.Print toString2DAry(ary)
+End Sub
+
+Function toString2DAry(ary)
+    ret = "["
+    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
+    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
+    For i1 = lb1 To ub1
+        For i2 = lb2 To ub2
+            elm = CStr(ary(i1, i2))
+            If i2 < ub2 Then
+                dlm = ","
+            ElseIf i1 < ub1 Then
+                dlm = ";" & vbCrLf
+            Else
+                dlm = "]"
+            End If
+            ret = ret & elm & dlm
+        Next i2
+    Next i1
+    toString2DAry = ret
+End Function
+
 Function toString(elm) As String
     Dim ret
     ret = ""
@@ -36,32 +60,6 @@ Function toString(elm) As String
         End If
     End If
     toString = ret
-End Function
-
-Function toString2DAry(ary)
-    ret = "["
-    lb1 = LBound(ary): ub1 = UBound(ary)
-    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
-    
-    For i1 = lb1 To ub1
-        For i2 = lb2 To ub2
-            
-            elm = CStr(ary(i1, i2))
-            If i2 < ub2 Then
-                dlm = ","
-            ElseIf i1 = ub1 Then
-                dlm = "]"
-            Else
-                dlm = ";" & vbCrLf
-            End If
-            
-            ret = ret & elm & dlm
-            
-        Next i2
-    Next i1
-    
-    toString2DAry = ret
-    
 End Function
 
 Function getDlm(shape, idx)
