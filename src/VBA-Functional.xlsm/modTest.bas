@@ -8,7 +8,6 @@ Sub testconAry()
     printAry x1
     printAry x2
     Stop
-    
 End Sub
 
 Function conStr(a, b, dlm)
@@ -55,14 +54,14 @@ Sub testToString()
     c = "123"
     x = Array(1, Array(1 / 3, 2.5, 3), Array(2, Array(3)), Array(1, 2))
     y = Array(Array(True, False, True), Array(4, 5, 6))
-    Z = Application.WorksheetFunction.Transpose(y)
+    z = Application.WorksheetFunction.Transpose(y)
     w = Range("A1:C2")
     Debug.Print toString(a)
     Debug.Print toString(b)
     Debug.Print toString(c)
     Debug.Print toString(x)
     Debug.Print toString(y)
-    Debug.Print toString(Z)
+    Debug.Print toString(z)
     Debug.Print toString(w)
 End Sub
 
@@ -74,7 +73,7 @@ Sub testDrop()
     Next
     x = dropAry(ary, 3)
     y = dropAry(ary, 0)
-    Z = dropAry(ary, -3)
+    z = dropAry(ary, -3)
     w = dropAry(ary, 9)
     x1 = dropAry(ary1, 3)
     y1 = dropAry(ary1, 0)
@@ -82,7 +81,7 @@ Sub testDrop()
     w1 = dropAry(ary1, 9)
     printAry (x)
     printAry (y)
-    printAry (Z)
+    printAry (z)
     printAry (w)
     printAry (x1)
     printAry (y1)
@@ -97,13 +96,13 @@ Sub testTake()
         ary1(i) = i
     Next
     y = takeAry(ary, 0)
-    Z = takeAry(ary, 3)
+    z = takeAry(ary, 3)
     w = takeAry(ary, -3)
     y1 = takeAry(ary1, 0)
     z1 = takeAry(ary1, 3)
     w1 = takeAry(ary1, -3)
     printAry (y)
-    printAry (Z)
+    printAry (z)
     printAry (w)
     printAry (y1)
     printAry (z1)
@@ -261,22 +260,22 @@ Sub testShape()
     Call setAryMByF(c, fob)
     x = getAryShape(a)
     y = getAryShape(b)
-    Z = getAryShape(c)
+    z = getAryShape(c)
     printAry (x)
     printAry (y)
-    printAry (Z)
+    printAry (z)
     x = getAryShape(a, "U")
     y = getAryShape(b, "U")
-    Z = getAryShape(c, "U")
+    z = getAryShape(c, "U")
     printAry (x)
     printAry (y)
-    printAry (Z)
+    printAry (z)
     x = getAryShape(a, "L")
     y = getAryShape(b, "L")
-    Z = getAryShape(c, "L")
+    z = getAryShape(c, "L")
     printAry (x)
     printAry (y)
-    printAry (Z)
+    printAry (z)
     Call printTime("printAry", a)
     Call printTime("printAry", b)
     Call printTime("printAry", c)
@@ -318,8 +317,8 @@ End Sub
 
 Sub testZipApply()
     fob = mkF(1, 2, "calc", Null, Null, "+")
-    Z = zipApplyF(fob, mkSeq(5), mkSeq(10, 2, 2))
-    printAry (Z)
+    z = zipApplyF(fob, mkSeq(5), mkSeq(10, 2, 2))
+    printAry (z)
 End Sub
 Sub testZip()
     x = zip(Array(1, 2, 3, 4), Array(2, 3, 4, 5), Array(3, 4, 5, 6))
@@ -344,13 +343,13 @@ Sub testAry()
         Next j
     Next i
     Set y = Range("a1:c2")
-    Z = Range("a1:c2")
+    z = Range("a1:c2")
     Debug.Print TypeName(x)
     printAry (x)
     Debug.Print TypeName(y)
     printAry (y)
-    Debug.Print TypeName(Z)
-    printAry (Z)
+    Debug.Print TypeName(z)
+    printAry (z)
 End Sub
 
 Sub testZipArrayTime()
@@ -362,7 +361,7 @@ Sub testZipArrayTime()
     c = mkSeq(1000000, 10, 10)
     x = Array(a, b, c)
     y = printTime("zipary", x)
-    Z = printTime("zip", a, b, c)
+    z = printTime("zip", a, b, c)
     Call printTime("conarys", x)
     ' printAry x
     ' printAry y
@@ -445,8 +444,8 @@ Sub testMaryAccessor()
     printAry x
     y = getMAryAt(x, Array(1, 1, 1))
     Debug.Print y
-    Z = getMAryAt(x, Array(1, 1, 1), 0)
-    Debug.Print Z
+    z = getMAryAt(x, Array(1, 1, 1), 0)
+    Debug.Print z
     Call setMAryAt(x, Array(1, 1, 1), -1)
     Call setMAryAt(x, Array(1, 1, 1), -2, 0)
     printAry x
@@ -468,10 +467,23 @@ End Sub
 Sub testl_()
     Dim x As Variant
     Dim y As Variant
-    x = l_(l_(l_(10, 11), l_(20, 21)), l_(l_(30, 31)), l_(l_(40, 41), l_(50, 51), l_(60, 61)))
-    y = l_()
+    Dim z As Variant
+    
+    x = Array(Array(Array(10, 11), Array(20, 21)), Array(Array(30, 31)), Array(Array(40, 41), Array(50, 51), Array(60, 61)))
+    y = l_(l_(l_(10, 11), l_(20, 21)), l_(l_(30, 31)), l_(l_(40, 41), l_(50, 51), l_(60, 61)))
+    z = l_()
     printAry (x)
     printAry (y)
+    printAry (z)
+    
     Debug.Print TypeName(x)
     Debug.Print TypeName(y)
+    Debug.Print TypeName(z)
+    
 End Sub
+Sub testmkseq()
+x = mkSeq(10)
+printAry (x)
+
+End Sub
+

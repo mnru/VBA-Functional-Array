@@ -1,5 +1,4 @@
 Attribute VB_Name = "modFnc"
-
 Public Function evalA(argAry As Variant) As Variant
     ary = argAry
     Dim ret As Variant

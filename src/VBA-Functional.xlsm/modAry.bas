@@ -79,31 +79,9 @@ Function mkSameAry(vl, num)
     mkSameAry = ret
 End Function
 
-Function mkSeq(ParamArray argAry())
-    ary = argAry
-    Dim first
-    Dim last
-    Dim step
-    argn = lenAry(ary)
-    Select Case argn
-        Case 1
-            first = 1
-            last = getAryAt(ary, 1)
-            step = IIf(first <= last, 1, -1)
-        Case 2
-            first = getAryAt(ary, 1)
-            last = getAryAt(ary, 2)
-            step = IIf(first <= last, 1, -1)
-        Case 3
-            step = Abs(getAryAt(ary, 3))
-            first = getAryAt(ary, 1)
-            last = getAryAt(ary, 2)
-            step = IIf(first <= last, step, -1 * step)
-        Case Else
-    End Select
-    n = Int((last - first) / step) + 1
-    ReDim ret(0 To n - 1)
-    For i = 0 To n - 1
+Function mkSeq(num, Optional first = 1, Optional step = 1)
+    ReDim ret(0 To num - 1)
+    For i = 0 To num - 1
         ret(i) = first + step * i
     Next i
     mkSeq = ret

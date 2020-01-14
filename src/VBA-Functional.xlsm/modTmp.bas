@@ -7,6 +7,4 @@ Sub addBtn(rn, mn, Optional cn = "run", Optional sn = "", Optional bn = "")
     Set btn = Workbooks(bn).Sheets(sn).Buttons.Add(rg.Left, rg.Top, rg.Width, rg.Height)
     btn.OnAction = mn
     btn.Caption = cn
-    
-    
 End Sub
