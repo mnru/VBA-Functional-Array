@@ -1,10 +1,8 @@
 Attribute VB_Name = "modAry"
 Option Base 0
-
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function
-
 Function getAryAt(ary, pos, Optional base = 1)
     Dim ret
     If pos < 0 Then
@@ -15,7 +13,6 @@ Function getAryAt(ary, pos, Optional base = 1)
     ret = ary(idx)
     getAryAt = ret
 End Function
-
 Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
@@ -24,7 +21,6 @@ Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
     End If
     ary(idx) = vl
 End Sub
-
 Function getMAryAt(ary, pos, Optional base = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
@@ -34,7 +30,6 @@ Function getMAryAt(ary, pos, Optional base = 1)
     ret = getElm(ary, idx2)
     getMAryAt = ret
 End Function
-
 Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
@@ -43,8 +38,6 @@ Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
     idx2 = calcAry(idx1, lsp, "+")
     Call setElm(vl, ary, idx2)
 End Sub
-
-
 Function conArys(ParamArray argArys())
     arys = argArys
     num = 0
@@ -70,7 +63,6 @@ Function conArys(ParamArray argArys())
     Next ary
     conArys = ret
 End Function
-
 Function mkSameAry(vl, num)
     ReDim ret(0 To num - 1)
     For i = 0 To num - 1
@@ -78,7 +70,6 @@ Function mkSameAry(vl, num)
     Next i
     mkSameAry = ret
 End Function
-
 Function mkSeq(num, Optional first = 1, Optional step = 1)
     ReDim ret(0 To num - 1)
     For i = 0 To num - 1
@@ -86,7 +77,6 @@ Function mkSeq(num, Optional first = 1, Optional step = 1)
     Next i
     mkSeq = ret
 End Function
-
 Function dropAry(ary, num)
     lng = lenAry(ary)
     sz = lng - Abs(num)
@@ -126,7 +116,7 @@ Function takeAry(ary, num)
         Next i
     ElseIf num < 0 Then
         ReDim ret(0 To sz - 1)
-        ' ub = UBound(ary)
+ ' ub = UBound(ary)
         For i = 0 To sz - 1
             ret(i) = getAryAt(ary, lng - sz + i, 0)
         Next i
@@ -135,7 +125,6 @@ Function takeAry(ary, num)
     End If
     takeAry = ret
 End Function
-
 Function revAry(ary)
     num = lenAry(ary)
     ReDim ret(0 To num - 1)
@@ -166,16 +155,14 @@ Function zipAry(arys)
     Next c
     zipAry = ret
 End Function
-
 Function prmAry(ParamArray argAry())
-    'flatten last elm
+ 'flatten last elm
     ary = argAry
     ary1 = dropAry(ary, -1)
     ary2 = getAryAt(ary, -1)
     ret = conArys(ary1, ary2)
     prmAry = ret
 End Function
-
 Function inAry(ary As Variant, elm As Variant) As Boolean
     Dim ret     As Boolean
     ret = False
@@ -187,7 +174,6 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     Next x
     inAry = ret
 End Function
-
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
     Dim idx     As Long
@@ -200,7 +186,6 @@ Public Function dimAry(ByVal ary As Variant) As Long
 Catch:
     dimAry = idx - 1
 End Function
-
 Function getAryShape(ary, Optional typ = "N")
     num = dimAry(ary)
     ReDim ret(0 To num - 1)
@@ -218,18 +203,16 @@ Function getAryShape(ary, Optional typ = "N")
     Next i
     getAryShape = ret
 End Function
-
 Function getAryNum(ary)
     Dim ret
     sp = getAryShape(ary)
-    'ret = reduceA("calc", sp, "*")
+ 'ret = reduceA("calc", sp, "*")
     ret = 1
     For Each elm In sp
         ret = ret * elm
     Next elm
     getAryNum = ret
 End Function
-
 Function mkIndex(num, shape, Optional lshape = Null)
     n = lenAry(shape)
     ReDim ret(0 To n - 1)
@@ -246,7 +229,6 @@ Function mkIndex(num, shape, Optional lshape = Null)
     End If
     mkIndex = ret
 End Function
-
 Function getElm(ary, idx)
     Dim ret
     lb = LBound(idx)
@@ -315,7 +297,6 @@ Function getElm(ary, idx)
     End Select
     getElm = ret
 End Function
-
 Sub setElm(vl, ary, idx)
     lb = LBound(idx)
     Select Case lenAry(idx)
@@ -382,7 +363,6 @@ Sub setElm(vl, ary, idx)
         Case Else:
     End Select
 End Sub
-
 Sub setAryMbyS(mAry, sAry)
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
@@ -393,14 +373,11 @@ Sub setAryMbyS(mAry, sAry)
         Call setElm(vl, mAry, idx)
     Next i
 End Sub
-
-Function getArySbyM(mAry)
-    
+Function getArySbyM(mAry, Optional bs = 0)
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     n = getAryNum(mAry)
-    ReDim ret(0 To n - 1)
-    
+    ReDim ret(bs To bs + n - 1)
     For i = 0 To n - 1
         idx = mkIndex(i, sp, lsp)
         vl = getElm(mAry, idx)
@@ -408,15 +385,20 @@ Function getArySbyM(mAry)
     Next i
     getArySbyM = ret
 End Function
-
-Function reshapeAry(ary, sp)
+Function reshapeAry(ary, sp, Optional bs = 0)
     n = lenAry(sp)
-    ret = mkAry(sp)
+    ret = mkAry(sp, bs)
     Call setAryMbyS(ret, ary)
     reshapeAry = ret
     
 End Function
-
+Function reshapeAry0(ary, sp, Optional bs = 0)
+    n = lenAry(sp)
+    ret = mkAry0(sp)
+    Call setAryMbyS(ret, ary)
+    reshapeAry0 = ret
+    
+End Function
 Function calc(num1, num2, symbol As String)
     Dim ret
     Select Case symbol
@@ -431,7 +413,6 @@ Function calc(num1, num2, symbol As String)
     End Select
     calc = ret
 End Function
-
 Function calcAry(ary1, ary2, symbol As String)
     n = lenAry(ary1)
     ReDim ret(0 To n - 1)
@@ -440,9 +421,68 @@ Function calcAry(ary1, ary2, symbol As String)
     Next i
     calcAry = ret
 End Function
+Function mkAry(sp, Optional bs = 0)
+    n = lenAry(sp)
+    ub = calcAry(sp, mkSameAry(bs - 1, n), "+")
+    lb = LBound(ub)
+    Dim ret
+    Select Case n
+        Case 1: ReDim ret(bs To ub(lb))
+        Case 2: ReDim ret(bs To ub(lb), bs To ub(lb + 1))
+        Case 3: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2))
+        Case 4: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3))
+        Case 5: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4))
+        Case 6: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5))
+        Case 7: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6))
+        Case 8: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7))
+        Case 9: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8))
+        Case 10: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9))
+        Case 11: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10))
+        Case 12: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11))
+        Case 13: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12))
+        Case 14: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13))
+        Case 15: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14))
+        Case 16: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15))
+        Case 17: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16))
+        Case 18: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17))
+        Case 19: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18))
+        Case 20: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19))
+        Case 21: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20))
+        Case 22: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21))
+        Case 23: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22))
+        Case 24: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23))
+        Case 25: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24))
+        Case 26: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25))
+        Case 27: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26))
+        Case 28: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27))
+        Case 29: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28))
+        Case 30: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29))
+        Case 31: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30))
+        Case 32: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31))
+        Case 33: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32))
+        Case 34: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33))
+        Case 35: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34))
+        Case 36: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35))
+        Case 37: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36))
+        Case 38: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37))
+        Case 39: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38))
+        Case 40: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39))
+        Case 41: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40))
+        Case 42: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41))
+        Case 43: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42))
+        Case 44: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43))
+        Case 45: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44))
+        Case 46: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44), bs To ub(lb + 45))
+        Case 47: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44), bs To ub(lb + 45), bs To ub(lb + 46))
+        Case 48: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44), bs To ub(lb + 45), bs To ub(lb + 46), bs To ub(lb + 47))
+        Case 49: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44), bs To ub(lb + 45), bs To ub(lb + 46), bs To ub(lb + 47), bs To ub(lb + 48))
+        Case 50: ReDim ret(bs To ub(lb), bs To ub(lb + 1), bs To ub(lb + 2), bs To ub(lb + 3), bs To ub(lb + 4), bs To ub(lb + 5), bs To ub(lb + 6), bs To ub(lb + 7), bs To ub(lb + 8), bs To ub(lb + 9), bs To ub(lb + 10), bs To ub(lb + 11), bs To ub(lb + 12), bs To ub(lb + 13), bs To ub(lb + 14), bs To ub(lb + 15), bs To ub(lb + 16), bs To ub(lb + 17), bs To ub(lb + 18), bs To ub(lb + 19), bs To ub(lb + 20), bs To ub(lb + 21), bs To ub(lb + 22), bs To ub(lb + 23), bs To ub(lb + 24), bs To ub(lb + 25), bs To ub(lb + 26), bs To ub(lb + 27), bs To ub(lb + 28), bs To ub(lb + 29), bs To ub(lb + 30), bs To ub(lb + 31), bs To ub(lb + 32), bs To ub(lb + 33), bs To ub(lb + 34), bs To ub(lb + 35), bs To ub(lb + 36), bs To ub(lb + 37), bs To ub(lb + 38), bs To ub(lb + 39), bs To ub(lb + 40), bs To ub(lb + 41), bs To ub(lb + 42), bs To ub(lb + 43), bs To ub(lb + 44), bs To ub(lb + 45), bs To ub(lb + 46), bs To ub(lb + 47), bs To ub(lb + 48), bs To ub(lb + 49))
+        Case Else:
+    End Select
+    mkAry = ret
+End Function
 
-
-Function mkAry(sp)
+Function mkAry0(sp)
     n = lenAry(sp)
     lb = LBound(sp)
     
@@ -498,21 +538,10 @@ Function mkAry(sp)
         Case 48: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1)
         Case 49: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1)
         Case 50: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1)
-            'Case 51: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1)
-            'Case 52: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1)
-            'Case 53: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1)
-            'Case 54: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1)
-            'Case 55: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1)
-            'Case 56: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1)
-            'Case 57: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1)
-            'Case 58: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1)
-            'Case 59: ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1)
-        'Case 60
-        'ReDim ret(sp(lb) - 1, sp(lb + 1) - 1, sp(lb + 2) - 1, sp(lb + 3) - 1, sp(lb + 4) - 1, sp(lb + 5) - 1, sp(lb + 6) - 1, sp(lb + 7) - 1, sp(lb + 8) - 1, sp(lb + 9) - 1, sp(lb + 10) - 1, sp(lb + 11) - 1, sp(lb + 12) - 1, sp(lb + 13) - 1, sp(lb + 14) - 1, sp(lb + 15) - 1, sp(lb + 16) - 1, sp(lb + 17) - 1, sp(lb + 18) - 1, sp(lb + 19) - 1, sp(lb + 20) - 1, sp(lb + 21) - 1, sp(lb + 22) - 1, sp(lb + 23) - 1, sp(lb + 24) - 1, sp(lb + 25) - 1, sp(lb + 26) - 1, sp(lb + 27) - 1, sp(lb + 28) - 1, sp(lb + 29) - 1, sp(lb + 30) - 1, sp(lb + 31) - 1, sp(lb + 32) - 1, sp(lb + 33) - 1, sp(lb + 34) - 1, sp(lb + 35) - 1, sp(lb + 36) - 1, sp(lb + 37) - 1, sp(lb + 38) - 1, sp(lb + 39) - 1, sp(lb + 40) - 1, sp(lb + 41) - 1, sp(lb + 42) - 1, sp(lb + 43) - 1, sp(lb + 44) - 1, sp(lb + 45) - 1, sp(lb + 46) - 1, sp(lb + 47) - 1, sp(lb + 48) - 1, sp(lb + 49) - 1, sp(lb + 50) - 1, sp(lb + 51) - 1, sp(lb + 52) - 1, sp(lb + 53) - 1, sp(lb + 54) - 1, sp(lb + 55) - 1, sp(lb + 56) - 1, sp(lb + 57) - 1, sp(lb + 58) - 1, sp(lb + 59)- 1)
         Case Else:
     End Select
     
-    mkAry = ret
+    mkAry0 = ret
     
 End Function
 

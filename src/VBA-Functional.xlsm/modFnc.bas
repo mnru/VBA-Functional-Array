@@ -39,10 +39,9 @@ Public Function evalA(argAry As Variant) As Variant
     End Select
     evalA = ret
 End Function
-
 Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
-    fnAry = conArys(fnc, Null, ary)
+    fnAry = prmAry(fnc, Null, ary)
     num = lenAry(seq)
     ReDim ret(1 To num)
     Dim i   As Long
@@ -52,11 +51,27 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     Next i
     mapA = ret
 End Function
-
+Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
+    ary = argAry
+    sp = getAryShape(mAry)
+    lsp = getAryShape(mAry, "L")
+    ret = mkAry(sp)
+    fnAry = prmAry(fnc, Null, ary)
+    num = getAryNum(mAry)
+    Dim i   As Long
+    For i = 1 To num
+        idx0 = mkIndex(i, sp)
+        idx = calcAry(idx0, lsp, "+")
+        Call setAryAt(fnAry, 2, getElm(mAry, idx))
+        vl = evalA(fnAry)
+        Call setElm(vl, ret, idx0)
+    Next i
+    mMapA = ret
+End Function
 Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     num = lenAry(seq)
-    fnAry = conArys(fnc, Null, ary)
+    fnAry = prmAry(fnc, Null, ary)
     idx = 0
     ReDim ret(1 To num)
     For Each elm In seq
@@ -69,13 +84,11 @@ Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Va
     ReDim Preserve ret(1 To idx)
     filterA = ret
 End Function
-
 Public Function foldA(fnc As String, seq As Variant, init As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     ret = foldAryA(fnc, seq, init, ary)
     foldA = ret
 End Function
-
 Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As Variant
     fnAry = prmAry(fnc, init, Null, ary)
     n = lenAry(seq)
@@ -88,7 +101,6 @@ Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As
     Next elm
     foldAryA = ret
 End Function
-
 Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     init = getAryAt(seq, 1)
@@ -97,7 +109,6 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
     
     reduceA = ret
 End Function
-
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     ret = init
     For Each elm In seq
@@ -105,14 +116,12 @@ Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     Next elm
     foldF = ret
 End Function
-
 Public Function reduceF(fnObj, seq As Variant) As Variant
     init = getAryAt(seq, 1)
     seq1 = dropAry(seq, 1)
     ret = foldF(fnObj, seq1, init)
     reduceF = ret
 End Function
-
 Function applyF(vl, fnObj, Optional argAsAry = False)
     Dim ret
     fnAry = getAryAt(fnObj, 2)
@@ -128,7 +137,6 @@ Function applyF(vl, fnObj, Optional argAsAry = False)
     ret = evalA(fnAry)
     applyF = ret
 End Function
-
 Function applyFs(vl, fnObjs, Optional argAsAry = False)
     Dim ret
     ret = vl
@@ -137,7 +145,6 @@ Function applyFs(vl, fnObjs, Optional argAsAry = False)
     Next fnObj
     applyFs = ret
 End Function
-
 Function getArity(ary)
     Dim ret
     ret = 0
@@ -150,7 +157,6 @@ Function getArity(ary)
     Next elm
     getArity = ret
 End Function
-
 Function mkF(ParamArray argArys())
     ary = argArys
     n = getArity(ary)
@@ -158,14 +164,12 @@ Function mkF(ParamArray argArys())
     fnAry = dropAry(ary, n)
     mkF = Array(arity, fnAry)
 End Function
-
 Function zipApplyF(fnObj, ParamArray argAry())
     arys = argAry
     x = zipAry(arys)
     ret = mapA("applyF", x, fnObj, True)
     zipApplyF = ret
 End Function
-
 Sub setAryMByF(ary, fnObj)
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
@@ -176,7 +180,6 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-
 Sub setAryMByP(ary, fn, Optional base = 1)
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
@@ -188,4 +191,3 @@ Sub setAryMByP(ary, fn, Optional base = 1)
         Call setElm(vl, ary, idx)
     Next i0
 End Sub
-

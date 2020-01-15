@@ -1,8 +1,8 @@
 Attribute VB_Name = "modUtil"
 
-Sub printAry(ary)
-    Debug.Print toString(ary)
-End Sub
+'Sub printAry(ary)
+'    Debug.Print toString(ary)
+'End Sub
 
 Sub print2DAry(ary)
     Debug.Print toString2DAry(ary)
