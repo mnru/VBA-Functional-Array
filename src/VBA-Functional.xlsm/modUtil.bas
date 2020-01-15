@@ -1,33 +1,4 @@
 Attribute VB_Name = "modUtil"
-
-'Sub printAry(ary)
-'    Debug.Print toString(ary)
-'End Sub
-
-Sub print2DAry(ary)
-    Debug.Print toString2DAry(ary)
-End Sub
-
-Function toString2DAry(ary)
-    ret = "["
-    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
-    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
-    For i1 = lb1 To ub1
-        For i2 = lb2 To ub2
-            elm = CStr(ary(i1, i2))
-            If i2 < ub2 Then
-                dlm = ","
-            ElseIf i1 < ub1 Then
-                dlm = ";" & vbCrLf
-            Else
-                dlm = "]"
-            End If
-            ret = ret & elm & dlm
-        Next i2
-    Next i1
-    toString2DAry = ret
-End Function
-
 Function toString(elm) As String
     Dim ret
     ret = ""
@@ -85,18 +56,6 @@ Function getDlm(shape, idx)
     getDlm = ret
 End Function
 
-Function printTime(fnc As String, ParamArray argAry() As Variant)
-    Dim etime As Double
-    Dim stime As Double
-    Dim secs  As Double
-    ary = argAry
-    fnAry = conArys(fnc, ary)
-    stime = Timer
-    printTime = evalA(fnAry)
-    etime = Timer
-    secs = etime - stime
-    Debug.Print fnc & " - " & secToHMS(secs)
-End Function
 
 Function secToHMS(vl As Double)
     'Dim x2 As Double

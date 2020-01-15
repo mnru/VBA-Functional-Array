@@ -1,46 +1,30 @@
 Attribute VB_Name = "modLog"
-Private stmLog
 Private toFile_    As Boolean
 Private toConsole_ As Boolean
-Private toSheet_   As Boolean
+Private pn_
+Private stmLog     As Object
 
-Sub setLog(Optional toConsole As Boolean = True, Optional toFile As Boolean = False, Optional pn = "", Optional toSheet As Boolean = False)
-    
+Sub setLog(Optional toConsole As Boolean = True, Optional toFile As Boolean = False, Optional pn = "")
     toConsole_ = toConsole
     toFile_ = toFile
-    toSheet_ = toSheet
-    If toFile Then
-        Call prepareLogFile(pn)
-    End If
-    
+    If pn = "" Then pn = ThisWorkbook.Path & "\log.txt"
+    pn_ = pn
     
 End Sub
 
-Sub prepareLogFile(Optional pn = "")
-    
-    
-    If pn = "" Then pn = ThisWorkbook.Path & "\log.txt"
-    
+Sub prepareLogFile()
     On Error GoTo Catch
     
     Set fso = CreateObject("Scripting.FileSystemObject")
-    
-    If fso.FileExists(pn) Then
-        
-        Set stmLog = fso.OpenTextFile(pn, IOMode:=ForAppending)
-        
+    If fso.FileExists(pn_) Then
+        Set stmLog = fso.OpenTextFile(pn_, IOMode:=8) 'ForAppending
     Else
-        
-        Set stmLog = fso.CreateTextFile(pn)
-        
+        Set stmLog = fso.CreateTextFile(pn_)
     End If
-    
-Catch:
     Exit Sub
+Catch:
     MsgBox Err.Description
     Err.Clear
-    
-    
     
 End Sub
 
@@ -50,21 +34,22 @@ Sub closeLogFile()
     stmLog.Close
     On Error GoTo 0
     
-    
 End Sub
 
-Sub writeToFile(msg, withNewLine)
-    If withNewLine Then
+Sub writeToFile(msg, Optional crlf As Boolean = True)
+    
+    Call prepareLogFile
+    If crlf Then
         stmLog.writeline (msg)
     Else
         stmLog.Write (msg)
     End If
-    
+    Call closeLogFile
 End Sub
 
-Sub writeToConsole(msg, withNewLine)
+Sub writeToConsole(msg, Optional crlf As Boolean = True)
     
-    If withNewLine Then
+    If crlf Then
         
         Debug.Print msg
     Else
@@ -73,10 +58,10 @@ Sub writeToConsole(msg, withNewLine)
     
 End Sub
 
-Sub writeLog(msg, Optional withNewLine As Boolean = True)
-    If toConsole_ Then Call writeToConsole(msg, withNewLine)
-    If toFile_ Then Call writeToFile(msg, withNewLine)
-    ' If toSheet_ Then Call writeToSheet(msg, withNewLine)
+Sub writeLog(msg, Optional crlf As Boolean = True)
+    If toConsole_ Then Call writeToConsole(msg, crlf)
+    If toFile_ Then Call writeToFile(msg, crlf)
+    ' If toSheet_ Then Call writeToSheet(msg, crlf)
     
 End Sub
 
@@ -84,25 +69,41 @@ Sub printAry(ary)
     writeLog toString(ary)
 End Sub
 
-Sub printSimpleAry(ary)
+Sub printSimpleAry(ary, Optional flush = 1000)
     
-    Call writeLog("[", False)
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     aryNum = getAryNum(ary)
     If aryNum = 0 Then
-        Call writeLog("]", False)
+        Call writeLog("[]", False)
     Else
-        
+        ret = "["
         For i = 0 To aryNum - 1
             idx0 = mkIndex(i, sp)
             idx = calcAry(idx0, lsp, "+")
             vl = getElm(ary, idx)
             dlm = getDlm(sp, idx0)
-            Call writeLog(vl & dlm, False)
-            
+            ret = ret & vl & dlm
+            If i Mod flush = 0 Then
+                Call writeLog(ret, False)
+                ret = ""
+            End If
         Next i
     End If
-    Call writeLog(vbCrLf, True)
+    Call writeLog(ret, True)
     
 End Sub
+
+Function printTime(fnc As String, ParamArray argAry() As Variant)
+    Dim etime As Double
+    Dim stime As Double
+    Dim secs  As Double
+    ary = argAry
+    fnAry = prmAry(fnc, ary)
+    stime = Timer
+    printTime = evalA(fnAry)
+    etime = Timer
+    secs = etime - stime
+    Call writeLog(fnc & " - " & secToHMS(secs))
+End Function
+

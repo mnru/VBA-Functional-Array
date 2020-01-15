@@ -134,7 +134,7 @@ Sub testRgt()
     Debug.Print IsArray(rg)
 End Sub
 Sub testRangeToArys()
-    Dim rg  As Range
+    Dim rg                As Range
     Set rg = Range("A1:C2")
     dary = rg
     Dim dr(0 To 1, 0 To 2)
@@ -524,19 +524,22 @@ Sub testSimpleAry()
     
     Call setLog(True, True)
     
-    x = reshapeAry(mkSeq(100), Array(10, 10))
+    r = 100
+    c = 100
+    x = reshapeAry(mkSeq(r * c), Array(r, c))
     
-    printSimpleAry (x)
+    printTime "printAry", x
+    Stop
+    printTime "printSimpleAry", x
+    Stop
+    Call setLog(False, True)
     
-    
+    printTime "printAry", x
+    Stop
+    printTime "printSimpleAry", x
+    Stop
 End Sub
 
-Sub testPrintAry()
-    Call setLog(True, True)
-    x = reshapeAry(mkSeq(100), Array(10, 10))
-    
-    printAry (x)
-End Sub
 
 Sub testLog()
     
