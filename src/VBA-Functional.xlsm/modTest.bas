@@ -524,20 +524,19 @@ Sub testSimpleAry()
     
     Call setLog(True, True)
     
-    r = 100
+    r = 500
     c = 100
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
-    printTime "printAry", x
-    Stop
     printTime "printSimpleAry", x
+    Stop
+    printTime "printAry", x
     Stop
     Call setLog(False, True)
     
-    printTime "printAry", x
-    Stop
     printTime "printSimpleAry", x
-    Stop
+    printTime "printAry", x
+
 End Sub
 
 

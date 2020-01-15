@@ -1,8 +1,7 @@
 Attribute VB_Name = "modLog"
+Private pn_
 Private toFile_    As Boolean
 Private toConsole_ As Boolean
-Private pn_
-Private stmLog     As Object
 
 Sub setLog(Optional toConsole As Boolean = True, Optional toFile As Boolean = False, Optional pn = "")
     toConsole_ = toConsole
@@ -12,39 +11,35 @@ Sub setLog(Optional toConsole As Boolean = True, Optional toFile As Boolean = Fa
     
 End Sub
 
-Sub prepareLogFile()
+Function prepareLogFile(pn)
     On Error GoTo Catch
     
     Set fso = CreateObject("Scripting.FileSystemObject")
-    If fso.FileExists(pn_) Then
-        Set stmLog = fso.OpenTextFile(pn_, IOMode:=8) 'ForAppending
+    If fso.FileExists(pn) Then
+        Set stm = fso.OpenTextFile(pn, IOMode:=8) 'ForAppending
     Else
-        Set stmLog = fso.CreateTextFile(pn_)
+        Set stm = fso.CreateTextFile(pn)
     End If
-    Exit Sub
+    Set prepareLogFile = stm
+    
+    Exit Function
 Catch:
     MsgBox Err.Description
     Err.Clear
     
-End Sub
-
-Sub closeLogFile()
-    
-    On Error Resume Next
-    stmLog.Close
-    On Error GoTo 0
-    
-End Sub
+End Function
 
 Sub writeToFile(msg, Optional crlf As Boolean = True)
     
-    Call prepareLogFile
+    Set stm = prepareLogFile(pn_)
     If crlf Then
-        stmLog.writeline (msg)
+        stm.writeline (msg)
     Else
-        stmLog.Write (msg)
+        stm.Write (msg)
     End If
-    Call closeLogFile
+    On Error Resume Next
+    stm.Close
+    On Error GoTo 0
 End Sub
 
 Sub writeToConsole(msg, Optional crlf As Boolean = True)
@@ -82,6 +77,7 @@ Sub printSimpleAry(ary, Optional flush = 1000)
             idx0 = mkIndex(i, sp)
             idx = calcAry(idx0, lsp, "+")
             vl = getElm(ary, idx)
+            If TypeName(vl) = "String" Then vl = "'" & vl & "'"
             dlm = getDlm(sp, idx0)
             ret = ret & vl & dlm
             If i Mod flush = 0 Then
