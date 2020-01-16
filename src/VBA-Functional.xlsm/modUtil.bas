@@ -55,10 +55,8 @@ Function getDlm(shape, idx)
     End Select
     getDlm = ret
 End Function
-
-
 Function secToHMS(vl As Double)
-    'Dim x2 As Double
+ 'Dim x2 As Double
     x0 = vl
     x1 = Int(x0)
     x2 = x0 - x1
@@ -67,8 +65,6 @@ Function secToHMS(vl As Double)
     ret = Format(getAryAt(x3, 1), "00") & ":" & Format(getAryAt(x3, 2), "00") & ":" & Format(x4, "00.000")
     secToHMS = ret
 End Function
-
-
 Function clcToAry(clc As Collection)
     cnt = clc.Count
     ReDim ret(1 To cnt)
