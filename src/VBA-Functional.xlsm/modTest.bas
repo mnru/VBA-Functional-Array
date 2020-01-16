@@ -424,7 +424,7 @@ Sub testReshape()
     printTime "printAry", e
     Stop
     printTime "printAry", d
-    Print
+    
     
     
 End Sub
@@ -528,42 +528,24 @@ Sub testSimpleAry()
     c = 100
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
+    printTime "print2DAry", x
+    Stop
     printTime "printSimpleAry", x
     Stop
     printTime "printAry", x
     Stop
     Call setLog(False, True)
     
+    printTime "print2DAry", x
     printTime "printSimpleAry", x
     printTime "printAry", x
-
+    
 End Sub
 
-Sub testSimpleAry()
-    
-    Call setLog(True, True)
-    
-    r = 1000
-    c = 1000
-    x = reshapeAry(mkSeq(r * c), Array(r, c))
-    
-    printTime "print2DAry", x
-    Stop
-    printTime "printSimpleAry", x
-    Stop
-    printTime "printAry", x
-    Stop
-    Call setLog(False, True)
-    
-    printTime "print2DAry", x
-    printTime "printSimpleAry", x
-    printTime "printAry", x
-End Sub
-
-Sub test1DArray()    
-	x = mkSeq(1000000)
-     Call setLog(True, True)
-    printTime "print1DAry", x
+Sub test1DArray()
+    x = mkSeq(1000000)
+    Call setLog(True, True)
+    printTime "print1DAry", x
 End Sub
 
 Sub testLog()
