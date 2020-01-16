@@ -504,14 +504,12 @@ Sub testmMapA()
 End Sub
 
 Sub testSimpleAry()
-    
-    
+        
     r = 500
     c = 100
     
 ' r = 1048576
 ' c = 16384
-    
     
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
@@ -531,7 +529,6 @@ Sub testSimpleAry()
     printTime "printAry", x
     Stop
     
-    
     Call DebugLog.setDic("array", False, True)
     
     printTime "print2DAry", x
@@ -539,6 +536,23 @@ Sub testSimpleAry()
     printTime "printSimpleAry", x
     Stop
     printTime "printAry", x
+End Sub
+
+Sub test3DArray()
+    
+    d = 100
+    r = 100
+    c = 100
+    
+    x = reshapeAry(mkSeq(d * r * c), Array(d, r, c))
+    
+    DebugLog.setAllFileFlg (True)
+    Call DebugLog.setDic("array", False, True)
+    
+    printTime "print3DAry", x
+    printTime "print3DAry", x
+    printTime "print3DAry", x
+    
 End Sub
 
 Sub test1DArray()
@@ -549,7 +563,7 @@ End Sub
 
 Sub testLog()
     
-    Call DebugLog.setLog(True, True)
+    Call DebugLog.setAllFileFlg(True)
     
     Stop
     Call DebugLog.writeLog("A", False)
