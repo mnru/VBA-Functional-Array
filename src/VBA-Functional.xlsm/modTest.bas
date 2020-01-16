@@ -10,19 +10,23 @@ Sub testconAry()
     printAry x2
     Stop
 End Sub
+
 Function conStr(a, b, dlm)
     conStr = a & dlm & b
 End Function
+
 Sub testReduce()
     x = reduceA("conStr", Array("a", "b", "c"), "-")
     Debug.Print x
 End Sub
+
 Sub testFold()
     x = foldA("calc", mkSeq(5), 100, "-")
     Debug.Print x
 End Sub
+
 Sub testCollection()
-    Dim clc               As Collection
+    Dim clc As Collection
     Set clc = New Collection
     ary1 = Array(1, 2, 3)
     ary2 = Array("a", "b", "c")
@@ -35,6 +39,7 @@ Sub testCollection()
     x = clcToAry(clc)
     printAry x
 End Sub
+
 Sub testSeq()
     printAry mkSameAry(12, 5)
     printAry mkSeq(5)
@@ -43,6 +48,7 @@ Sub testSeq()
     printAry mkSeq(5, 9, 2)
     printAry mkSeq(3, -3, -2)
 End Sub
+
 Sub testToString()
     a = "abc"
     b = Time
@@ -59,6 +65,7 @@ Sub testToString()
     Debug.Print toString(z)
     Debug.Print toString(w)
 End Sub
+
 Sub testDrop()
     ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
     Dim ary1(1 To 9)
@@ -82,6 +89,7 @@ Sub testDrop()
     printAry (z1)
     printAry (w1)
 End Sub
+
 Sub testTake()
     ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
     Dim ary1(1 To 9)
@@ -425,8 +433,8 @@ Sub testSequence()
 ' Call printTime("printAry", x)
 ' Stop
     
-    
 End Sub
+
 Sub testMaryAccessor()
     x = reshapeAry(mkSeq(100), Array(2, 3, 4))
     printAry x
@@ -497,7 +505,6 @@ End Sub
 
 Sub testSimpleAry()
     
-    Call DebugLog.setLog(True, True)
     
     r = 500
     c = 100
@@ -512,18 +519,34 @@ Sub testSimpleAry()
     Stop
     printTime "printSimpleAry", x
     Stop
- 'printTime "printAry", x
+    printTime "printAry", x
     Stop
-    Call DebugLog.setLog(False, True)
+    
+    Call DebugLog.setAllFileFlg(True)
+    
     printTime "print2DAry", x
+    Stop
     printTime "printSimpleAry", x
- 'printTime "printAry", x
+    Stop
+    printTime "printAry", x
+    Stop
+    
+    
+    Call DebugLog.setDic("array", False, True)
+    
+    printTime "print2DAry", x
+    Stop
+    printTime "printSimpleAry", x
+    Stop
+    printTime "printAry", x
 End Sub
+
 Sub test1DArray()
     x = mkSeq(1000000)
     Call DebugLog.setLog(True, True)
     printTime "print1DAry", x
 End Sub
+
 Sub testLog()
     
     Call DebugLog.setLog(True, True)
