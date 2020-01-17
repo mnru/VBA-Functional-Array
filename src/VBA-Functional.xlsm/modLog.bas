@@ -1,18 +1,24 @@
 Attribute VB_Name = "modLog"
+Sub printOut(x)
+     Set wr = New LogWriter
+    wr.logType = "debug"
+    Call wr.output(x, True)
+End Sub
+
 Sub printAry(ary)
-    Dim logtype As String
-    logtype = "array"
-    Call DebugLog.writeLog(toString(ary), True, logtype)
+    Set wr = New LogWriter
+    wr.logType = "array"
+    Call wr.output(toString(ary), True)
 End Sub
 
 Sub printSimpleAry(ary, Optional flush = 1000)
-    Dim logtype As String
-    logtype = "array"
+    Set wr = New LogWriter
+    wr.logType = "array"
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     aryNum = getAryNum(ary)
     If aryNum = 0 Then
-        Call DebugLog.writeLog("[]", False, logtype)
+        Call wr.output("[]", False)
     Else
         ret = "["
         For i = 0 To aryNum - 1
@@ -23,18 +29,18 @@ Sub printSimpleAry(ary, Optional flush = 1000)
             dlm = getDlm(sp, idx0)
             ret = ret & vl & dlm
             If i Mod flush = 0 Then
-                Call DebugLog.writeLog(ret, False, logtype)
+                Call wr.output(ret, False)
                 ret = ""
             End If
         Next i
     End If
-    Call DebugLog.writeLog(ret, True, logtype)
+    Call wr.output(ret, True)
     
 End Sub
 
 Sub print1DAry(ary, Optional flush = 1000)
-    Dim logtype As String
-    logtype = "array"
+    Set wr = New LogWriter
+    wr.logType = "array"
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     cnt = 1
@@ -47,17 +53,17 @@ Sub print1DAry(ary, Optional flush = 1000)
         End If
         ret = ret & elm & dlm
         If cnt Mod flush = 0 Then
-            Call DebugLog.writeLog(ret, False, logtype)
+            Call wr.output(ret, False)
             ret = ""
         End If
         cnt = cnt + 1
     Next i1
-    Call DebugLog.writeLog(ret, True, logtype)
+    Call wr.output(ret, True)
 End Sub
 
 Sub print2DAry(ary, Optional flush = 1000)
-    Dim logtype As String
-    logtype = "array"
+    Set wr = New LogWriter
+    wr.logType = "array"
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
@@ -74,18 +80,18 @@ Sub print2DAry(ary, Optional flush = 1000)
             End If
             ret = ret & elm & dlm
             If cnt Mod flush = 0 Then
-                Call DebugLog.writeLog(ret, False, logtype)
+                Call wr.output(ret, False)
                 ret = ""
             End If
             cnt = cnt + 1
         Next i2
     Next i1
-    Call DebugLog.writeLog(ret, True, logtype)
+    Call wr.output(ret, True)
 End Sub
 
 Sub print3DAry(ary, Optional flush = 1000)
-    Dim logtype As String
-    logtype = "array"
+    Set wr = New LogWriter
+    wr.logType = "array"
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
@@ -109,19 +115,19 @@ Sub print3DAry(ary, Optional flush = 1000)
                 End If
                 ret = ret & elm & dlm
                 If cnt Mod flush = 0 Then
-                    Call DebugLog.writeLog(ret, False, logtype)
+                    Call wr.output(ret, False)
                     ret = ""
                 End If
                 cnt = cnt + 1
             Next i3
         Next i2
     Next i1
-    Call DebugLog.writeLog(ret, True, logtype)
+    Call wr.output(ret, True)
 End Sub
 
 Function printTime(fnc As String, ParamArray argAry() As Variant)
-    Dim logtype As String
-    logtype = "time"
+    Set wr = New LogWriter
+    wr.logType = "time"
     Dim etime   As Double
     Dim stime   As Double
     Dim secs    As Double
@@ -131,6 +137,6 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     printTime = evalA(fnAry)
     etime = Timer
     secs = etime - stime
-    Call DebugLog.writeLog(fnc & " - " & secToHMS(secs), True, logtype)
+    Call wr.output(fnc & " - " & secToHMS(secs), True)
 End Function
 

@@ -108,3 +108,14 @@ End Function
 Function addStr(body As String, Optional prefix As String = "", Optional suffix As String = "")
     addStr = prefix & body & suffix
 End Function
+
+Function poly(x, polyAry)
+    lb = LBound(polyAry)
+    ub = UBound(polyAry)
+    ret = polyAry(ub)
+    For i = ub - 1 To lb Step -1
+        ret = ret * x + polyAry(i)
+    Next
+    poly = ret
+End Function
+

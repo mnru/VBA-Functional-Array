@@ -17,12 +17,12 @@ End Function
 
 Sub testReduce()
     x = reduceA("conStr", Array("a", "b", "c"), "-")
-    Debug.Print x
+    printOut x
 End Sub
 
 Sub testFold()
     x = foldA("calc", mkSeq(5), 100, "-")
-    Debug.Print x
+    printOut x
 End Sub
 
 Sub testCollection()
@@ -57,13 +57,13 @@ Sub testToString()
     y = Array(Array(True, False, True), Array(4, 5, 6))
     z = Application.WorksheetFunction.Transpose(y)
     w = Range("A1:C2")
-    Debug.Print toString(a)
-    Debug.Print toString(b)
-    Debug.Print toString(c)
-    Debug.Print toString(x)
-    Debug.Print toString(y)
-    Debug.Print toString(z)
-    Debug.Print toString(w)
+    printOut toString(a)
+    printOut toString(b)
+    printOut toString(c)
+    printOut toString(x)
+    printOut toString(y)
+    printOut toString(z)
+    printOut toString(w)
 End Sub
 
 Sub testDrop()
@@ -127,12 +127,12 @@ Sub testMapA()
     z0 = mapA("calc", b, 1, "+")
     t2 = Time
     printAry z0
-    Debug.Print "mapA: -" & Format(t2 - t1, "hh:nn:ss")
+    printOut "mapA: -" & Format(t2 - t1, "hh:nn:ss")
 End Sub
 Sub testRgt()
     rg = Range("A1:A2")
-    Debug.Print TypeName(rg)
-    Debug.Print IsArray(rg)
+    printOut TypeName(rg)
+    printOut IsArray(rg)
 End Sub
 Sub testRangeToArys()
     Dim rg                As Range
@@ -172,14 +172,14 @@ Sub testElm()
         Next j
     Next i
     x = getElm(a, Array(0, 1, 2, 3))
-    Debug.Print x
+    printOut x
     sp = getAryShape(a)
     lsp = getAryShape(a, "L")
     n = reduceA("calc", sp, "*")
     For i = 0 To n - 1
         idx = mkIndex(i, sp, lsp)
         y = getElm(a, idx)
-        Debug.Print y & ","
+        printOut y & ","
     Next i
 End Sub
 Sub testRangeToAry()
@@ -212,10 +212,10 @@ Sub testAt()
     For i = 1 To 6
         b(i) = i
     Next
-    Debug.Print getAryAt(a, 2)
-    Debug.Print getAryAt(b, 2)
-    Debug.Print getAryAt(a, -2)
-    Debug.Print getAryAt(b, -2)
+    printOut getAryAt(a, 2)
+    printOut getAryAt(b, 2)
+    printOut getAryAt(a, -2)
+    printOut getAryAt(b, -2)
     Call setAryAt(a, 2, -3)
     Call setAryAt(b, 2, -3)
     Call setAryAt(a, -2, -5)
@@ -226,10 +226,10 @@ Sub testAt()
     For i = 1 To 6
         b(i) = i
     Next
-    Debug.Print getAryAt(a, 2, 0)
-    Debug.Print getAryAt(b, 2, 0)
-    Debug.Print getAryAt(a, -2, 0)
-    Debug.Print getAryAt(b, -2, 0)
+    printOut getAryAt(a, 2, 0)
+    printOut getAryAt(b, 2, 0)
+    printOut getAryAt(a, -2, 0)
+    printOut getAryAt(b, -2, 0)
     Call setAryAt(a, 2, -3, 0)
     Call setAryAt(b, 2, -3, 0)
     Call setAryAt(a, -2, -5, 0)
@@ -239,7 +239,7 @@ Sub testAt()
 End Sub
 Sub testadd()
     x = Array(Null, Null)
-    Debug.Print lenAry(x)
+    printOut lenAry(x)
     printAry (x)
 End Sub
 Sub testShape()
@@ -302,7 +302,7 @@ Sub testFoldF()
     fo = mkF(2, 1, "calc", Null, Null, "-")
     sq = mkSeq(5)
     a = foldF(fo, sq, 1)
-    Debug.Print a
+    printOut a
 End Sub
 Sub testZipApply()
     fob = mkF(1, 2, "calc", Null, Null, "+")
@@ -332,13 +332,14 @@ Sub testAry()
     Next i
     Set y = Range("a1:c2")
     z = Range("a1:c2")
-    Debug.Print TypeName(x)
+    printOut TypeName(x)
     printAry (x)
-    Debug.Print TypeName(y)
+    printOut TypeName(y)
     printAry (y)
-    Debug.Print TypeName(z)
+    printOut TypeName(z)
     printAry (z)
 End Sub
+
 Sub testZipArrayTime()
     a = mkSeq(10)
     b = mkSeq(10, 20, -2)
@@ -361,8 +362,8 @@ Sub testGetAryNum()
     Dim b(1 To 3, 1 To 4, 1 To 5)
     x = getAryNum(a)
     y = getAryNum(b)
-    Debug.Print x
-    Debug.Print y
+    printOut x
+    printOut y
 End Sub
 
 Sub testMAry()
@@ -372,11 +373,12 @@ Sub testMAry()
     Call setAryMbyS(a, c)
     Call setAryMbyS(b, c)
     printAry (a)
-    Debug.Print
+    printOut
     printAry (b)
     Range("a1").Resize(4, 5) = a
     Range("a6").Resize(3, 4) = b
 End Sub
+
 Sub testFlatten()
     Dim a(3, 4, 5)
     b = mkSeq(120)
@@ -387,7 +389,7 @@ Sub testFlatten()
     printAry (b)
     printAry (x)
     printAry (y)
-    Debug.Print
+    printOut
     Dim f(2, 3)
     g = mkSeq(12, 11)
     Call setAryMbyS(f, g)
@@ -395,6 +397,7 @@ Sub testFlatten()
     w = flattenAry(d)
     printAry (w)
 End Sub
+
 Sub testReshape()
     a = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6))
     b = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6), 1)
@@ -415,13 +418,15 @@ Sub testReshape()
     
     
 End Sub
+
 Sub testSequence()
+    
     t1 = Time
     r = 2000
     c = 100
     y = reshapeAry(mkSeq(r * c), Array(r, c))
     t2 = Time
-    Debug.Print Format(t2 - t1, "hh:mm;ss")
+    printOut Format(t2 - t1, "hh:mm;ss")
     Call printTime("printAry", y)
     Stop
     Call printTime("print2DAry", y)
@@ -429,19 +434,20 @@ Sub testSequence()
 ' t3 = Time
 ' x = Application.WorksheetFunction.Sequence(500, 100)
 ' t4 = Time
-' Debug.Print Format(t4 - t3, "hh:mm;ss")
+' printOut Format(t4 - t3, "hh:mm;ss")
 ' Call printTime("printAry", x)
 ' Stop
     
 End Sub
 
 Sub testMaryAccessor()
+    
     x = reshapeAry(mkSeq(100), Array(2, 3, 4))
     printAry x
     y = getMAryAt(x, Array(1, 1, 1))
-    Debug.Print y
+    printOut y
     z = getMAryAt(x, Array(1, 1, 1), 0)
-    Debug.Print z
+    printOut z
     Call setMAryAt(x, Array(1, 1, 1), -1)
     Call setMAryAt(x, Array(1, 1, 1), -2, 0)
     printAry x
@@ -450,15 +456,16 @@ Sub testMaryAccessor()
     x0 = Application.WorksheetFunction.Sequence(4, 5)
     printAry x0
     y0 = getMAryAt(x0, Array(1, 1))
-    Debug.Print y0
+    printOut y0
     z0 = getMAryAt(x0, Array(1, 1), 0)
-    Debug.Print z0
+    printOut z0
     Call setMAryAt(x0, Array(1, 1), -1)
     Call setMAryAt(x0, Array(1, 1), -2, 0)
     printAry x0
     
     
 End Sub
+
 Sub testl_()
     Dim x As Variant
     Dim y As Variant
@@ -471,16 +478,16 @@ Sub testl_()
     printAry (y)
     printAry (z)
     
-    Debug.Print TypeName(x)
-    Debug.Print TypeName(y)
-    Debug.Print TypeName(z)
+    printOut TypeName(x)
+    printOut TypeName(y)
+    printOut TypeName(z)
     
 End Sub
 
 Sub testmMapA()
     x1 = reshapeAry(mkSeq(24), Array(2, 3, 4))
     printAry (x1)
-    Debug.Print
+    printOut
     y1 = mMapA("calc", x1, 5, "*")
     printAry (y1)
     
@@ -489,7 +496,7 @@ Sub testmMapA()
     Call setAryMbyS(x2, mkSeq(20))
     printAry (x2)
     
-    Debug.Print
+    printOut
     y2 = mMapA("calc", x2, 5, "-")
     printAry (y2)
     
@@ -503,8 +510,25 @@ Sub testmMapA()
     
 End Sub
 
+Sub testSpill()
+
+ r = 2000
+ c = 10000
+    
+    
+    x = reshapeAry(mkSeq(r * c), Array(r, c))
+    
+    'x = Application.WorksheetFunction.Sequence(2000, 10000)
+    
+
+Call LogSetting.setAllFlg(True, True)
+
+printTime "print2DAry", x
+
+End Sub
+
 Sub testSimpleAry()
-        
+    
     r = 500
     c = 100
     
@@ -520,7 +544,7 @@ Sub testSimpleAry()
     printTime "printAry", x
     Stop
     
-    Call DebugLog.setAllFileFlg(True)
+    Call LogSetting.setAllFileFlg(True)
     
     printTime "print2DAry", x
     Stop
@@ -529,7 +553,7 @@ Sub testSimpleAry()
     printTime "printAry", x
     Stop
     
-    Call DebugLog.setDic("array", False, True)
+    Call LogSetting.setDic(False, True, "array")
     
     printTime "print2DAry", x
     Stop
@@ -543,11 +567,9 @@ Sub test3DArray()
     d = 100
     r = 100
     c = 100
-    
     x = reshapeAry(mkSeq(d * r * c), Array(d, r, c))
-    
-    DebugLog.setAllFileFlg (True)
-    Call DebugLog.setDic("array", False, True)
+    LogSetting.setAllFileFlg (True)
+    Call LogSetting.setDic(False, True, "array")
     
     printTime "print3DAry", x
     printTime "print3DAry", x
@@ -557,22 +579,13 @@ End Sub
 
 Sub test1DArray()
     x = mkSeq(1000000)
-    Call DebugLog.setLog(True, True)
+    Call LogSetting.setAllFlg(True, True)
     printTime "print1DAry", x
 End Sub
 
-Sub testLog()
+Sub testPoly()
     
-    Call DebugLog.setAllFileFlg(True)
-    
-    Stop
-    Call DebugLog.writeLog("A", False)
-    
-    Call DebugLog.writeLog("B" & vbCrLf & "C", False)
-    Call DebugLog.writeLog("B" & vbCrLf & "C", True)
-    Call DebugLog.writeLog("B" & vbCrLf & "C", True)
-    
-    closeLogFile
-    Stop
+    printOut poly(-2, Array(1, 2, 3))
     
 End Sub
+
