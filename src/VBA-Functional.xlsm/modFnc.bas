@@ -164,12 +164,14 @@ Function mkF(ParamArray argArys())
     fnAry = dropAry(ary, n)
     mkF = Array(arity, fnAry)
 End Function
+
 Function zipApplyF(fnObj, ParamArray argAry())
     arys = argAry
     x = zipAry(arys)
     ret = mapA("applyF", x, fnObj, True)
     zipApplyF = ret
 End Function
+
 Sub setAryMByF(ary, fnObj)
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
@@ -180,7 +182,8 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-Sub setAryMByP(ary, fn, Optional base = 1)
+
+Sub setAryMByP(fnc As String, sp, bs, ParamArray prms())
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     n = getAryNum(ary)
@@ -191,3 +194,4 @@ Sub setAryMByP(ary, fn, Optional base = 1)
         Call setElm(vl, ary, idx)
     Next i0
 End Sub
+

@@ -206,6 +206,7 @@ Sub testRangeToAry()
     printAry (Adr)
     printAry (bdr)
 End Sub
+
 Sub testAt()
     a = Array(1, 2, 3, 4, 5, 6)
     Dim b(1 To 6)
@@ -275,6 +276,7 @@ Sub testShape()
     Call printTime("printAry", c)
     Stop
 End Sub
+
 Sub testApply()
     a = mkSeq(30)
     e = mapA("applyF", a, mkF(2, "calc", 2, Null, "^"))
@@ -286,29 +288,34 @@ Sub testApply()
     printAry (b0)
     printAry (b1)
 End Sub
+
 Sub testmkF()
     a = mkF(1, "calc", Null, 3, "%")
     b = mkF(2, 1, "calc", Null, Null, "-")
     printAry (a)
     printAry (b)
 End Sub
+
 Sub testPrmAry()
     a = Array(1, 2, 3, Array(4, 5, 6), Array(7, 8, 9))
     b = prmAry(a)
     printAry (a)
     printAry (b)
 End Sub
+
 Sub testFoldF()
     fo = mkF(2, 1, "calc", Null, Null, "-")
     sq = mkSeq(5)
     a = foldF(fo, sq, 1)
     printOut a
 End Sub
+
 Sub testZipApply()
     fob = mkF(1, 2, "calc", Null, Null, "+")
     z = zipApplyF(fob, mkSeq(5), mkSeq(5, 10, -2))
     printAry (z)
 End Sub
+
 Sub testZip()
     x = zip(Array(1, 2, 3, 4), Array(2, 3, 4, 5), Array(3, 4, 5, 6))
     printAry (x)
@@ -323,6 +330,7 @@ Sub testZip()
     printAry (y)
     Stop
 End Sub
+
 Sub testAry()
     Dim x(1 To 3, 1 To 3) As String
     For i = 1 To 3
@@ -414,8 +422,6 @@ Sub testReshape()
     printTime "printAry", e
     Stop
     printTime "printAry", d
-    Print
-    
     
 End Sub
 
@@ -584,28 +590,37 @@ Sub test1DArray()
 End Sub
 
 Sub testPoly()
-    
     printOut poly(-2, Array(1, 2, 3))
+    printOut polyStr(Array(2, -3, 4, 5))
+    printOut polyStr(Array(2, 3.2, 0, 5))
+    printOut polyStr(Array(1, 3, 0, 0))
+    printOut polyStr(Array(1, 1, 0, 1))
+    
+    printOut polyStr(Array(5))
+    printOut polyStr(Array(1))
+    printOut polyStr(Array(0))
     
 End Sub
 
 Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
     sp = Array(r, c)
-   ret = mkAry(sp, bs)
+    ret = mkAry(sp, bs)
     Call setAry2DSeq(ret, first, step)
     mk2DSeq1 = ret
 End Function
 
 Sub testmkSeq()
     r = 1000
-    c = 1000
+    c = 10000
     first = -100
     step = 7
     x1 = printTime("mkSequence", r, c, first, step)
     x2 = printTime("mk2DSeq", r, c, first, step)
     x3 = printTime("mk2DSeq1", r, c, first, step)
     x4 = printTime("mkaryMSeq", Array(r, c), first, step)
-    
+    t1 = Timer
+    x5 = Application.WorksheetFunction.Sequence(r, c, first, step)
+    t2 = Timer
+    printOut ("worksheetfunction" & " - " & secToHMS(t2 - t1))
     Stop
-    
 End Sub

@@ -55,6 +55,7 @@ Function getDlm(shape, idx)
     End Select
     getDlm = ret
 End Function
+
 Function secToHMS(vl As Double)
  'Dim x2 As Double
     x0 = vl
@@ -65,6 +66,7 @@ Function secToHMS(vl As Double)
     ret = Format(getAryAt(x3, 1), "00") & ":" & Format(getAryAt(x3, 2), "00") & ":" & Format(x4, "00.000")
     secToHMS = ret
 End Function
+
 Function clcToAry(clc As Collection)
     cnt = clc.Count
     ReDim ret(1 To cnt)
@@ -112,10 +114,32 @@ End Function
 Function poly(x, polyAry)
     lb = LBound(polyAry)
     ub = UBound(polyAry)
-    ret = polyAry(ub)
-    For i = ub - 1 To lb Step -1
+    ret = polyAry(lb)
+    For i = lb + 1 To ub
         ret = ret * x + polyAry(i)
     Next
     poly = ret
 End Function
 
+Function polyStr(polyAry)
+    ret = ""
+    n = lenAry(polyAry)
+    For i = 1 To n
+        c = getAryAt(polyAry, i)
+        If c <> 0 Then
+            sn = IIf(c > 0 And i > 1, "+", "")
+            ret = ret & " " & sn
+            If c <> 1 Or i = n Then ret = ret & getAryAt(polyAry, i)
+            If i < n Then ret = ret & "X"
+            If i < n - 1 Then ret = ret & "^" & n - i
+        End If
+    Next i
+    If ret = "" Then ret = getAryAt(polyAry, -1)
+    polyStr = ret
+    
+End Function
+
+Function fmt(exp, fm)
+    ret = Format(exp, fm)
+    fmt = ret
+End Function
