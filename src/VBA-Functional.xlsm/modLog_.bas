@@ -1,10 +1,10 @@
 Attribute VB_Name = "modLog_"
-Sub printOut(msg,Optional crlf=true)
-If crlf Then
-    Debug.Print msg
-Else
-    Debug.Print msg;
-End If
+Sub printOut(msg, Optional crlf = True)
+    If crlf Then
+        Debug.Print msg
+    Else
+        Debug.Print msg;
+    End If
 End Sub
 
 Sub printAry(ary)
@@ -35,7 +35,7 @@ Sub printSimpleAry(ary, Optional flush = 1000)
 End Sub
 
 Sub print1DAry(ary, Optional flush = 1000)
-     ret = "["
+    ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     cnt = 1
     For i1 = lb1 To ub1
@@ -56,7 +56,7 @@ Sub print1DAry(ary, Optional flush = 1000)
 End Sub
 
 Sub print2DAry(ary, Optional flush = 1000)
-     ret = "["
+    ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
     cnt = 1

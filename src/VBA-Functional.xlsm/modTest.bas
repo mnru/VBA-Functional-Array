@@ -511,20 +511,20 @@ Sub testmMapA()
 End Sub
 
 Sub testSpill()
-
- r = 2000
- c = 10000
+    
+    r = 2000
+    c = 10000
     
     
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
     'x = Application.WorksheetFunction.Sequence(2000, 10000)
     
-
-Call LogSetting.setAllFlg(True, True)
-
-printTime "print2DAry", x
-
+    
+    Call LogSetting.setAllFlg(True, True)
+    
+    printTime "print2DAry", x
+    
 End Sub
 
 Sub testSimpleAry()
@@ -589,3 +589,23 @@ Sub testPoly()
     
 End Sub
 
+Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
+    sp = Array(r, c)
+   ret = mkAry(sp, bs)
+    Call setAry2DSeq(ret, first, step)
+    mk2DSeq1 = ret
+End Function
+
+Sub testmkSeq()
+    r = 1000
+    c = 1000
+    first = -100
+    step = 7
+    x1 = printTime("mkSequence", r, c, first, step)
+    x2 = printTime("mk2DSeq", r, c, first, step)
+    x3 = printTime("mk2DSeq1", r, c, first, step)
+    x4 = printTime("mkaryMSeq", Array(r, c), first, step)
+    
+    Stop
+    
+End Sub

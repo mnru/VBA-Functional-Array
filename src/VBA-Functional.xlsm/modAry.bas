@@ -204,6 +204,7 @@ Function getAryShape(ary, Optional typ = "N")
     Next i
     getAryShape = ret
 End Function
+
 Function getAryNum(ary)
     Dim ret
     sp = getAryShape(ary)
@@ -214,6 +215,7 @@ Function getAryNum(ary)
     Next elm
     getAryNum = ret
 End Function
+
 Function mkIndex(num, shape, Optional lshape = Null)
     n = lenAry(shape)
     ReDim ret(0 To n - 1)
@@ -230,6 +232,7 @@ Function mkIndex(num, shape, Optional lshape = Null)
     End If
     mkIndex = ret
 End Function
+
 Function getElm(ary, idx)
     Dim ret
     lb = LBound(idx)
@@ -298,6 +301,7 @@ Function getElm(ary, idx)
     End Select
     getElm = ret
 End Function
+
 Sub setElm(vl, ary, idx)
     lb = LBound(idx)
     Select Case lenAry(idx)
@@ -364,6 +368,7 @@ Sub setElm(vl, ary, idx)
         Case Else:
     End Select
 End Sub
+
 Sub setAryMbyS(mAry, sAry)
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
@@ -374,6 +379,7 @@ Sub setAryMbyS(mAry, sAry)
         Call setElm(vl, mAry, idx)
     Next i
 End Sub
+
 Function getArySbyM(mAry, Optional bs = 0)
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
@@ -386,6 +392,7 @@ Function getArySbyM(mAry, Optional bs = 0)
     Next i
     getArySbyM = ret
 End Function
+
 Function reshapeAry(ary, sp, Optional bs = 0)
     n = lenAry(sp)
     ret = mkAry(sp, bs)
@@ -408,6 +415,7 @@ Function calc(num1, num2, symbol As String)
     End Select
     calc = ret
 End Function
+
 Function calcAry(ary1, ary2, symbol As String)
     n = lenAry(ary1)
     ReDim ret(0 To n - 1)
@@ -416,6 +424,7 @@ Function calcAry(ary1, ary2, symbol As String)
     Next i
     calcAry = ret
 End Function
+
 Function mkAry(sp, Optional bs = 0)
     n = lenAry(sp)
     ub = calcAry(sp, mkSameAry(bs - 1, n), "+")
@@ -483,3 +492,97 @@ Function l_(ParamArray argAry() As Variant)
     ary = argAry
     l_ = ary
 End Function
+
+Sub setAryMSeq(ary, Optional first = 1, Optional step = 1)
+    sp = getAryShape(ary)
+    lsp = getAryShape(ary, "L")
+    num = getAryNum(ary)
+    vl = first
+    For i0 = 0 To num - 1
+        idx = mkIndex(i0, sp, lsp)
+        'vl = first + i0 * step
+        Call setElm(vl, ary, idx)
+        vl = vl + step
+    Next i0
+End Sub
+
+Sub setAry1DSeq(ary, Optional first = 1, Optional step = 1)
+    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
+    vl = first
+    For i1 = lb1 To ub1
+        ary(i1) = vl
+        vl = vl + step
+    Next i1
+End Sub
+
+Sub setAry2DSeq(ary, Optional first = 1, Optional step = 1)
+    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
+    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
+    vl = first
+    For i1 = lb1 To ub1
+        For i2 = lb2 To ub2
+            ary(i1, i2) = vl
+            vl = vl + step
+        Next i2
+    Next i1
+End Sub
+
+Sub setAry3DSeq(ary, Optional first = 1, Optional step = 1)
+    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
+    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
+    lb3 = LBound(ary, 3): ub3 = UBound(ary, 3)
+    
+    vl = first
+    For i1 = lb1 To ub1
+        For i2 = lb2 To ub2
+            For i3 = lb3 To ub3
+                ary(i1, i2, i3) = vl
+                vl = vl + step
+            Next i3
+        Next i2
+    Next i1
+End Sub
+
+Function mk2DSeq(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
+    ReDim ret(bs To bs + r - 1, bs To bs + c - 1)
+    vl = first
+    For i1 = bs To bs + r - 1
+        For i2 = bs To bs + c - 1
+            
+            ret(i1, i2) = vl
+            vl = vl + step
+        Next i2
+    Next i1
+    mk2DSeq = ret
+End Function
+
+Function mk3DSeq(r, c, h, Optional first = 1, Optional step = 1, Optional bs = 0)
+    ReDim ret(bs To bs + r - 1, bs To bs + c - 1, bs To bs + h - 1)
+    vl = first
+    For i1 = bs To bs + r - 1
+        For i2 = bs To bs + c - 1
+            For i3 = bs To bs + h - 1
+                
+                ret(i1, i2, i3) = vl
+                vl = vl + step
+            Next i3
+        Next i2
+    Next i1
+    mk3DSeq = ret
+End Function
+
+Function mkAryMSeq(sp, Optional first = 1, Optional step = 1, Optional bs = 0)
+    ret = mkAry(sp, bs)
+    Call setAryMSeq(ret, first, step)
+    mkAryMSeq = ret
+End Function
+
+
+Function mkSequence(r, n, Optional first = 1, Optional step = 1)
+    
+    ret = Application.WorksheetFunction.Sequence(r, n, first, step)
+    
+    mkSequence = ret
+    
+End Function
+
