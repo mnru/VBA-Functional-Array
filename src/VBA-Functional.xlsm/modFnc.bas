@@ -39,6 +39,7 @@ Public Function evalA(argAry As Variant) As Variant
     End Select
     evalA = ret
 End Function
+
 Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     fnAry = prmAry(fnc, Null, ary)
@@ -51,6 +52,7 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     Next i
     mapA = ret
 End Function
+
 Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     sp = getAryShape(mAry)
@@ -68,6 +70,7 @@ Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     Next i
     mMapA = ret
 End Function
+
 Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     num = lenAry(seq)
@@ -84,11 +87,13 @@ Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Va
     ReDim Preserve ret(1 To idx)
     filterA = ret
 End Function
+
 Public Function foldA(fnc As String, seq As Variant, init As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     ret = foldAryA(fnc, seq, init, ary)
     foldA = ret
 End Function
+
 Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As Variant
     fnAry = prmAry(fnc, init, Null, ary)
     n = lenAry(seq)
@@ -101,6 +106,7 @@ Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As
     Next elm
     foldAryA = ret
 End Function
+
 Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     ary = argAry
     init = getAryAt(seq, 1)
@@ -109,6 +115,7 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
     
     reduceA = ret
 End Function
+
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     ret = init
     For Each elm In seq
@@ -116,12 +123,14 @@ Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     Next elm
     foldF = ret
 End Function
+
 Public Function reduceF(fnObj, seq As Variant) As Variant
     init = getAryAt(seq, 1)
     seq1 = dropAry(seq, 1)
     ret = foldF(fnObj, seq1, init)
     reduceF = ret
 End Function
+
 Function applyF(vl, fnObj, Optional argAsAry = False)
     Dim ret
     fnAry = getAryAt(fnObj, 2)
@@ -137,6 +146,7 @@ Function applyF(vl, fnObj, Optional argAsAry = False)
     ret = evalA(fnAry)
     applyF = ret
 End Function
+
 Function applyFs(vl, fnObjs, Optional argAsAry = False)
     Dim ret
     ret = vl
@@ -157,6 +167,7 @@ Function getArity(ary)
     Next elm
     getArity = ret
 End Function
+
 Function mkF(ParamArray argArys())
     ary = argArys
     n = getArity(ary)
@@ -182,16 +193,3 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-
-Sub setAryMByP(fnc As String, sp, bs, ParamArray prms())
-    sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
-    n = getAryNum(ary)
-    For i0 = 0 To n - 1
-        i = i0 + base
-        idx = mkIndex(i, sp, lsp)
-        vl = Application.Run(fn, i)
-        Call setElm(vl, ary, idx)
-    Next i0
-End Sub
-

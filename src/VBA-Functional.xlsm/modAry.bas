@@ -1,8 +1,10 @@
 Attribute VB_Name = "modAry"
 Option Base 0
+
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function
+
 Function getAryAt(ary, pos, Optional base = 1)
     Dim ret
     If pos < 0 Then
@@ -13,6 +15,7 @@ Function getAryAt(ary, pos, Optional base = 1)
     ret = ary(idx)
     getAryAt = ret
 End Function
+
 Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
@@ -21,6 +24,7 @@ Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
     End If
     ary(idx) = vl
 End Sub
+
 Function getMAryAt(ary, pos, Optional base = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
@@ -30,6 +34,7 @@ Function getMAryAt(ary, pos, Optional base = 1)
     ret = getElm(ary, idx2)
     getMAryAt = ret
 End Function
+
 Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
@@ -38,6 +43,7 @@ Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
     idx2 = calcAry(idx1, lsp, "+")
     Call setElm(vl, ary, idx2)
 End Sub
+
 Function conArys(ParamArray argArys())
     arys = argArys
     num = 0
@@ -63,6 +69,7 @@ Function conArys(ParamArray argArys())
     Next ary
     conArys = ret
 End Function
+
 Function mkSameAry(vl, num)
     ReDim ret(0 To num - 1)
     For i = 0 To num - 1
@@ -70,6 +77,7 @@ Function mkSameAry(vl, num)
     Next i
     mkSameAry = ret
 End Function
+
 Function mkSeq(num, Optional first = 1, Optional step = 1)
     ReDim ret(0 To num - 1)
     For i = 0 To num - 1
@@ -77,6 +85,7 @@ Function mkSeq(num, Optional first = 1, Optional step = 1)
     Next i
     mkSeq = ret
 End Function
+
 Function dropAry(ary, num)
     lng = lenAry(ary)
     sz = lng - Abs(num)
@@ -125,6 +134,7 @@ Function takeAry(ary, num)
     End If
     takeAry = ret
 End Function
+
 Function revAry(ary)
     num = lenAry(ary)
     ReDim ret(0 To num - 1)
@@ -155,6 +165,7 @@ Function zipAry(arys)
     Next c
     zipAry = ret
 End Function
+
 Function prmAry(ParamArray argAry())
  'flatten last elm
     ary = argAry
@@ -163,6 +174,7 @@ Function prmAry(ParamArray argAry())
     ret = conArys(ary1, ary2)
     prmAry = ret
 End Function
+
 Function inAry(ary As Variant, elm As Variant) As Boolean
     Dim ret     As Boolean
     ret = False
@@ -174,6 +186,7 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     Next x
     inAry = ret
 End Function
+
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
     Dim idx     As Long
