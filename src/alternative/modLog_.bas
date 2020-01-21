@@ -1,5 +1,5 @@
 Attribute VB_Name = "modLog_"
-Sub printOut(msg, Optional crlf = True)
+Sub printOut(msg, Optional crlf as Boolean = True)
     If crlf Then
         Debug.Print msg
     Else

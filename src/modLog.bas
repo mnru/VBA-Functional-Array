@@ -1,5 +1,5 @@
 Attribute VB_Name = "modLog"
-Sub printOut(x, Optional crlf = True)
+Sub printOut(x, Optional crlf As Boolean = True)
      Set wr = New LogWriter
     wr.logType = "debug"
     Call wr.output(x, crlf)
