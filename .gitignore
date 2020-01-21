@@ -3,5 +3,5 @@ bin/VBA-Functional.xlsx
 tmp/
 bin/~$VBA-Functional.xlsm
 bin/log.txt
-compose.vbs
-decompose.vbs
+F_compose.vbs
+F_decompose.vbs
