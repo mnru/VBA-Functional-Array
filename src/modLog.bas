@@ -139,3 +139,6 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     secs = etime - stime
     Call wr.output(fnc & " - " & secToHMS(secs), True)
 End Function
+
+
+

@@ -76,3 +76,6 @@ Sub setDic(toConsole As Boolean, toFile As Boolean, ParamArray logTypes())
     Next
     
 End Sub
+
+
+
