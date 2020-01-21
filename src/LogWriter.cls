@@ -73,6 +73,3 @@ Sub output(msg, Optional crlf As Boolean = True)
         Call toFile(msg, crlf)
     End If
 End Sub
-
-
-

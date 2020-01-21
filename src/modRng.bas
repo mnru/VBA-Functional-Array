@@ -81,6 +81,3 @@ Sub layAryAt(ary, r, c, Optional rc = "r", Optional sn = "", Optional bn = "")
         Case Else
     End Select
 End Sub
-
-
-

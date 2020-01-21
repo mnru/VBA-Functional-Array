@@ -594,6 +594,3 @@ Function mkSequence(r, n, Optional first = 1, Optional step = 1)
     ret = Application.WorksheetFunction.Sequence(r, n, first, step)
     mkSequence = ret
 End Function
-
-
-

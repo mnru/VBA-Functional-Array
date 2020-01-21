@@ -127,4 +127,3 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     secs = etime - stime
     Call printOut(fnc & " - " & secToHMS(secs), True)
 End Function
-

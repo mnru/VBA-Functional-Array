@@ -8,6 +8,3 @@ Sub addBtn(rn, mn, Optional cn = "run", Optional sn = "", Optional bn = "")
     btn.OnAction = mn
     btn.Caption = cn
 End Sub
-
-
-
