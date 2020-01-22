@@ -1,6 +1,6 @@
 Attribute VB_Name = "modLog"
 
-Sub printOut(Optional msg = "", Optional crlf As Boolean = True)
+Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
   If crlf Then
     Debug.Print msg
   Else
@@ -10,13 +10,13 @@ End Sub
 
 Sub printAry(ary, Optional qt = True, Optional fm = "", Optional lcr = "", Optional width = 0)
  
-  Call printOut(toString(ary, qt, fm, lcr, width), True)
+  Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
 Sub printSimpleAry(ary, Optional flush = 1000)
   aryNum = getAryNum(ary)
   If aryNum = 0 Then
-    Call printOut("[]", False)
+    Call outPut("[]", False)
   Else
     ret = "["
     For i = 0 To aryNum - 1
@@ -27,12 +27,12 @@ Sub printSimpleAry(ary, Optional flush = 1000)
       dlm = getDlm(sp, idx0)
       ret = ret & vl & dlm
       If i Mod flush = 0 Then
-        Call printOut(ret, False)
+        Call outPut(ret, False)
         ret = ""
       End If
     Next i
   End If
-  Call printOut(ret, True)
+  Call outPut(ret, True)
  
 End Sub
 
@@ -49,12 +49,12 @@ Sub print1DAry(ary, Optional flush = 1000)
     End If
     ret = ret & elm & dlm
     If cnt Mod flush = 0 Then
-      Call printOut(ret, False)
+      Call outPut(ret, False)
       ret = ""
     End If
     cnt = cnt + 1
   Next i1
-  Call printOut(ret, True)
+  Call outPut(ret, True)
 End Sub
 
 Sub print2DAry(ary, Optional flush = 1000)
@@ -74,13 +74,13 @@ Sub print2DAry(ary, Optional flush = 1000)
       End If
       ret = ret & elm & dlm
       If cnt Mod flush = 0 Then
-        Call printOut(ret, False)
+        Call outPut(ret, False)
         ret = ""
       End If
       cnt = cnt + 1
     Next i2
   Next i1
-  Call printOut(ret, True)
+  Call outPut(ret, True)
 End Sub
 
 Sub print3DAry(ary, Optional flush = 1000)
@@ -107,14 +107,14 @@ Sub print3DAry(ary, Optional flush = 1000)
         End If
         ret = ret & elm & dlm
         If cnt Mod flush = 0 Then
-          Call printOut(ret, False)
+          Call outPut(ret, False)
           ret = ""
         End If
         cnt = cnt + 1
       Next i3
     Next i2
   Next i1
-  Call printOut(ret, True)
+  Call outPut(ret, True)
 End Sub
 
 Function printTime(fnc As String, ParamArray argAry() As Variant)
@@ -127,5 +127,5 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
   printTime = evalA(fnAry)
   etime = Timer
   secs = etime - stime
-  Call printOut(fnc & " - " & secToHMS(secs), True)
+  Call outPut(fnc & " - " & secToHMS(secs), True)
 End Function

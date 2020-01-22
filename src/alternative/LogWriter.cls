@@ -65,7 +65,7 @@ Private Sub toConsole(msg, Optional crlf As Boolean = True)
     
 End Sub
 
-Sub output(msg, Optional crlf As Boolean = True)
+Sub outPut(msg, Optional crlf As Boolean = True)
     If toConsoleFlg_ Then
         Call toConsole(msg, crlf)
     End If
