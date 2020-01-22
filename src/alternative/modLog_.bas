@@ -1,14 +1,15 @@
 Attribute VB_Name = "modLog_"
-Sub printOut(x, Optional crlf As Boolean = True)
-     Set wr = New LogWriter
+
+Sub printOut(Optional msg = "", Optional crlf As Boolean = True)
+    Set wr = New LogWriter
     wr.logType = "debug"
-    Call wr.output(x, crlf)
+    Call wr.output(msg, crlf)
 End Sub
 
-Sub printAry(ary)
+Sub printAry(ary, Optional qt = True, Optional fm = "", Optional lcr = "", Optional width = 0)
     Set wr = New LogWriter
     wr.logType = "array"
-    Call wr.output(toString(ary), True)
+    Call wr.output(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
 Sub printSimpleAry(ary, Optional flush = 1000)
@@ -35,7 +36,7 @@ Sub printSimpleAry(ary, Optional flush = 1000)
         Next i
     End If
     Call wr.output(ret, True)
-
+    
 End Sub
 
 Sub print1DAry(ary, Optional flush = 1000)
@@ -96,12 +97,12 @@ Sub print3DAry(ary, Optional flush = 1000)
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
     lb3 = LBound(ary, 3): ub3 = UBound(ary, 3)
-
+    
     cnt = 1
     For i1 = lb1 To ub1
         For i2 = lb2 To ub2
             For i3 = lb3 To ub3
-
+                
                 elm = CStr(ary(i1, i2, i3))
                 If i3 < ub3 Then
                     dlm = ","
@@ -109,7 +110,7 @@ Sub print3DAry(ary, Optional flush = 1000)
                     dlm = ";" & vbCrLf
                 ElseIf i1 < ub1 Then
                     dlm = ";;" & vbCrLf & vbCrLf
-
+                    
                 Else
                     dlm = "]"
                 End If
@@ -128,9 +129,9 @@ End Sub
 Function printTime(fnc As String, ParamArray argAry() As Variant)
     Set wr = New LogWriter
     wr.logType = "time"
-    Dim etime   As Double
-    Dim stime   As Double
-    Dim secs    As Double
+    Dim etime  As Double
+    Dim stime  As Double
+    Dim secs   As Double
     ary = argAry
     fnAry = prmAry(fnc, ary)
     stime = Timer
