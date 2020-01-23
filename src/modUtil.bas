@@ -211,3 +211,23 @@ Function comp(x, y, symbol)
     End Select
     comp = ret
 End Function
+
+Function info(x, symbol)
+    Dim ret
+    Select Case LCase(symbol)
+        Case "isarray": ret = IsArray(x)
+        Case "isdate": ret = IsDate(x)
+        Case "isempty": ret = IsEmpty(x)
+        Case "iserror": ret = IsError(x)
+        Case "ismissing": ret = IsMissing(x)
+        Case "isnull": ret = IsNull(x)
+        Case "isnumeric": ret = IsNumeric(x)
+        Case "isobject": ret = IsObject(x)
+        Case "typename": ret = TypeName(x)
+        Case "vartype": ret = VarType(x)
+        Case Else:
+    End Select
+    info = ret
+    
+End Function
+

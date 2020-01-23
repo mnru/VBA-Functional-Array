@@ -624,7 +624,6 @@ Function mkSequence(r, n, Optional first = 1, Optional step = 1)
     mkSequence = ret
 End Function
 
-
 Sub testmkSeq()
     r = 1000
     c = 10000
@@ -684,7 +683,7 @@ End Sub
 
 Sub testWhile()
     
-    x = mkSeq(20)
+    x = mkSeq(10)
     y1 = takeWhile("comp", x, 1, 6, "<")
     y2 = takeWhile("comp", x, 1, 6, ">")
     y3 = takeWhile("comp", x, -1, 6, "<=")
@@ -704,3 +703,15 @@ Sub testWhile()
     printAry y8
     
 End Sub
+
+Sub testInfo()
+    x = Sheets("test").Range("b1:n1")
+    x0 = rangeToAry(x)
+    printAry x0
+    y = dropWhile("info", x0, -1, "isEmpty")
+    printAry y
+    z = evalA(y)
+    outPut z
+    
+End Sub
+
