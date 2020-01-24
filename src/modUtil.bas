@@ -1,7 +1,8 @@
 Attribute VB_Name = "modUtil"
 Option Base 0
 
-Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0) As String
+Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0, _
+    Optional insheet As Boolean = False) As String
     
     Dim ret
     ret = ""
@@ -46,8 +47,10 @@ Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r",
     toString = ret
 End Function
 
-Function getDlm(shape, idx)
+Function getDlm(shape, idx, Optional insheet As Boolean = False)
     Dim ret
+    Dim nl
+    nl = IIf(insheet, vbLf, vbCrLf)
     n = lenAry(shape)
     m = 0
     For i = n To 1 Step -1
@@ -62,9 +65,9 @@ Function getDlm(shape, idx)
         Case n
             ret = ","
         Case n - 1
-            ret = ";" & vbCrLf & " "
+            ret = ";" & nl & " "
         Case Else
-            ret = String(n - m, ";") & vbCrLf & vbCrLf & " "
+            ret = String(n - m, ";") & nl & nl & " "
     End Select
     getDlm = ret
 End Function

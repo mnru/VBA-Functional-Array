@@ -1,43 +1,4 @@
 Attribute VB_Name = "modRng"
-
-Function rangeToAry(rg, Optional rc As String = "r", Optional num = 1)
-    Dim ret
-    With Application.WorksheetFunction
-        Select Case LCase(rc)
-            Case "r"
-                ret = .Index(rg, num, 0)
-            Case "c"
-                ret = .Transpose(.Index(rg, 0, num))
-            Case Else
-        End Select
-    End With
-    If dimAry(ret) = 0 Then
-        ret = Array(rg)
-    End If
-    rangeToAry = ret
-End Function
-
-Function rangeToArys(rg, Optional rc As String = "r")
-    Dim ret
-    Select Case LCase(rc)
-        Case "r"
-            tmp = rg
-        Case "c"
-            tmp = Application.WorksheetFunction.Transpose(rg)
-        Case Else
-    End Select
-    If dimAry(tmp) <= 1 Then
-        ret = Array(tmp)
-    Else
-        num = lenAry(tmp)
-        ReDim ret(1 To num)
-        For i = 1 To num
-            ret(i) = Application.WorksheetFunction.Index(tmp, i, 0)
-        Next i
-    End If
-    rangeToArys = ret
-End Function
-
 Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Null) As Variant
     bkn = ActiveWorkbook.Name
     ThisWorkbook.Activate
@@ -81,3 +42,43 @@ Sub layAryAt(ary, r, c, Optional rc = "r", Optional sn = "", Optional bn = "")
         Case Else
     End Select
 End Sub
+
+Function rangeToAry(rg, Optional rc As String = "r", Optional num = 1)
+    Dim ret
+    tmp = rg
+    With Application.WorksheetFunction
+        Select Case LCase(rc)
+            Case "r"
+                ret = .Index(tmp, num, 0)
+            Case "c"
+                ret = .Transpose(.Index(tmp, 0, num))
+            Case Else
+        End Select
+    End With
+    If dimAry(ret) = 0 Then
+        ret = Array(tmp)
+    End If
+    rangeToAry = ret
+End Function
+
+Function rangeToArys(rg, Optional rc As String = "r")
+    Dim ret, tmp
+    tmp = reg
+    Select Case LCase(rc)
+        Case "r"
+            tmp = rg
+        Case "c"
+            tmp = Application.WorksheetFunction.Transpose(tmp)
+        Case Else
+    End Select
+    If dimAry(tmp) <= 1 Then
+        ret = Array(tmp)
+    Else
+        num = lenAry(tmp)
+        ReDim ret(1 To num)
+        For i = 1 To num
+            ret(i) = Application.WorksheetFunction.Index(tmp, i, 0)
+        Next i
+    End If
+    rangeToArys = ret
+End Function
