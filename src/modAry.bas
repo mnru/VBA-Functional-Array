@@ -125,7 +125,7 @@ Function takeAry(ary, num)
         Next i
     ElseIf num < 0 Then
         ReDim ret(0 To sz - 1)
-    ' ub = UBound(ary)
+        ' ub = UBound(ary)
         For i = 0 To sz - 1
             ret(i) = getAryAt(ary, lng - sz + i, 0)
         Next i
@@ -167,7 +167,7 @@ Function zipAry(arys)
 End Function
 
 Function prmAry(ParamArray argAry())
-  'flatten last elm
+    'flatten last elm
     ary = argAry
     ary1 = dropAry(ary, -1)
     ary2 = getAryAt(ary, -1)
@@ -221,7 +221,7 @@ End Function
 Function getAryNum(ary)
     Dim ret
     sp = getAryShape(ary)
-  'ret = reduceA("calc", sp, "*")
+    'ret = reduceA("calc", sp, "*")
     ret = 1
     For Each elm In sp
         ret = ret * elm
@@ -522,7 +522,7 @@ Function mkMAry(sp, Optional bs = 0)
 End Function
 
 Function l_(ParamArray argAry() As Variant)
-  'works like function array()
+    'works like function array()
     Dim ary As Variant
     ary = argAry
     l_ = ary
@@ -535,7 +535,7 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     vl = first
     For i0 = 0 To num - 1
         idx = mkIndex(i0, sp, lsp)
-    'vl = first + i0 * step
+        'vl = first + i0 * step
         Call setElm(vl, ary, idx)
         vl = vl + step
     Next i0

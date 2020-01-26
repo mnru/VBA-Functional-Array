@@ -73,7 +73,7 @@ Function getDlm(shape, idx, Optional insheet As Boolean = False)
 End Function
 
 Function secToHMS(vl As Double)
-  'Dim x2 As Double
+    'Dim x2 As Double
     x0 = vl
     x1 = Int(x0)
     x2 = x0 - x1
@@ -234,3 +234,6 @@ Function info(x, symbol)
     
 End Function
 
+Function id(x)
+    id = x
+End Function

@@ -1,6 +1,6 @@
 Attribute VB_Name = "modTest"
 Sub testconAry()
-  ' DebugLog.setLog
+    ' DebugLog.setLog
     ary1 = Array(1, 2, 3)
     ary2 = Array(4, 5, 6, 7)
     ary3 = Array(8, 9, 10)
@@ -11,9 +11,7 @@ Sub testconAry()
     Stop
 End Sub
 
-Function conStr(a, b, dlm)
-    conStr = a & dlm & b
-End Function
+Function conStr(a, b, dlm): conStr = a & dlm & b: End Function
 
 Sub testReduce()
     x = reduceA("conStr", Array("a", "b", "c"), "-")
@@ -359,10 +357,10 @@ Sub testZipArrayTime()
     y = printTime("zipary", x)
     z = printTime("zip", a, b, c)
     Call printTime("conarys", x)
-  ' printAry x
-  ' printAry y
-  ' printAry Z
-  'Stop
+    ' printAry x
+    ' printAry y
+    ' printAry Z
+    'Stop
 End Sub
 
 Sub testGetAryNum()
@@ -437,12 +435,12 @@ Sub testSequence()
     Stop
     Call printTime("print2DAry", y)
     Stop
-  ' t3 = Time
-  ' x = Application.WorksheetFunction.Sequence(500, 100)
-  ' t4 = Time
-  ' output Format(t4 - t3, "hh:mm;ss")
-  ' Call printTime("printAry", x)
-  ' Stop
+    ' t3 = Time
+    ' x = Application.WorksheetFunction.Sequence(500, 100)
+    ' t4 = Time
+    ' output Format(t4 - t3, "hh:mm;ss")
+    ' Call printTime("printAry", x)
+    ' Stop
     
 End Sub
 
@@ -524,10 +522,10 @@ Sub testSpill()
     
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
-  'x = Application.WorksheetFunction.Sequence(2000, 10000)
+    'x = Application.WorksheetFunction.Sequence(2000, 10000)
     
     
-  'Call LogSetting.setAllFlg(True, True)
+    'Call LogSetting.setAllFlg(True, True)
     
     printTime "print2DAry", x
     
@@ -538,8 +536,8 @@ Sub testSimpleAry()
     r = 500
     c = 100
     
-  ' r = 1048576
-  ' c = 16384
+    ' r = 1048576
+    ' c = 16384
     
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     
@@ -619,7 +617,7 @@ Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
 End Function
 
 
-Function mkSequence(r, n, Optional first = 1, Optional step = 1)
+Function mkSequence(r, n, Optional first = 1, Optional step = 1) As Variant()
     ret = Application.WorksheetFunction.Sequence(r, n, first, step)
     mkSequence = ret
 End Function
@@ -714,4 +712,3 @@ Sub testInfo()
     outPut z
     
 End Sub
-

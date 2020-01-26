@@ -24,8 +24,8 @@ Function getFileByDialog(Optional dialogType As MsoFileDialogType = 4, Optional 
     Dim tmp
     Set dlg = Application.FileDialog(dialogType)
     
-'  If initFolder = "" Then
-'    initFolder = ThisWorkbook.Path
+    '  If initFolder = "" Then
+    '    initFolder = ThisWorkbook.Path
     'initFolder = CurDir
     Print '  End If
     
@@ -107,4 +107,3 @@ Sub testDialog()
     printAry z
     
 End Sub
-

@@ -33,7 +33,7 @@ Sub checkTbl(Optional tbln = "check")
         
     Next i
     
-
+    
 End Sub
 
 Function clmNum(clmnn, tbln, Optional bn = "")
@@ -52,7 +52,7 @@ End Function
 Function evalTblRow(ary, fncl)
     Dim ret
     Dim ary1, ary2, ary3
- ' ary1 = rangeToAry(lrow)
+    ' ary1 = rangeToAry(lrow)
     ary2 = dropAry(ary, fncl - 1)
     ary3 = dropWhile("info", ary2, -1, "isEmpty")
     ret = evalA(ary3)
@@ -78,6 +78,6 @@ End Sub
 
 Sub setbtn()
     Call addBtn("D1", "checkTbl", "eval")
-  Call addBtn("F1", "clearActual", "clear")
-
+    Call addBtn("F1", "clearActual", "clear")
+    
 End Sub
