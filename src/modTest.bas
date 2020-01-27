@@ -13,7 +13,7 @@ End Sub
 
 Function conStr(a, b, dlm): conStr = a & dlm & b: End Function
 
-Sub testReduce()
+Sub testReduce() 'comment for check
     x = reduceA("conStr", Array("a", "b", "c"), "-")
     outPut x
 End Sub
