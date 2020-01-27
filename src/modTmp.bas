@@ -96,29 +96,20 @@ Function getFilePart(pn, prm) As String
     
 End Function
 Function joinOneDelm(a, b, delm)
-If Right(a, 1) = delm Then a = Left(a, Len(a) - 1)
-If Left(b, 1) = delm Then b = Right(b, Len(b) - 1)
-ret = a & delm & b
-joinOneDelm = ret
+    If Right(a, 1) = delm Then a = Left(a, Len(a) - 1)
+    If Left(b, 1) = delm Then b = Right(b, Len(b) - 1)
+    ret = a & delm & b
+    joinOneDelm = ret
 End Function
 
 
 Function buildPaths(ParamArray prms())
-ary = prms
-ret = reduceA("joinOneDelm", ary, "\")
-buildPaths = ret
-
+    ary = prms
+    ret = reduceA("joinOneDelm", ary, "\")
+    buildPaths = ret
+    
 End Function
 
-Sub addBtn(rn, mn, Optional cn = "run", Optional sn = "", Optional bn = "")
-    If sn = "" Then sn = ActiveSheet.Name
-    If bn = "" Then bn = ThisWorkbook.Name
-    
-    Set rg = Workbooks(bn).Sheets(sn).Range(rn)
-    Set btn = Workbooks(bn).Sheets(sn).Buttons.Add(rg.Left, rg.Top, rg.width, rg.Height)
-    btn.OnAction = mn
-    btn.Caption = cn
-End Sub
 
 Sub testDialog()
     
@@ -135,6 +126,6 @@ Sub testDialog()
 End Sub
 
 Sub testbuild()
-x = buildPaths("c:\", "\windows", "system")
-outPut (x)
+    x = buildPaths("c:\", "\windows", "system")
+    outPut (x)
 End Sub

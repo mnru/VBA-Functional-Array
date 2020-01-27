@@ -1,7 +1,7 @@
 Attribute VB_Name = "modCheck"
 Sub checkTbl(Optional tbln = "check")
     
-    Set vardic = CreateObject("Scripting.Dictionary")
+    Set varDic = CreateObject("Scripting.Dictionary")
     Dim num
     
     numFn = clmNum("function", tbln)
@@ -20,14 +20,14 @@ Sub checkTbl(Optional tbln = "check")
             If TypeName(x) = "String" Then
                 If Left(x, 1) = "_" Then
                     y = getVar(x)
-                    Call setAryAt(rw, j, vardic(y))
+                    Call setAryAt(rw, j, varDic(y))
                 End If
             End If
         Next j
         vl = evalTblRow(rw, numFn)
         x = rw(numVar)
         If Not IsEmpty(x) And x <> "" Then
-            vardic(getVar(x)) = vl
+            varDic(getVar(x)) = vl
         End If
         Range(tbln & "[" & "actual" & "]")(i, 1) = toString(vl, , , , , True)
         
@@ -81,3 +81,14 @@ Sub setbtn()
     Call addBtn("F1", "clearActual", "clear")
     
 End Sub
+
+Sub addBtn(rn, mn, Optional cn = "run", Optional sn = "", Optional bn = "")
+    If sn = "" Then sn = ActiveSheet.Name
+    If bn = "" Then bn = ThisWorkbook.Name
+    
+    Set rg = Workbooks(bn).Sheets(sn).Range(rn)
+    Set btn = Workbooks(bn).Sheets(sn).Buttons.Add(rg.Left, rg.Top, rg.width, rg.Height)
+    btn.OnAction = mn
+    btn.Caption = cn
+End Sub
+

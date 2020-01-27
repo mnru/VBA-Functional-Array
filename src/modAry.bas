@@ -611,3 +611,14 @@ Function mkMArySeq(sp, Optional first = 1, Optional step = 1, Optional bs = 0)
     Call setMArySeq(ret, first, step)
     mkMArySeq = ret
 End Function
+
+Function uniqueAry(ary)
+    Set dic = CreateObject("Scripting.Dictionary")
+    For Each elm In ary
+        dic(elm) = Null
+    Next
+    ret = dic.keys
+    uniqueAry = ret
+End Function
+
+
