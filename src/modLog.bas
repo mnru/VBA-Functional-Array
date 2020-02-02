@@ -1,5 +1,4 @@
 Attribute VB_Name = "modLog"
-
 Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
     If crlf Then
         Debug.Print msg
@@ -45,7 +44,6 @@ Sub printSimpleAry(ary, Optional flush = 1000)
         Next i
     End If
     Call outPut(ret, True)
-    
 End Sub
 
 Sub print1DAry(ary, Optional flush = 1000)
@@ -100,12 +98,10 @@ Sub print3DAry(ary, Optional flush = 1000)
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
     lb3 = LBound(ary, 3): ub3 = UBound(ary, 3)
-    
     cnt = 1
     For i1 = lb1 To ub1
         For i2 = lb2 To ub2
             For i3 = lb3 To ub3
-                
                 elm = CStr(ary(i1, i2, i3))
                 If i3 < ub3 Then
                     dlm = ","
@@ -113,7 +109,6 @@ Sub print3DAry(ary, Optional flush = 1000)
                     dlm = ";" & vbCrLf
                 ElseIf i1 < ub1 Then
                     dlm = ";;" & vbCrLf & vbCrLf
-                    
                 Else
                     dlm = "]"
                 End If
@@ -128,4 +123,3 @@ Sub print3DAry(ary, Optional flush = 1000)
     Next i1
     Call outPut(ret, True)
 End Sub
-

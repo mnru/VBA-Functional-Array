@@ -107,6 +107,7 @@ Sub testTake()
     printAry (z1)
     printAry (w1)
 End Sub
+
 Sub testCon()
     a = mkSeq(10000)
     b = mkSeq(10000, 2, 2)
@@ -114,6 +115,7 @@ Sub testCon()
     Call printTime("conarys", a, b, c)
     printAry (conArys(a, b, c))
 End Sub
+
 Sub testMapA()
     a = mkSeq(10)
     b = mkSeq(10001, 0, 3)
@@ -127,11 +129,13 @@ Sub testMapA()
     printAry z0
     outPut "mapA: -" & Format(t2 - t1, "hh:nn:ss")
 End Sub
+
 Sub testRgt()
     rg = Range("A1:A2")
     outPut TypeName(rg)
     outPut IsArray(rg)
 End Sub
+
 Sub testRangeToArys()
     Dim rg    As Range
     Set rg = Range("A1:C2")
@@ -156,6 +160,7 @@ Sub testRangeToArys()
     printAry (Adr)
     printAry (bdr)
 End Sub
+
 Sub testElm()
     Dim a(0 To 1, 0 To 2, 0 To 3, 0 To 4)
     vl = 1
@@ -180,6 +185,7 @@ Sub testElm()
         outPut y & ","
     Next i
 End Sub
+
 Sub testRangeToAry()
     Dim rg    As Range
     Set rg = Range("A1:C2")
@@ -236,11 +242,13 @@ Sub testAt()
     printAry (a)
     printAry (b)
 End Sub
+
 Sub testadd()
     x = Array(Null, Null)
     outPut lenAry(x)
     printAry (x)
 End Sub
+
 Sub testShape()
     Dim a(1 To 3, 1 To 4, 1 To 5)
     Print ' Dim a(1 To 3, 1 To 4)
@@ -333,7 +341,7 @@ Sub testAry()
     Dim x(1 To 3, 1 To 3) As String
     For i = 1 To 3
         For j = 1 To 3
-            x(i, j) = Chr(65 + (i - 1) + (j - 1) * 3)
+            x(i, j) = chr(65 + (i - 1) + (j - 1) * 3)
         Next j
     Next i
     Set y = Range("a1:c2")
@@ -412,7 +420,6 @@ Sub testReshape()
     f = printTime("reshapeAry", mkSeq(1000000), Array(100, 100, 100), 1)
     d = reshapeAry(mkSeq(27000), Array(30, 30, 30), 1)
     Stop
-    
     printTime "printAry", a
     printTime "printAry", b
     printTime "printAry", c
@@ -420,11 +427,9 @@ Sub testReshape()
     printTime "printAry", e
     Stop
     printTime "printAry", d
-    
 End Sub
 
 Sub testSequence()
-    
     t1 = Time
     r = 2000
     c = 100
@@ -441,11 +446,9 @@ Sub testSequence()
     ' output Format(t4 - t3, "hh:mm;ss")
     ' Call printTime("printAry", x)
     ' Stop
-    
 End Sub
 
 Sub testMaryAccessor()
-    
     x = reshapeAry(mkSeq(100), Array(2, 3, 4))
     printAry x
     y = getMAryAt(x, Array(1, 1, 1))
@@ -455,8 +458,6 @@ Sub testMaryAccessor()
     Call setMAryAt(x, Array(1, 1, 1), -1)
     Call setMAryAt(x, Array(1, 1, 1), -2, 0)
     printAry x
-    
-    
     x0 = Application.WorksheetFunction.Sequence(4, 5)
     printAry x0
     y0 = getMAryAt(x0, Array(1, 1))
@@ -466,26 +467,21 @@ Sub testMaryAccessor()
     Call setMAryAt(x0, Array(1, 1), -1)
     Call setMAryAt(x0, Array(1, 1), -2, 0)
     printAry x0
-    
-    
 End Sub
 
 Sub testl_()
     Dim x As Variant
     Dim y As Variant
     Dim z As Variant
-    
     x = Array(Array(Array(10, 11), Array(20, 21)), Array(Array(30, 31)), Array(Array(40, 41), Array(50, 51), Array(60, 61)))
     y = l_(l_(l_(10, 11), l_(20, 21)), l_(l_(30, 31)), l_(l_(40, 41), l_(50, 51), l_(60, 61)))
     z = l_()
     printAry (x)
     printAry (y)
     printAry (z)
-    
     outPut TypeName(x)
     outPut TypeName(y)
     outPut TypeName(z)
-    
 End Sub
 
 Sub testmMapA()
@@ -494,71 +490,49 @@ Sub testmMapA()
     outPut
     y1 = mMapA("calc", x1, 5, "*")
     printAry (y1)
-    
     ReDim x2(1 To 4, 1 To 5)
-    
     Call setAryMbyS(x2, mkSeq(20))
     printAry (x2)
-    
     outPut
     y2 = mMapA("calc", x2, 5, "-")
     printAry (y2)
-    
     fob = mkF(2, "calc", 3, Null, "-")
     fobs = Array(fob, mkF(1, "calc", Null, 3, "*"))
     y3 = mMapA("ApplyF", x2, fob)
     y4 = mMapA("ApplyFs", x2, fobs)
-    
     printAry (y3)
     printAry (y4)
-    
 End Sub
 
 Sub testSpill()
-    
     r = 2000
     c = 10000
-    
-    
     x = reshapeAry(mkSeq(r * c), Array(r, c))
-    
     'x = Application.WorksheetFunction.Sequence(2000, 10000)
-    
-    
     'Call LogSetting.setAllFlg(True, True)
-    
     printTime "print2DAry", x
-    
 End Sub
 
 Sub testSimpleAry()
-    
     r = 500
     c = 100
-    
     ' r = 1048576
     ' c = 16384
-    
     x = reshapeAry(mkSeq(r * c), Array(r, c))
-    
     printTime "print2DAry", x
     Stop
     printTime "printSimpleAry", x
     Stop
     printTime "printAry", x
     Stop
-    
     Call LogSetting.setAllFileFlg(True)
-    
     printTime "print2DAry", x
     Stop
     printTime "printSimpleAry", x
     Stop
     printTime "printAry", x
     Stop
-    
     Call LogSetting.setDic(False, True, "array")
-    
     printTime "print2DAry", x
     Stop
     printTime "printSimpleAry", x
@@ -567,18 +541,15 @@ Sub testSimpleAry()
 End Sub
 
 Sub test3DArray()
-    
     d = 100
     r = 100
     c = 100
     x = reshapeAry(mkSeq(d * r * c), Array(d, r, c))
     LogSetting.setAllFileFlg (True)
     Call LogSetting.setDic(False, True, "array")
-    
     printTime "print3DAry", x
     printTime "print3DAry", x
     printTime "print3DAry", x
-    
 End Sub
 
 Sub test1DArray()
@@ -597,16 +568,12 @@ Sub testPoly()
     outPut polyStr(Array(5))
     outPut polyStr(Array(1))
     outPut polyStr(Array(0))
-    
-    
     x = Array(1, 2, 1, -2, 0, 2, 0)
     outPut polyStr(x)
     outPut poly(3, x)
     y = revAry(x)
     outPut polyStr(y)
     outPut poly(3, y)
-    
-    
 End Sub
 
 Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
@@ -615,7 +582,6 @@ Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
     Call set2DArySeq(ret, first, step)
     mk2DSeq1 = ret
 End Function
-
 
 Function mkSequence(r, n, Optional first = 1, Optional step = 1) As Variant()
     ret = Application.WorksheetFunction.Sequence(r, n, first, step)
@@ -639,21 +605,17 @@ Sub testmkSeq()
 End Sub
 
 Sub testCalcMary()
-    
     x = mk2DSeq(4, 5, -10)
     y = mk2DSeq(4, 5, 5, -1, 1)
     z = calcMAry(x, y, "*")
     w = mMapA("fmt", z, "0000")
     printAry (w)
-    
 End Sub
 
 Sub testfmt()
-    
     x = mkMArySeq(Array(4, 5), 0.5, -1 / 3)
     Call setElm("a", x, Array(1, 1))
     Call setElm("2", x, Array(2, 2))
-    
     printAry (x)
     outPut
     Call printAry(x, False)
@@ -661,10 +623,7 @@ Sub testfmt()
     Call printAry(x, True, "0.000", "r", 7)
     outPut
     Call printAry(x, True)
-    
-    
 End Sub
-
 
 Sub testMath()
     Pi = Atn(1) * 4
@@ -680,7 +639,6 @@ Sub testMath()
 End Sub
 
 Sub testWhile()
-    
     x = mkSeq(10)
     y1 = takeWhile("comp", x, 1, 6, "<")
     y2 = takeWhile("comp", x, 1, 6, ">")
@@ -690,7 +648,6 @@ Sub testWhile()
     y6 = dropWhile("comp", x, 1, 6, ">")
     y7 = dropWhile("comp", x, -1, 6, "<=")
     y8 = dropWhile("comp", x, -1, 6, ">=")
-    
     printAry y1
     printAry y2
     printAry y3
@@ -699,7 +656,6 @@ Sub testWhile()
     printAry y6
     printAry y7
     printAry y8
-    
 End Sub
 
 Sub testInfo()
@@ -710,5 +666,4 @@ Sub testInfo()
     printAry y
     z = evalA(y)
     outPut z
-    
 End Sub

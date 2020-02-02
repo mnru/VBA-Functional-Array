@@ -14,16 +14,11 @@ Sub testEqAry()
     printOut (eqAry(x1, x6))
 End Sub
 
-
 Function areBothAry(ary1, ary2) As Boolean
-    
     Dim ret As Boolean
-    
     ret = IIf(IsArray(ary1) And IsArray(ary2), True, False)
-    
     areBothAry = ret
 End Function
-
 
 Function haveSameDimension(ary1, ary2) As Boolean
     Dim ret As Boolean
@@ -44,7 +39,6 @@ Function areSameLength(ary1, ary2) As Boolean
 End Function
 
 Function eqAry(ary1, ary2) As Boolean
-    
     Dim ret As Boolean
     ret = False
     If Not IsArray(ary1) Or Not IsArray(ary2) Then
@@ -69,7 +63,6 @@ Function eqAry(ary1, ary2) As Boolean
                     Else
                         printOut ("two arrays have same value but different index")
                     End If
-                    
                 End If
             Next i
         End If

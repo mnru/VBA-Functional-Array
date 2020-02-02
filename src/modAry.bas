@@ -1,31 +1,40 @@
 Attribute VB_Name = "modAry"
 Option Base 0
-
+'Option Explicit
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function
 
-Function getAryAt(ary, pos, Optional base = 1)
-    Dim ret
+Function getAryAt(ary As Variant, pos As Long, Optional base As Long = 1, Optional isObj As Boolean = False) As Variant
+    Dim idx As Long
+    Dim ret As Variant
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
     Else
         idx = LBound(ary) + pos - base
     End If
-    ret = ary(idx)
-    getAryAt = ret
+    If isObj Then
+        Set getAryAt = ary(idx)
+    Else
+        getAryAt = ary(idx)
+    End If
 End Function
 
-Sub setAryAt(ByRef ary, pos, vl, Optional base = 1)
+Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As Long = 1, Optional isObj As Boolean = False)
+    Dim idx As Long
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
     Else
         idx = LBound(ary) + pos - base
     End If
-    ary(idx) = vl
+    If isObj Then
+        Set ary(idx) = vl
+    Else
+        ary(idx) = vl
+    End If
 End Sub
 
-Function getMAryAt(ary, pos, Optional base = 1)
+Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
     bs = mkSameAry(base, n)
@@ -35,7 +44,7 @@ Function getMAryAt(ary, pos, Optional base = 1)
     getMAryAt = ret
 End Function
 
-Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
+Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
     bs = mkSameAry(base, n)
@@ -85,7 +94,6 @@ Function getAryNum(ary)
     Next elm
     getAryNum = ret
 End Function
-
 
 Function conArys(ParamArray argArys())
     arys = argArys
@@ -229,7 +237,6 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     Next x
     inAry = ret
 End Function
-
 
 Function mkIndex(num, shape, Optional lshape = Null)
     n = lenAry(shape)
@@ -413,7 +420,6 @@ Function reshapeAry(ary, sp, Optional bs = 0)
     ret = mkMAry(sp, bs)
     Call setAryMbyS(ret, ary)
     reshapeAry = ret
-    
 End Function
 
 Function calc(num1, num2, symbol As String)
@@ -454,13 +460,11 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs = 0)
         idx1 = calcAry(idx, lsp1, "+")
         idx2 = calcAry(idx, lsp2, "+")
         idx0 = calcAry(idx, lsp0, "+")
-        
         vl = calc(getElm(ary1, idx1), getElm(ary2, idx2), symbol)
         Call setElm(vl, ret, idx0)
     Next i
     calcMAry = ret
 End Function
-
 
 Function mkMAry(sp, Optional bs = 0)
     n = lenAry(sp)
@@ -542,7 +546,6 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
         vl = vl + step
     Next i0
 End Sub
-
 
 Function mkMArySeq(sp, Optional first = 1, Optional step = 1, Optional bs = 0)
     ret = mkMAry(sp, bs)

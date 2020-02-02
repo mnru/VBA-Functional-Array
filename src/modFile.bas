@@ -12,21 +12,17 @@ Enum fileSelectType
     singleFolder = 3
 End Enum
 
-
 Function getFileByDialog(Optional dialogType As fileSelectType = multiFiles, Optional title As String = "", _
     Optional initFolder As String = "", Optional initialFile As String = "", Optional extentions As String = "All Files,*.*")
-    
     Set fso = CreateObject("Scripting.FileSystemObject")
     Dim ret
     Dim tmp
     Dim mstype
     Set dlg = Application.FileDialog(dialogType)
-    
-  ' If initFolder = "" Then
-  '  initFolder = ThisWorkbook.Path
-  'initFolder = CurDir
-  ' End If
-    
+    ' If initFolder = "" Then
+    '  initFolder = ThisWorkbook.Path
+    'initFolder = CurDir
+    ' End If
     If title = "" Then
         Select Case dialogType
             Case singleFile
@@ -41,22 +37,17 @@ Function getFileByDialog(Optional dialogType As fileSelectType = multiFiles, Opt
             Case Else
         End Select
     End If
-    
     MultiSelect = dialogType = fileSelectType.multiFiles
-    
     With Application.FileDialog(mstype)
         .title = title
         .AllowMultiSelect = MultiSelect
         .InitialFileName = fso.buildpath(initFolder, initFile)
-        
         If extentions <> "" And dialogType <> fileSelectType.singleFolder Then
             exts = Split(extentions, ",")
-            
             For i = LBound(exts) To UBound(exts) Step 2
                 .Filters.Add exts(i), exts(i + 1)
             Next i
         End If
-        
         If .Show = True Then
             n = .SelectedItems.Count
             ReDim tmp(1 To n)
@@ -71,17 +62,12 @@ Function getFileByDialog(Optional dialogType As fileSelectType = multiFiles, Opt
         Else
             ret = False
         End If
-        
     End With
-    
     getFileByDialog = ret
-    
 End Function
-
 
 Function getFilePart(pn, prm) As String
     Dim ret As String
-    
     Set fso = CreateObject("Scripting.FileSystemObject")
     Select Case LCase(prm)
         Case "parent": ret = fso.GetParentFolderName(pn)
@@ -93,8 +79,8 @@ Function getFilePart(pn, prm) As String
         Case Else:
     End Select
     getFilePart = ret
-    
 End Function
+
 Function joinOneDelm(a, b, delm)
     If Right(a, 1) = delm Then a = Left(a, Len(a) - 1)
     If Left(b, 1) = delm Then b = Right(b, Len(b) - 1)
@@ -102,27 +88,20 @@ Function joinOneDelm(a, b, delm)
     joinOneDelm = ret
 End Function
 
-
 Function buildPaths(ParamArray prms())
     ary = prms
     ret = reduceA("joinOneDelm", ary, "\")
     buildPaths = ret
-    
 End Function
 
-
 Sub testDialog()
-    
     x = getFileByDialog(singleFolder)
     printAry (x)
     Stop
     y = getFileByDialog(multiFiles, , , , "All files,*.*,Excel files,*.xls*,Text files,*.txt;*.csv")
     printAry y
-    
     z = mapA("getFilePart", y, "file")
-    
     printAry z
-    
 End Sub
 
 Sub testbuild()

@@ -3,7 +3,6 @@ Option Base 0
 
 Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0, _
     Optional insheet As Boolean = False) As String
-    
     Dim ret
     ret = ""
     If IsArray(elm) Then
@@ -28,7 +27,6 @@ Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r",
             ret = ret & "<" & TypeName(elm) & ">"
         ElseIf IsNull(elm) Then
             ret = ret & "Null"
-            
         Else
             If TypeName(elm) = "String" Then
                 If qt Then
@@ -41,7 +39,6 @@ Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r",
             End If
             tmp = align(tmp, lcr, width)
             ret = ret & tmp
-            
         End If
     End If
     toString = ret
@@ -95,7 +92,6 @@ End Function
 Function flattenAry(ary)
     Dim clc As Collection
     Set clc = New Collection
-    
     For Each elm In ary
         If IsArray(elm) Then
             For Each el In flattenAry(elm)
@@ -105,10 +101,8 @@ Function flattenAry(ary)
             clc.Add elm
         End If
     Next elm
-    
     ret = clcToAry(clc)
     flattenAry = ret
-    
 End Function
 
 Function mcLike(word As String, wildcard As String, Optional include As Boolean = True) As Boolean
@@ -153,7 +147,6 @@ Function polyStr(polyAry)
     If ret = "" Then ret = getAryAt(polyAry, -1)
     If Left(ret, 1) = "+" Then ret = Right(ret, Len(ret) - 1)
     polyStr = ret
-    
 End Function
 
 Function fmt(expr, Optional fm = "", Optional lcr = "r", Optional width = 0)
@@ -174,12 +167,8 @@ Function align(str, Optional lcr = "r", Optional width = 0)
             Case Else:
         End Select
     End If
-    
     align = ret
-    
-    
 End Function
-
 
 Function math(x, symbol)
     Dim ret
@@ -196,7 +185,6 @@ Function math(x, symbol)
         Case Else:
     End Select
     math = ret
-    
 End Function
 
 Function comp(x, y, symbol)
@@ -230,7 +218,6 @@ Function info(x, symbol)
         Case Else:
     End Select
     info = ret
-    
 End Function
 
 Function id_(x)

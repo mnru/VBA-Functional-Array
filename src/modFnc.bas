@@ -102,7 +102,6 @@ Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As
         Call setAryAt(fnAry, 1, ret, 0)
         Call setAryAt(fnAry, 2, elm, 0)
         ret = evalA(fnAry)
-        
     Next elm
     foldAryA = ret
 End Function
@@ -112,7 +111,6 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
     init = getAryAt(seq, 1)
     seq1 = dropAry(seq, 1)
     ret = foldAryA(fnc, seq1, init, ary)
-    
     reduceA = ret
 End Function
 
@@ -155,6 +153,7 @@ Function applyFs(vl, fnObjs, Optional argAsAry = False)
     Next fnObj
     applyFs = ret
 End Function
+
 Function getArity(ary)
     Dim ret
     ret = 0
@@ -205,9 +204,7 @@ End Function
 Function takeWhile(fnc, ary, direction, ParamArray argAry())
     prm = argAry
     fnAry = prmAry(fnc, Null, prm)
-    
     n = lenAry(ary)
-    
     sn = Sgn(direction)
     num = 0
     For i = 1 To n
@@ -223,13 +220,10 @@ Function takeWhile(fnc, ary, direction, ParamArray argAry())
     takeWhile = ret
 End Function
 
-
 Function dropWhile(fnc, ary, direction, ParamArray argAry())
     prm = argAry
     fnAry = prmAry(fnc, Null, prm)
-    
     n = lenAry(ary)
-    
     sn = Sgn(direction)
     num = 0
     For i = 1 To n
