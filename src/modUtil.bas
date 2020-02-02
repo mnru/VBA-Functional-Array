@@ -87,7 +87,7 @@ Function clcToAry(clc As Collection)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
-        ret(i) = clc.Item(i)
+        ret(i) = clc.item(i)
     Next i
     clcToAry = ret
 End Function
@@ -168,9 +168,9 @@ Function align(str, Optional lcr = "r", Optional width = 0)
     d = width - Len(ret)
     If d > 0 Then
         Select Case LCase(lcr)
-            Case "r": ret = Space(d) & ret
-            Case "l": ret = ret & Space(d)
-            Case "c": ret = Space(d \ 2) & ret & Space(d - d \ 2)
+            Case "r": ret = space(d) & ret
+            Case "l": ret = ret & space(d)
+            Case "c": ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If
@@ -193,7 +193,6 @@ Function math(x, symbol)
         Case "sqr": ret = Sqr(x)
         Case "abs": ret = Abs(x)
         Case "sgn": ret = Sgn(x)
-        Case "rnd": ret = Rnd(x)
         Case Else:
     End Select
     math = ret
@@ -234,6 +233,6 @@ Function info(x, symbol)
     
 End Function
 
-Function id(x)
-    id = x
+Function id_(x)
+    id_ = x
 End Function

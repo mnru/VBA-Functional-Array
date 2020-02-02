@@ -8,8 +8,20 @@ Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
     End If
 End Sub
 
+Function printTime(fnc As String, ParamArray argAry() As Variant)
+    Dim etime  As Double
+    Dim stime  As Double
+    Dim secs   As Double
+    ary = argAry
+    fnAry = prmAry(fnc, ary)
+    stime = Timer
+    printTime = evalA(fnAry)
+    etime = Timer
+    secs = etime - stime
+    Call outPut(fnc & " - " & secToHMS(secs), True)
+End Function
+
 Sub printAry(ary, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0)
-    
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
@@ -117,15 +129,3 @@ Sub print3DAry(ary, Optional flush = 1000)
     Call outPut(ret, True)
 End Sub
 
-Function printTime(fnc As String, ParamArray argAry() As Variant)
-    Dim etime  As Double
-    Dim stime  As Double
-    Dim secs   As Double
-    ary = argAry
-    fnAry = prmAry(fnc, ary)
-    stime = Timer
-    printTime = evalA(fnAry)
-    etime = Timer
-    secs = etime - stime
-    Call outPut(fnc & " - " & secToHMS(secs), True)
-End Function

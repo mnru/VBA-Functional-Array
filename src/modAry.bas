@@ -44,6 +44,49 @@ Sub setMAryAt(ByRef ary, pos, vl, Optional base = 1)
     Call setElm(vl, ary, idx2)
 End Sub
 
+Public Function dimAry(ByVal ary As Variant) As Long
+    On Error GoTo Catch
+    Dim idx     As Long
+    idx = 0
+    Do
+        idx = idx + 1
+        Dim tmp As Long
+        tmp = UBound(ary, idx)
+    Loop
+Catch:
+    dimAry = idx - 1
+End Function
+
+Function getAryShape(ary, Optional typ = "N")
+    num = dimAry(ary)
+    ReDim ret(0 To num - 1)
+    For i = 1 To num
+        Select Case UCase(typ)
+            Case "N"
+                tmp = lenAry(ary, i)
+            Case "L"
+                tmp = LBound(ary, i)
+            Case "U"
+                tmp = UBound(ary, i)
+            Case Else
+        End Select
+        Call setAryAt(ret, i, tmp)
+    Next i
+    getAryShape = ret
+End Function
+
+Function getAryNum(ary)
+    Dim ret
+    sp = getAryShape(ary)
+    'ret = reduceA("calc", sp, "*")
+    ret = 1
+    For Each elm In sp
+        ret = ret * elm
+    Next elm
+    getAryNum = ret
+End Function
+
+
 Function conArys(ParamArray argArys())
     arys = argArys
     num = 0
@@ -187,47 +230,6 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     inAry = ret
 End Function
 
-Public Function dimAry(ByVal ary As Variant) As Long
-    On Error GoTo Catch
-    Dim idx     As Long
-    idx = 0
-    Do
-        idx = idx + 1
-        Dim tmp As Long
-        tmp = UBound(ary, idx)
-    Loop
-Catch:
-    dimAry = idx - 1
-End Function
-
-Function getAryShape(ary, Optional typ = "N")
-    num = dimAry(ary)
-    ReDim ret(0 To num - 1)
-    For i = 1 To num
-        Select Case UCase(typ)
-            Case "N"
-                tmp = lenAry(ary, i)
-            Case "L"
-                tmp = LBound(ary, i)
-            Case "U"
-                tmp = UBound(ary, i)
-            Case Else
-        End Select
-        Call setAryAt(ret, i, tmp)
-    Next i
-    getAryShape = ret
-End Function
-
-Function getAryNum(ary)
-    Dim ret
-    sp = getAryShape(ary)
-    'ret = reduceA("calc", sp, "*")
-    ret = 1
-    For Each elm In sp
-        ret = ret * elm
-    Next elm
-    getAryNum = ret
-End Function
 
 Function mkIndex(num, shape, Optional lshape = Null)
     n = lenAry(shape)
@@ -339,7 +341,7 @@ Sub setElm(vl, ary, idx)
         Case 19: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18)) = vl
         Case 20: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19)) = vl
         Case 21: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20)) = vl
-        Case 22: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21)) = vl
+        Case 22: ary(idx(lb), idx(slb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21)) = vl
         Case 23: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22)) = vl
         Case 24: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22), idx(lb + 23)) = vl
         Case 25: ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22), idx(lb + 23), idx(lb + 24)) = vl
@@ -541,70 +543,6 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Next i0
 End Sub
 
-Sub set1DArySeq(ary, Optional first = 1, Optional step = 1)
-    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
-    vl = first
-    For i1 = lb1 To ub1
-        ary(i1) = vl
-        vl = vl + step
-    Next i1
-End Sub
-
-Sub set2DArySeq(ary, Optional first = 1, Optional step = 1)
-    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
-    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
-    vl = first
-    For i1 = lb1 To ub1
-        For i2 = lb2 To ub2
-            ary(i1, i2) = vl
-            vl = vl + step
-        Next i2
-    Next i1
-End Sub
-
-Sub set3DArySeq(ary, Optional first = 1, Optional step = 1)
-    lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
-    lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
-    lb3 = LBound(ary, 3): ub3 = UBound(ary, 3)
-    
-    vl = first
-    For i1 = lb1 To ub1
-        For i2 = lb2 To ub2
-            For i3 = lb3 To ub3
-                ary(i1, i2, i3) = vl
-                vl = vl + step
-            Next i3
-        Next i2
-    Next i1
-End Sub
-
-Function mk2DSeq(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
-    ReDim ret(bs To bs + r - 1, bs To bs + c - 1)
-    vl = first
-    For i1 = bs To bs + r - 1
-        For i2 = bs To bs + c - 1
-            
-            ret(i1, i2) = vl
-            vl = vl + step
-        Next i2
-    Next i1
-    mk2DSeq = ret
-End Function
-
-Function mk3DSeq(r, c, h, Optional first = 1, Optional step = 1, Optional bs = 0)
-    ReDim ret(bs To bs + r - 1, bs To bs + c - 1, bs To bs + h - 1)
-    vl = first
-    For i1 = bs To bs + r - 1
-        For i2 = bs To bs + c - 1
-            For i3 = bs To bs + h - 1
-                
-                ret(i1, i2, i3) = vl
-                vl = vl + step
-            Next i3
-        Next i2
-    Next i1
-    mk3DSeq = ret
-End Function
 
 Function mkMArySeq(sp, Optional first = 1, Optional step = 1, Optional bs = 0)
     ret = mkMAry(sp, bs)
@@ -620,5 +558,3 @@ Function uniqueAry(ary)
     ret = dic.keys
     uniqueAry = ret
 End Function
-
-
