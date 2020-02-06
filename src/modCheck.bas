@@ -1,11 +1,16 @@
 Attribute VB_Name = "modCheck"
 Sub checkTbl(Optional tbln = "check")
     Set varDic = CreateObject("Scripting.Dictionary")
-    Dim num As Long
-    Dim numFn As Long
+    Dim num   As Long
+    Dim rnum   As Long
+    Dim numFn  As Long
     Dim numVar As Long
     Dim numAct As Long
-    Dim x As String
+    Dim hdNum1 As Long
+    Dim hdNum2 As Long
+    Dim vx   As String
+    Dim el
+    Dim z    As String
     numFn = clmNum("function", tbln)
     numVar = clmNum("variable", tbln)
     numAct = clmNum("actual", tbln)
@@ -16,31 +21,31 @@ Sub checkTbl(Optional tbln = "check")
         rw = rws(i)
         cnum = lenAry(rw)
         For j = numFn + 1 To cnum
-            x = getAryAt(rw, j)
-            If TypeName(x) = "String" Then
-                Select Case getHeadNum(x)
+            el = getAryAt(rw, j)
+            If TypeName(el) = "String" Then
+                headNum1 = getHeadNum(el)
+                vx = getVar(CStr(el))
+                Select Case headNum1
                     Case 1
-                        y = getVar(x)
-                        Call setAryAt(rw, j, varDic(y))
+                        Call setAryAt(rw, j, varDic(vx))
                     Case 2
-                        y = getVar(x)
-                        Call setAryAt(rw, j, varDic(y), , True)
+                        Call setAryAt(rw, j, varDic(vx), , True)
                     Case Is > 2
-                        y = Right(x, Len(x) - 2)
-                        Call setAryAt(rw, j, y)
+                        vx = Right(el, Len(el) - 2)
+                        Call setAryAt(rw, j, vx)
                     Case Else
                 End Select
             End If
         Next j
-        x = rw(numVar)
-        If getHeadNum(x) = 2 Then
+        z = rw(numVar)
+        vz = getVar(z)
+        hdNum2 = getHeadNum(z)
+        If hdNum2 = 2 Then
             Set vl = evalTblRow(rw, numFn)
-            Set varDic(getVar(x)) = vl
-        Else
+            Set varDic(vz) = vl
+        ElseIf hdNum2 = 0 Or hdNum2 = 1 Then
             vl = evalTblRow(rw, numFn)
-            If getHeadNum(x) = 1 Then
-                varDic(getVar(x)) = vl
-            End If
+            varDic(vz) = vl
         End If
         Range(tbln & "[" & "actual" & "]")(i, 1) = toString(vl, , , , , True)
     Next i
@@ -87,13 +92,15 @@ Function evalTblRow(ary, fncl)
 End Function
 
 Function getVar(str As String) As String
-    Dim str0 As String
-    Dim str1 As String
-    Dim n As Long
-    n = getHeadNum(str)
-    str0 = Right(str, Len(str) - n)
-    str1 = Right(str, Len(str) - 2)
-    getVar = IIf(n > 2, str1, str0)
+    Dim ret  As String
+    Dim num  As Long
+    num = getHeadNum(str)
+    If num > 2 Then
+        ret = Right(str, Len(str) - 2)
+    Else
+        ret = Right(str, Len(str) - num)
+    End If
+    getVar = ret
 End Function
 
 Sub testCheckTbl()

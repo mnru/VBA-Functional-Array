@@ -1,9 +1,11 @@
 Attribute VB_Name = "modUtil"
 Option Base 0
 
-Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0, _
+Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As String = "r", Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
-    Dim ret
+    Dim ret As String, tmp As String
+    Dim i As Long, aryNum As Long
+    Dim sp, lsp
     ret = ""
     If IsArray(elm) Then
         d = dimAry(elm)
@@ -31,6 +33,7 @@ Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r",
             If TypeName(elm) = "String" Then
                 If qt Then
                     tmp = "'" & elm & "'"
+                    'tmp = """" & elm & """"
                 Else
                     tmp = elm
                 End If
@@ -44,9 +47,10 @@ Function toString(elm, Optional qt = True, Optional fm = "", Optional lcr = "r",
     toString = ret
 End Function
 
-Function getDlm(shape, idx, Optional insheet As Boolean = False)
-    Dim ret
-    Dim nl
+Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
+    Dim ret As String
+    Dim i As Long
+    Dim nl As String
     nl = IIf(insheet, vbLf, vbCrLf)
     n = lenAry(shape)
     m = 0
@@ -131,7 +135,9 @@ Function poly(x, polyAry)
     poly = ret
 End Function
 
-Function polyStr(polyAry)
+Function polyStr(polyAry) As String
+    Dim i As Long
+    Dim ret As String
     ret = ""
     n = lenAry(polyAry)
     For i = 1 To n
@@ -149,14 +155,15 @@ Function polyStr(polyAry)
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm = "", Optional lcr = "r", Optional width = 0)
+Function fmt(expr, Optional fm As String = "", Optional lcr As String = "r", Optional width As Long = 0) As String
+    Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str, Optional lcr = "r", Optional width = 0)
-    Dim ret
+Function align(str As String, Optional lcr As String = "r", Optional width As Long = 0) As String
+    Dim ret As String
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
@@ -170,7 +177,7 @@ Function align(str, Optional lcr = "r", Optional width = 0)
     align = ret
 End Function
 
-Function math(x, symbol)
+Function math(x, symbol As String)
     Dim ret
     Select Case LCase(symbol)
         Case "sin": ret = Sin(x)
@@ -187,7 +194,7 @@ Function math(x, symbol)
     math = ret
 End Function
 
-Function comp(x, y, symbol)
+Function comp(x, y, symbol As String)
     Dim ret
     Select Case symbol
         Case "=": ret = x = y 'caution assign and eqaul is same symbol
@@ -202,7 +209,7 @@ Function comp(x, y, symbol)
     comp = ret
 End Function
 
-Function info(x, symbol)
+Function info(x, symbol As String)
     Dim ret
     Select Case LCase(symbol)
         Case "isarray": ret = IsArray(x)

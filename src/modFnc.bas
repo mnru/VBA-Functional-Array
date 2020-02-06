@@ -1,5 +1,11 @@
 Attribute VB_Name = "modFnc"
+Enum direction
+    fromLeft = 1
+    fromRight = -1
+End Enum
+
 Public Function evalA(argAry As Variant) As Variant
+    Dim lb As Long
     ary = argAry
     Dim ret As Variant
     lb = LBound(ary)
@@ -41,6 +47,8 @@ Public Function evalA(argAry As Variant) As Variant
 End Function
 
 Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
+    Dim ary, fnAry
+    Dim num As Long
     ary = argAry
     fnAry = prmAry(fnc, Null, ary)
     num = lenAry(seq)
@@ -54,6 +62,8 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
 End Function
 
 Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
+    Dim ary, sp, lsp, fnAry, ret
+    Dim num As Long
     ary = argAry
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
@@ -72,29 +82,34 @@ Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Var
 End Function
 
 Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
+    Dim num As Long, i As Long
+    Dim ary, fnAry
     ary = argAry
     num = lenAry(seq)
     fnAry = prmAry(fnc, Null, ary)
-    idx = 0
+    i = 0
     ReDim ret(1 To num)
     For Each elm In seq
         Call setAryAt(fnAry, 2, elm)
         If evalA(fnAry) Then
-            idx = idx + 1
-            ret(idx) = elm
+            i = i + 1
+            ret(i) = elm
         End If
     Next elm
-    ReDim Preserve ret(1 To idx)
+    ReDim Preserve ret(1 To i)
     filterA = ret
 End Function
 
 Public Function foldA(fnc As String, seq As Variant, init As Variant, ParamArray argAry() As Variant) As Variant
+    Dim ary, ret
     ary = argAry
     ret = foldAryA(fnc, seq, init, ary)
     foldA = ret
 End Function
 
 Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As Variant
+    Dim fnAry, elm, ret
+    Dim n As Long
     fnAry = prmAry(fnc, init, Null, ary)
     n = lenAry(seq)
     ret = init
@@ -107,6 +122,7 @@ Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As
 End Function
 
 Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
+    Dim ary, seq1, ret, init
     ary = argAry
     init = getAryAt(seq, 1)
     seq1 = dropAry(seq, 1)
@@ -115,6 +131,7 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
 End Function
 
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
+    Dim ret, init, elm
     ret = init
     For Each elm In seq
         ret = applyF(Array(ret, elm), fnObj, True)
@@ -123,6 +140,7 @@ Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
 End Function
 
 Public Function reduceF(fnObj, seq As Variant) As Variant
+    Dim init, seq1, ret
     init = getAryAt(seq, 1)
     seq1 = dropAry(seq, 1)
     ret = foldF(fnObj, seq1, init)
@@ -130,7 +148,8 @@ Public Function reduceF(fnObj, seq As Variant) As Variant
 End Function
 
 Function applyF(vl, fnObj, Optional argAsAry = False)
-    Dim ret
+    Dim ret, fnAry, arity
+    Dim n As Long
     fnAry = getAryAt(fnObj, 2)
     arity = getAryAt(fnObj, 1)
     If Not argAsAry Then
@@ -146,7 +165,7 @@ Function applyF(vl, fnObj, Optional argAsAry = False)
 End Function
 
 Function applyFs(vl, fnObjs, Optional argAsAry = False)
-    Dim ret
+    Dim ret, fnObj
     ret = vl
     For Each fnObj In fnObjs
         ret = applyF(ret, fnObj, argAsAry)
@@ -201,11 +220,13 @@ Function negate(fnc As String, x, ParamArray argAry())
     negate = ret
 End Function
 
-Function takeWhile(fnc, ary, direction, ParamArray argAry())
+Function takeWhile(fnc As String, ary, dir As direction, ParamArray argAry())
+    Dim n As Long, sn As Long, i As Long, num As Long
+    Dim prm, v, ret
     prm = argAry
     fnAry = prmAry(fnc, Null, prm)
     n = lenAry(ary)
-    sn = Sgn(direction)
+    sn = Sgn(dir)
     num = 0
     For i = 1 To n
         v = getAryAt(ary, sn * i)
@@ -220,11 +241,13 @@ Function takeWhile(fnc, ary, direction, ParamArray argAry())
     takeWhile = ret
 End Function
 
-Function dropWhile(fnc, ary, direction, ParamArray argAry())
+Function dropWhile(fnc As String, ary, dir As direction, ParamArray argAry())
+    Dim n As Long, sn As Long, i As Long, num As Long
+    Dim prm, v, ret
     prm = argAry
     fnAry = prmAry(fnc, Null, prm)
     n = lenAry(ary)
-    sn = Sgn(direction)
+    sn = Sgn(dir)
     num = 0
     For i = 1 To n
         v = getAryAt(ary, sn * i)
