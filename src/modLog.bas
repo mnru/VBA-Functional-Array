@@ -1,5 +1,5 @@
 Attribute VB_Name = "modLog"
-Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
+Sub outPut(Optional msg As Variant = "", Optional crlf As Boolean = True)
     If crlf Then
         Debug.Print msg
     Else
@@ -8,9 +8,10 @@ Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
 End Sub
 
 Function printTime(fnc As String, ParamArray argAry() As Variant)
-    Dim etime  As Double
-    Dim stime  As Double
-    Dim secs   As Double
+    Dim ary, fnAry
+    Dim etime As Double
+    Dim stime As Double
+    Dim secs  As Double
     ary = argAry
     fnAry = prmAry(fnc, ary)
     stime = Timer
@@ -20,11 +21,17 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     Call outPut(fnc & " - " & secToHMS(secs), True)
 End Function
 
-Sub printAry(ary, Optional qt = True, Optional fm = "", Optional lcr = "r", Optional width = 0)
+Sub printAry(ary, Optional qt As Boolean = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0)
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
-Sub printSimpleAry(ary, Optional flush = 1000)
+Sub printSimpleAry(ary, Optional flush As Long = 1000)
+    Dim i As Long, aryNum As Long
+    Dim sp, lsp
+    Dim ret As String, dlm As String
+    Dim idx, idx0, vl
+    sp = getAryShape(ary)
+    lsp = getAryShape(ary, "L")
     aryNum = getAryNum(ary)
     If aryNum = 0 Then
         Call outPut("[]", False)
@@ -46,7 +53,7 @@ Sub printSimpleAry(ary, Optional flush = 1000)
     Call outPut(ret, True)
 End Sub
 
-Sub print1DAry(ary, Optional flush = 1000)
+Sub print1DAry(ary, Optional flush As Long = 1000)
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     cnt = 1
@@ -67,7 +74,7 @@ Sub print1DAry(ary, Optional flush = 1000)
     Call outPut(ret, True)
 End Sub
 
-Sub print2DAry(ary, Optional flush = 1000)
+Sub print2DAry(ary, Optional flush As Long = 1000)
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
@@ -93,7 +100,7 @@ Sub print2DAry(ary, Optional flush = 1000)
     Call outPut(ret, True)
 End Sub
 
-Sub print3DAry(ary, Optional flush = 1000)
+Sub print3DAry(ary, Optional flush As Long = 1000)
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)

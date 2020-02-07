@@ -1,7 +1,13 @@
 Attribute VB_Name = "modUtil"
 Option Base 0
 
-Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As String = "r", Optional width As Long = 0, _
+Enum AlignDirection
+    leftAlign = 1
+    centerAlign = 2
+    rightAlign = 3
+End Enum
+
+Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aryNum As Long
@@ -74,7 +80,8 @@ Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
 End Function
 
 Function secToHMS(vl As Double)
-    'Dim x2 As Double
+    Dim x1 As Long
+    Dim x2 As Double
     x0 = vl
     x1 = Int(x0)
     x2 = x0 - x1
@@ -155,22 +162,22 @@ Function polyStr(polyAry) As String
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm As String = "", Optional lcr As String = "r", Optional width As Long = 0) As String
+Function fmt(expr, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0) As String
     Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str As String, Optional lcr As String = "r", Optional width As Long = 0) As String
+Function align(str As String, Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0) As String
     Dim ret As String
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
         Select Case LCase(lcr)
-            Case "r": ret = space(d) & ret
-            Case "l": ret = ret & space(d)
-            Case "c": ret = space(d \ 2) & ret & space(d - d \ 2)
+            Case AlignDirection.rightAlign: ret = space(d) & ret
+            Case AlignDirection.leftAlign: ret = ret & space(d)
+            Case AlignDirection.centerAlign: ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If

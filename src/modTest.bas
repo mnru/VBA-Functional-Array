@@ -137,7 +137,7 @@ Sub testRgt()
 End Sub
 
 Sub testRangeToArys()
-    Dim rg    As Range
+    Dim rg  As Range
     Set rg = Range("A1:C2")
     dary = rg
     Dim dr(0 To 1, 0 To 2)
@@ -163,6 +163,7 @@ End Sub
 
 Sub testElm()
     Dim a(0 To 1, 0 To 2, 0 To 3, 0 To 4)
+    Dim i As Long
     vl = 1
     For i = 0 To 1
         For j = 0 To 2
@@ -187,7 +188,7 @@ Sub testElm()
 End Sub
 
 Sub testRangeToAry()
-    Dim rg    As Range
+    Dim rg  As Range
     Set rg = Range("A1:C2")
     dary = rg
     Dim dr(0 To 1, 0 To 2)
@@ -251,7 +252,7 @@ End Sub
 
 Sub testShape()
     Dim a(1 To 3, 1 To 4, 1 To 5)
-    Print ' Dim a(1 To 3, 1 To 4)
+    ' Dim a(1 To 3, 1 To 4)
     Dim b(0 To 3, 0 To 4, 0 To 5)
     Dim c(1 To 5)
     vl = 1
@@ -358,16 +359,16 @@ Sub testZipArrayTime()
     a = mkSeq(10)
     b = mkSeq(10, 20, -2)
     c = mkSeq(10, 100, -10)
-    a = mkSeq(100000)
-    b = mkSeq(100000, 200000, -2)
-    c = mkSeq(100000, 1000000, -10)
+    '  a = mkSeq(100000)
+    '  b = mkSeq(100000, 200000, -2)
+    '  c = mkSeq(100000, 1000000, -10)
     x = Array(a, b, c)
     y = printTime("zipary", x)
     z = printTime("zip", a, b, c)
     Call printTime("conarys", x)
-    ' printAry x
-    ' printAry y
-    ' printAry Z
+    printAry x
+    printAry y
+    printAry z
     'Stop
 End Sub
 
@@ -431,7 +432,7 @@ End Sub
 
 Sub testSequence()
     t1 = Time
-    r = 2000
+    r = 20
     c = 100
     y = reshapeAry(mkSeq(r * c), Array(r, c))
     t2 = Time
@@ -458,15 +459,15 @@ Sub testMaryAccessor()
     Call setMAryAt(x, Array(1, 1, 1), -1)
     Call setMAryAt(x, Array(1, 1, 1), -2, 0)
     printAry x
-    x0 = Application.WorksheetFunction.Sequence(4, 5)
-    printAry x0
-    y0 = getMAryAt(x0, Array(1, 1))
-    outPut y0
-    z0 = getMAryAt(x0, Array(1, 1), 0)
-    outPut z0
-    Call setMAryAt(x0, Array(1, 1), -1)
-    Call setMAryAt(x0, Array(1, 1), -2, 0)
-    printAry x0
+    '  x0 = Application.WorksheetFunction.Sequence(4, 5)
+    '  printAry x0
+    '  y0 = getMAryAt(x0, Array(1, 1))
+    '  outPut y0
+    '  z0 = getMAryAt(x0, Array(1, 1), 0)
+    '  outPut z0
+    '  Call setMAryAt(x0, Array(1, 1), -1)
+    '  Call setMAryAt(x0, Array(1, 1), -2, 0)
+    '  printAry x0
 End Sub
 
 Sub testl_()
@@ -505,8 +506,8 @@ Sub testmMapA()
 End Sub
 
 Sub testSpill()
-    r = 2000
-    c = 10000
+    r = 20
+    c = 100
     x = reshapeAry(mkSeq(r * c), Array(r, c))
     'x = Application.WorksheetFunction.Sequence(2000, 10000)
     'Call LogSetting.setAllFlg(True, True)
@@ -525,14 +526,14 @@ Sub testSimpleAry()
     Stop
     printTime "printAry", x
     Stop
-    Call LogSetting.setAllFileFlg(True)
+    ' Call LogSetting.setAllFileFlg(True)
     printTime "print2DAry", x
     Stop
     printTime "printSimpleAry", x
     Stop
     printTime "printAry", x
     Stop
-    Call LogSetting.setDic(False, True, "array")
+    'Call LogSetting.setDic(False, True, "array")
     printTime "print2DAry", x
     Stop
     printTime "printSimpleAry", x
@@ -541,12 +542,12 @@ Sub testSimpleAry()
 End Sub
 
 Sub test3DArray()
-    d = 100
-    r = 100
-    c = 100
+    d = 10
+    r = 10
+    c = 10
     x = reshapeAry(mkSeq(d * r * c), Array(d, r, c))
-    LogSetting.setAllFileFlg (True)
-    Call LogSetting.setDic(False, True, "array")
+    ' LogSetting.setAllFileFlg (True)
+    ' Call LogSetting.setDic(False, True, "array")
     printTime "print3DAry", x
     printTime "print3DAry", x
     printTime "print3DAry", x
@@ -554,13 +555,13 @@ End Sub
 
 Sub test1DArray()
     x = mkSeq(1000000)
-    Call LogSetting.setAllFlg(True, True)
+    ' Call LogSetting.setAllFlg(True, True)
     printTime "print1DAry", x
 End Sub
 
 Sub testPoly()
     outPut poly(-2, Array(1, 2, 3))
-    outPut polyStr(Array(2, -3, 4, 5))
+    outPut (polyStr(Array(2, -3, 4, 5)))
     outPut polyStr(Array(2, 3.2, 0, 5))
     outPut polyStr(Array(1, 3, 0, 0))
     outPut polyStr(Array(1, 1, 0, 1))
@@ -620,7 +621,7 @@ Sub testfmt()
     outPut
     Call printAry(x, False)
     outPut
-    Call printAry(x, True, "0.000", "r", 7)
+    Call printAry(x, True, "0.000", AlignDirection.rightAlign, 7)
     outPut
     Call printAry(x, True)
 End Sub
@@ -659,7 +660,7 @@ Sub testWhile()
 End Sub
 
 Sub testInfo()
-    x = Sheets("test").Range("b1:n1")
+    x = Sheets("check").Range("b1:n1")
     x0 = rangeToAry(x)
     printAry x0
     y = dropWhile("info", x0, -1, "isEmpty")

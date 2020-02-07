@@ -36,6 +36,7 @@ Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As 
 End Sub
 
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
+    Dim n As Long
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
     bs = mkSameAry(base, n)
@@ -46,6 +47,7 @@ Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
 End Function
 
 Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
+    Dim n As Long
     lsp = getAryShape(ary, "L")
     n = lenAry(lsp)
     bs = mkSameAry(base, n)
@@ -56,7 +58,7 @@ End Sub
 
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
-    Dim idx   As Long
+    Dim idx  As Long
     idx = 0
     Do
         idx = idx + 1
@@ -240,7 +242,7 @@ Function prmAry(ParamArray argAry())
 End Function
 
 Function inAry(ary As Variant, elm As Variant) As Boolean
-    Dim ret  As Boolean
+    Dim ret As Boolean
     ret = False
     For Each x In ary
         If x = elm Then
@@ -419,6 +421,7 @@ Sub setAryMbyS(mAry, sAry)
 End Sub
 
 Function getArySbyM(mAry, Optional bs As Long = 0)
+    Dim n As Long, i As Long
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     n = getAryNum(mAry)
@@ -463,7 +466,9 @@ Function calcAry(ary1, ary2, symbol As String)
     calcAry = ret
 End Function
 
-Function calcMAry(ary1, ary2, symbol As String, Optional bs = 0)
+Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
+    Dim n As Long, dm As Long, i As Long
+    Dim ret, vl, sp1, sp2, lsp1, lsp2, idx, idx0, idx1, idx2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
     lsp1 = getAryShape(ary1, "L")

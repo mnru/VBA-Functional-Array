@@ -1,5 +1,5 @@
 Attribute VB_Name = "modFnc"
-Enum direction
+Enum Direction
     fromLeft = 1
     fromRight = -1
 End Enum
@@ -131,7 +131,7 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
 End Function
 
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
-    Dim ret, init, elm
+    Dim ret, elm
     ret = init
     For Each elm In seq
         ret = applyF(Array(ret, elm), fnObj, True)
@@ -149,7 +149,7 @@ End Function
 
 Function applyF(vl, fnObj, Optional argAsAry = False)
     Dim ret, fnAry, arity
-    Dim n As Long
+    Dim n As Long, i As Long
     fnAry = getAryAt(fnObj, 2)
     arity = getAryAt(fnObj, 1)
     If Not argAsAry Then
@@ -187,6 +187,7 @@ Function getArity(ary)
 End Function
 
 Function mkF(ParamArray argArys())
+    Dim n As Long
     ary = argArys
     n = getArity(ary)
     arity = takeAry(ary, n)
@@ -202,6 +203,8 @@ Function zipApplyF(fnObj, ParamArray argAry())
 End Function
 
 Sub setAryMByF(ary, fnObj)
+    Dim n As Long
+    Dim i As Long
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     n = getAryNum(ary)
@@ -220,7 +223,7 @@ Function negate(fnc As String, x, ParamArray argAry())
     negate = ret
 End Function
 
-Function takeWhile(fnc As String, ary, dir As direction, ParamArray argAry())
+Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     Dim n As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret
     prm = argAry
@@ -241,7 +244,7 @@ Function takeWhile(fnc As String, ary, dir As direction, ParamArray argAry())
     takeWhile = ret
 End Function
 
-Function dropWhile(fnc As String, ary, dir As direction, ParamArray argAry())
+Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     Dim n As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret
     prm = argAry
