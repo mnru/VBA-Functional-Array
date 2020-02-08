@@ -1,7 +1,7 @@
 Attribute VB_Name = "modFnc"
 Enum Direction
-    fromLeft = 1
-    fromRight = -1
+    faLeft = 1
+    faRight = -1
 End Enum
 
 Public Function evalA(argAry As Variant) As Variant
@@ -214,14 +214,6 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-
-Function negate(fnc As String, x, ParamArray argAry())
-    ary = argAry
-    Dim ret
-    fnAry = prmAry(fnc, x, ary)
-    ret = Not evalA(fnAry)
-    negate = ret
-End Function
 
 Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     Dim n As Long, sn As Long, i As Long, num As Long

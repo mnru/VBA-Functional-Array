@@ -621,7 +621,7 @@ Sub testfmt()
     outPut
     Call printAry(x, False)
     outPut
-    Call printAry(x, True, "0.000", AlignDirection.rightAlign, 7)
+    Call printAry(x, True, "0.000", AlignDirection.faRight, 7)
     outPut
     Call printAry(x, True)
 End Sub

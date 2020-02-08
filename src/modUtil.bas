@@ -2,12 +2,12 @@ Attribute VB_Name = "modUtil"
 Option Base 0
 
 Enum AlignDirection
-    leftAlign = 1
-    centerAlign = 2
-    rightAlign = 3
+    faLeft = 1
+    faCenter = 0
+    faRight = -1
 End Enum
 
-Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0, _
+Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aryNum As Long
@@ -162,22 +162,22 @@ Function polyStr(polyAry) As String
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0) As String
+Function fmt(expr, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0) As String
     Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str As String, Optional lcr As AlignDirection = AlignDirection.rightAlign, Optional width As Long = 0) As String
+Function align(str As String, Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0) As String
     Dim ret As String
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
         Select Case LCase(lcr)
-            Case AlignDirection.rightAlign: ret = space(d) & ret
-            Case AlignDirection.leftAlign: ret = ret & space(d)
-            Case AlignDirection.centerAlign: ret = space(d \ 2) & ret & space(d - d \ 2)
+            Case AlignDirection.faRight: ret = space(d) & ret
+            Case AlignDirection.faLeft: ret = ret & space(d)
+            Case AlignDirection.faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If
