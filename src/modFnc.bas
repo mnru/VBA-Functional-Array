@@ -81,9 +81,10 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     mapMA = ret
 End Function
 
-Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
+Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, ParamArray argAry() As Variant) As Variant
     Dim num As Long, i As Long
     Dim ary, fnAry
+    Dim bol As Boolean
     ary = argAry
     num = lenAry(seq)
     fnAry = prmAry(fnc, Empty, ary)
@@ -91,7 +92,9 @@ Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Va
     ReDim ret(1 To num)
     For Each elm In seq
         Call setAryAt(fnAry, 2, elm)
-        If evalA(fnAry) Then
+        bol = evalA(fnAry)
+        If Not affirmative Then bol = Not bol
+        If bol Then
             i = i + 1
             ret(i) = elm
         End If

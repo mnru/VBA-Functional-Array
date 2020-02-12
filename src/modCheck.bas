@@ -64,6 +64,14 @@ Sub checkTbl(Optional tbln = "check")
     Next i
 End Sub
 
+Function mkTest(tbl)
+    checkTbl (tbl)
+    x = filterA("info", rangeToAry(Range(tbl & "[statement]"), "c"), False, "isempty")
+    ret = mcJoin(x, vbLf, "Sub test" & tbl & vbLf, vbLf & "End sub")
+    ret = Replace(ret, vbLf, vbCrLf)
+    mkTest = ret
+End Function
+
 Function fnAryElmToStr(elm)
     Dim ret
     If TypeName(elm) = "String" Then
@@ -81,18 +89,29 @@ Function fnAryElmToStr(elm)
 End Function
 
 Function fnaryToStr(fnAry)
-    Dim ret
+    Dim ret, tmp
     Dim fn
-    fn = fnAry(LBound(fnAry))
+    fn = getAryAt(fnAry, 1)
     tmp = mapA("fnAryElmToStr", dropAry(fnAry, 1))
-    ret = fn & mcJoin(tmp, ",", "(", ")")
+    If fn = "id_" Then
+        ret = getAryAt(tmp, 1)
+    ElseIf fn = "l_" Then
+        ret = "Array" & mcJoin(tmp, ",", "(", ")")
+    ElseIf fn = "calc" Then
+        ret = getAryAt(tmp, 1) & Replace(getAryAt(tmp, 3), """", " ") & getAryAt(tmp, 2)
+    ElseIf fn = "math" Or fn = "info" Then
+        ret = Replace(getAryAt(tmp, 2), """", "") & "(" & getAryAt(tmp, 1) & ")"
+    Else
+        ret = fn & mcJoin(tmp, ",", "(", ")")
+    End If
     fnaryToStr = ret
 End Function
 
 Function mkStatement(fnAry, vz, retIsObj, Optional withAssert, Optional expected)
     Dim ret
     If vz = "" Then
-        ret = "Call " & fnaryToStr(fnAry)
+        'ret = "Call " & fnaryToStr(fnAry)
+        ret = ""
     ElseIf retIsObj Then
         ret = "Set " & vz & " = " & fnaryToStr(fnAry)
     Else
