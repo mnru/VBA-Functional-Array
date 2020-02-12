@@ -58,7 +58,7 @@ End Sub
 
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
-    Dim idx  As Long
+    Dim idx As Long
     idx = 0
     Do
         idx = idx + 1
@@ -253,7 +253,7 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     inAry = ret
 End Function
 
-Function mkIndex(num As Long, shape, Optional lshape = Null)
+Function mkIndex(num As Long, shape, Optional lshape = Empty)
     Dim n As Long, i As Long, p As Long, r As Long
     n = lenAry(shape)
     ReDim ret(0 To n - 1)
@@ -263,7 +263,7 @@ Function mkIndex(num As Long, shape, Optional lshape = Null)
         Call setAryAt(ret, i, r Mod p)
         r = r \ p
     Next i
-    If Not IsNull(lshape) Then
+    If Not IsEmpty(lshape) Then
         For i = 1 To n
             Call setAryAt(ret, i, getAryAt(ret, i) + getAryAt(lshape, i))
         Next i
@@ -597,7 +597,7 @@ End Function
 Function uniqueAry(ary)
     Set dic = CreateObject("Scripting.Dictionary")
     For Each elm In ary
-        dic(elm) = Null
+        dic(elm) = Empty
     Next
     ret = dic.keys
     uniqueAry = ret

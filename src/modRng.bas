@@ -1,5 +1,5 @@
 Attribute VB_Name = "modRng"
-Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Null) As Variant
+Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Empty) As Variant
     bkn = ActiveWorkbook.Name
     ThisWorkbook.Activate
     Application.Volatile
@@ -16,7 +16,7 @@ Public Function TLookup(key, tbl As String, targetCol As String, Optional source
     Exit Function
 lnError:
     Debug.Print Err.Description
-    TLookup = Null
+    TLookup = Empty
     Workbooks(bkn).Activate
 End Function
 

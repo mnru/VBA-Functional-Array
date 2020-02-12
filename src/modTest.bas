@@ -137,7 +137,7 @@ Sub testRgt()
 End Sub
 
 Sub testRangeToArys()
-    Dim rg  As Range
+    Dim rg As Range
     Set rg = Range("A1:C2")
     dary = rg
     Dim dr(0 To 1, 0 To 2)
@@ -188,7 +188,7 @@ Sub testElm()
 End Sub
 
 Sub testRangeToAry()
-    Dim rg  As Range
+    Dim rg As Range
     Set rg = Range("A1:C2")
     dary = rg
     Dim dr(0 To 1, 0 To 2)
@@ -245,7 +245,7 @@ Sub testAt()
 End Sub
 
 Sub testadd()
-    x = Array(Null, Null)
+    x = Array(Empty, Empty)
     outPut lenAry(x)
     printAry (x)
 End Sub
@@ -256,7 +256,7 @@ Sub testShape()
     Dim b(0 To 3, 0 To 4, 0 To 5)
     Dim c(1 To 5)
     vl = 1
-    fob = mkF(1, "calc", Null, 1, "+")
+    fob = mkF(1, "calc", Empty, 1, "+")
     Call setAryMByF(a, fob)
     Call setAryMByF(b, fob)
     Call setAryMByF(c, fob)
@@ -286,10 +286,10 @@ End Sub
 
 Sub testApply()
     a = mkSeq(30)
-    e = mapA("applyF", a, mkF(2, "calc", 2, Null, "^"))
+    e = mapA("applyF", a, mkF(2, "calc", 2, Empty, "^"))
     printAry (e)
-    fob0 = Array(Array(Array(1), Array("calc", Null, 3, "+")), Array(Array(2), Array("calc", 100, Null, "/")))
-    fob1 = Array(mkF(1, "calc", Null, 3, "+"), mkF(2, "calc", 100, Null, "/"))
+    fob0 = Array(Array(Array(1), Array("calc", Empty, 3, "+")), Array(Array(2), Array("calc", 100, Empty, "/")))
+    fob1 = Array(mkF(1, "calc", Empty, 3, "+"), mkF(2, "calc", 100, Empty, "/"))
     b0 = mapA("applyFs", a, fob0)
     b1 = mapA("applyFs", a, fob1)
     printAry (b0)
@@ -297,8 +297,8 @@ Sub testApply()
 End Sub
 
 Sub testmkF()
-    a = mkF(1, "calc", Null, 3, "%")
-    b = mkF(2, 1, "calc", Null, Null, "-")
+    a = mkF(1, "calc", Empty, 3, "%")
+    b = mkF(2, 1, "calc", Empty, Empty, "-")
     printAry (a)
     printAry (b)
 End Sub
@@ -311,14 +311,14 @@ Sub testPrmAry()
 End Sub
 
 Sub testFoldF()
-    fo = mkF(2, 1, "calc", Null, Null, "-")
+    fo = mkF(2, 1, "calc", Empty, Empty, "-")
     sq = mkSeq(5)
     a = foldF(fo, sq, 1)
     outPut a
 End Sub
 
 Sub testZipApply()
-    fob = mkF(1, 2, "calc", Null, Null, "+")
+    fob = mkF(1, 2, "calc", Empty, Empty, "+")
     z = zipApplyF(fob, mkSeq(5), mkSeq(5, 10, -2))
     printAry (z)
 End Sub
@@ -359,9 +359,9 @@ Sub testZipArrayTime()
     a = mkSeq(10)
     b = mkSeq(10, 20, -2)
     c = mkSeq(10, 100, -10)
-    '  a = mkSeq(100000)
-    '  b = mkSeq(100000, 200000, -2)
-    '  c = mkSeq(100000, 1000000, -10)
+    ' a = mkSeq(100000)
+    ' b = mkSeq(100000, 200000, -2)
+    ' c = mkSeq(100000, 1000000, -10)
     x = Array(a, b, c)
     y = printTime("zipary", x)
     z = printTime("zip", a, b, c)
@@ -416,7 +416,7 @@ End Sub
 Sub testReshape()
     a = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6))
     b = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6), 1)
-    e = printTime("reshapeAry0", mkSeq(1000000), Array(100, 100, 100))
+    'e = printTime("reshapeAry0", mkSeq(1000000), Array(100, 100, 100))
     c = printTime("reshapeAry", mkSeq(1000000), Array(100, 100, 100))
     f = printTime("reshapeAry", mkSeq(1000000), Array(100, 100, 100), 1)
     d = reshapeAry(mkSeq(27000), Array(30, 30, 30), 1)
@@ -425,7 +425,7 @@ Sub testReshape()
     printTime "printAry", b
     printTime "printAry", c
     Stop
-    printTime "printAry", e
+    'printTime "printAry", e
     Stop
     printTime "printAry", d
 End Sub
@@ -459,15 +459,15 @@ Sub testMaryAccessor()
     Call setMAryAt(x, Array(1, 1, 1), -1)
     Call setMAryAt(x, Array(1, 1, 1), -2, 0)
     printAry x
-    '  x0 = Application.WorksheetFunction.Sequence(4, 5)
-    '  printAry x0
-    '  y0 = getMAryAt(x0, Array(1, 1))
-    '  outPut y0
-    '  z0 = getMAryAt(x0, Array(1, 1), 0)
-    '  outPut z0
-    '  Call setMAryAt(x0, Array(1, 1), -1)
-    '  Call setMAryAt(x0, Array(1, 1), -2, 0)
-    '  printAry x0
+    ' x0 = Application.WorksheetFunction.Sequence(4, 5)
+    ' printAry x0
+    ' y0 = getMAryAt(x0, Array(1, 1))
+    ' outPut y0
+    ' z0 = getMAryAt(x0, Array(1, 1), 0)
+    ' outPut z0
+    ' Call setMAryAt(x0, Array(1, 1), -1)
+    ' Call setMAryAt(x0, Array(1, 1), -2, 0)
+    ' printAry x0
 End Sub
 
 Sub testl_()
@@ -485,22 +485,22 @@ Sub testl_()
     outPut TypeName(z)
 End Sub
 
-Sub testmMapA()
+Sub testmapMA()
     x1 = reshapeAry(mkSeq(24), Array(2, 3, 4))
     printAry (x1)
     outPut
-    y1 = mMapA("calc", x1, 5, "*")
+    y1 = mapMA("calc", x1, 5, "*")
     printAry (y1)
     ReDim x2(1 To 4, 1 To 5)
     Call setAryMbyS(x2, mkSeq(20))
     printAry (x2)
     outPut
-    y2 = mMapA("calc", x2, 5, "-")
+    y2 = mapMA("calc", x2, 5, "-")
     printAry (y2)
-    fob = mkF(2, "calc", 3, Null, "-")
-    fobs = Array(fob, mkF(1, "calc", Null, 3, "*"))
-    y3 = mMapA("ApplyF", x2, fob)
-    y4 = mMapA("ApplyFs", x2, fobs)
+    fob = mkF(2, "calc", 3, Empty, "-")
+    fobs = Array(fob, mkF(1, "calc", Empty, 3, "*"))
+    y3 = mapMA("ApplyF", x2, fob)
+    y4 = mapMA("ApplyFs", x2, fobs)
     printAry (y3)
     printAry (y4)
 End Sub
@@ -577,7 +577,7 @@ Sub testPoly()
     outPut poly(3, y)
 End Sub
 
-Function mk2DSeq1(r, c, Optional first = 1, Optional step = 1, Optional bs = 0)
+Function mk2DSeq1(r, c, Optional first As Long = 1, Optional step As Long = 1, Optional bs As Long = 0)
     sp = Array(r, c)
     ret = mkMAry(sp, bs)
     Call set2DArySeq(ret, first, step)
@@ -594,14 +594,14 @@ Sub testmkSeq()
     c = 10000
     first = -100
     step = 7
-    x1 = printTime("mkSequence", r, c, first, step)
+    ' x1 = printTime("mkSequence", r, c, first, step)
     x2 = printTime("mk2DSeq", r, c, first, step)
     x3 = printTime("mk2DSeq1", r, c, first, step)
     x4 = printTime("mkMArySeq", Array(r, c), first, step)
-    t1 = Timer
-    x5 = Application.WorksheetFunction.Sequence(r, c, first, step)
-    t2 = Timer
-    outPut ("worksheetfunction" & " - " & secToHMS(t2 - t1))
+    '  t1 = Timer
+    '  x5 = Application.WorksheetFunction.Sequence(r, c, first, step)
+    '  t2 = Timer
+    '  outPut ("worksheetfunction" & " - " & secToHMS(t2 - t1))
     Stop
 End Sub
 
@@ -609,7 +609,7 @@ Sub testCalcMary()
     x = mk2DSeq(4, 5, -10)
     y = mk2DSeq(4, 5, 5, -1, 1)
     z = calcMAry(x, y, "*")
-    w = mMapA("fmt", z, "0000")
+    w = mapMA("fmt", z, "0000")
     printAry (w)
 End Sub
 
@@ -660,11 +660,39 @@ Sub testWhile()
 End Sub
 
 Sub testInfo()
-    x = Sheets("check").Range("b1:n1")
+    x = Sheets("check").Range("e3:j3")
     x0 = rangeToAry(x)
     printAry x0
     y = dropWhile("info", x0, -1, "isEmpty")
     printAry y
     z = evalA(y)
     outPut z
+End Sub
+
+Sub testDicStr()
+    Set dic = CreateObject("Scripting.Dictionary")
+    dic.Add "right", 1
+    dic.Add "left", 2
+    a = dic.keys
+    b = dic.items
+    c = zip(mapA("addStr", a, "'", "'"), b)
+    d = mapA("mcjoin", c, ":")
+    outPut TypeName(dic)
+    str1 = mcJoin(d, ",", "Dic(", ")")
+    Debug.Print str1
+    printAry dic
+End Sub
+
+Sub testClcStr()
+    Set clc = New Collection
+    clc.Add 1
+    clc.Add 2
+    clc.Add "abc"
+    printAry clc
+End Sub
+
+Sub testDic()
+    Set dic = mkDic("datetime", "date", "time", "date")
+    outPut lookupDic("a", dic, "double")
+    outPut lookupDic("time", dic, "double")
 End Sub

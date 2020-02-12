@@ -50,7 +50,7 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     Dim ary, fnAry
     Dim num As Long
     ary = argAry
-    fnAry = prmAry(fnc, Null, ary)
+    fnAry = prmAry(fnc, Empty, ary)
     num = lenAry(seq)
     ReDim ret(1 To num)
     Dim i As Long
@@ -61,14 +61,14 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     mapA = ret
 End Function
 
-Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
+Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
     Dim ary, sp, lsp, fnAry, ret
     Dim num As Long
     ary = argAry
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     ret = mkMAry(sp)
-    fnAry = prmAry(fnc, Null, ary)
+    fnAry = prmAry(fnc, Empty, ary)
     num = getAryNum(mAry)
     Dim i As Long
     For i = 1 To num
@@ -78,7 +78,7 @@ Public Function mMapA(fnc As String, mAry As Variant, ParamArray argAry() As Var
         vl = evalA(fnAry)
         Call setElm(vl, ret, idx0)
     Next i
-    mMapA = ret
+    mapMA = ret
 End Function
 
 Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
@@ -86,7 +86,7 @@ Public Function filterA(fnc As String, seq As Variant, ParamArray argAry() As Va
     Dim ary, fnAry
     ary = argAry
     num = lenAry(seq)
-    fnAry = prmAry(fnc, Null, ary)
+    fnAry = prmAry(fnc, Empty, ary)
     i = 0
     ReDim ret(1 To num)
     For Each elm In seq
@@ -110,7 +110,7 @@ End Function
 Public Function foldAryA(fnc As String, seq As Variant, init As Variant, ary) As Variant
     Dim fnAry, elm, ret
     Dim n As Long
-    fnAry = prmAry(fnc, init, Null, ary)
+    fnAry = prmAry(fnc, init, Empty, ary)
     n = lenAry(seq)
     ret = init
     For Each elm In seq
@@ -219,7 +219,7 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     Dim n As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret
     prm = argAry
-    fnAry = prmAry(fnc, Null, prm)
+    fnAry = prmAry(fnc, Empty, prm)
     n = lenAry(ary)
     sn = Sgn(dir)
     num = 0
@@ -240,7 +240,7 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     Dim n As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret
     prm = argAry
-    fnAry = prmAry(fnc, Null, prm)
+    fnAry = prmAry(fnc, Empty, prm)
     n = lenAry(ary)
     sn = Sgn(dir)
     num = 0

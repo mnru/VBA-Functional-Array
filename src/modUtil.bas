@@ -31,10 +31,16 @@ Function toString(elm, Optional qt = True, Optional fm As String = "", Optional 
             Next i
         End If
     Else
-        If IsObject(elm) Then
+        If TypeName(elm) = "Dictionary" Then
+            ret = ret & dicToStr(elm)
+        ElseIf TypeName(elm) = "Collection" Then
+            ret = ret & clcToStr(elm)
+        ElseIf IsObject(elm) Then
             ret = ret & "<" & TypeName(elm) & ">"
         ElseIf IsNull(elm) Then
             ret = ret & "Null"
+        ElseIf IsEmpty(elm) Then
+            ret = ret & "Empty"
         Else
             If TypeName(elm) = "String" Then
                 If qt Then
@@ -51,6 +57,24 @@ Function toString(elm, Optional qt = True, Optional fm As String = "", Optional 
         End If
     End If
     toString = ret
+End Function
+
+Function dicToStr(dic) As String
+    Dim tmp1, tmp2
+    Dim ret As String
+    tmp1 = zip(mapA("tostring", dic.keys), mapA("tostring", dic.items))
+    tmp2 = mapA("mcJoin", tmp1, "=>")
+    ret = mcJoin(tmp2, ",", "Dic(", ")")
+    dicToStr = ret
+End Function
+
+Function clcToStr(clc) As String
+    Dim tmp1, tmp2
+    Dim ret As String
+    tmp1 = clcToAry(clc)
+    tmp2 = mapA("toString", tmp1)
+    ret = mcJoin(tmp2, ",", "Collection(", ")")
+    clcToStr = ret
 End Function
 
 Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
@@ -91,7 +115,7 @@ Function secToHMS(vl As Double)
     secToHMS = ret
 End Function
 
-Function clcToAry(clc As Collection)
+Function clcToAry(clc)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
@@ -235,5 +259,42 @@ Function info(x, symbol As String)
 End Function
 
 Function id_(x)
-    id_ = x
+    If IsObject(x) Then
+        Set id_ = x
+    Else
+        id_ = x
+    End If
+End Function
+
+Function mkDic(ParamArray argAry())
+    ary = argAry
+    Set ret = CreateObject("Scripting.Dictionary")
+    Dim i As Long
+    i = LBound(ary)
+    Do While i < UBound(ary)
+        ret.Add ary(i), ary(i + 1)
+        i = i + 2
+    Loop
+    Set mkDic = ret
+End Function
+
+Function lookupDic(x, dic, Optional default = Empty)
+    Dim ret
+    If dic.Exists(x) Then
+        ret = dic(x)
+    Else
+        ret = default
+    End If
+    lookupDic = ret
+End Function
+
+Function mkClc(ParamArray argAry())
+    Dim ary
+    ary = argAry
+    Dim clc
+    Set clc = New Collection
+    For Each elm In ary
+        clc.Add elm
+    Next elm
+    Set mkClc = clc
 End Function

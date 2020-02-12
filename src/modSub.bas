@@ -64,12 +64,9 @@ Function mk3DSeq(r, c, h, Optional first = 1, Optional step = 1, Optional bs = 0
     Next i1
     mk3DSeq = ret
 End Function
-
 '''''''''''''''''''''''''''''''''''
 'sub of modFnc
 '''''''''''''''''''''''''''''''''''
-
-
 
 Function negate(fnc As String, x, ParamArray argAry())
     ary = argAry
@@ -78,5 +75,3 @@ Function negate(fnc As String, x, ParamArray argAry())
     ret = Not evalA(fnAry)
     negate = ret
 End Function
-
-
