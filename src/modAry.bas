@@ -6,7 +6,7 @@ Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function
 
-Function getAryAt(ary As Variant, pos As Long, Optional base As Long = 1, Optional isObj As Boolean = False) As Variant
+Function getAryAt(ary As Variant, pos As Long, Optional base As Long = 1) ', Optional isObj As Boolean = False) As Variant
     Dim idx As Long
     Dim ret As Variant
     If pos < 0 Then
@@ -14,25 +14,27 @@ Function getAryAt(ary As Variant, pos As Long, Optional base As Long = 1, Option
     Else
         idx = LBound(ary) + pos - base
     End If
-    If isObj Then
-        Set getAryAt = ary(idx)
-    Else
-        getAryAt = ary(idx)
-    End If
+    Assign getAryAt, ary(idx)
+    '  If isObj Then
+    '    Set getAryAt = ary(idx)
+    '  Else
+    '    getAryAt = ary(idx)
+    '  End If
 End Function
 
-Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As Long = 1, Optional isObj As Boolean = False)
+Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As Long = 1) ', Optional isObj As Boolean = False)
     Dim idx As Long
     If pos < 0 Then
         idx = UBound(ary) + pos + 1
     Else
         idx = LBound(ary) + pos - base
     End If
-    If isObj Then
-        Set ary(idx) = vl
-    Else
-        ary(idx) = vl
-    End If
+    Assign ary(idx), vl
+    '  If isObj Then
+    '    Set ary(idx) = vl
+    '  Else
+    '    ary(idx) = vl
+    '  End If
 End Sub
 
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
@@ -271,7 +273,7 @@ Function mkIndex(num As Long, shape, Optional lshape = Empty)
     mkIndex = ret
 End Function
 
-Function getElm(ary, idx)
+Function getElm(ByRef ary, idx)
     Dim ret
     Dim lb As Long
     lb = LBound(idx)
@@ -338,7 +340,7 @@ Function getElm(ary, idx)
         Case 60: ret = ary(idx(lb), idx(lb + 1), idx(lb + 2), idx(lb + 3), idx(lb + 4), idx(lb + 5), idx(lb + 6), idx(lb + 7), idx(lb + 8), idx(lb + 9), idx(lb + 10), idx(lb + 11), idx(lb + 12), idx(lb + 13), idx(lb + 14), idx(lb + 15), idx(lb + 16), idx(lb + 17), idx(lb + 18), idx(lb + 19), idx(lb + 20), idx(lb + 21), idx(lb + 22), idx(lb + 23), idx(lb + 24), idx(lb + 25), idx(lb + 26), idx(lb + 27), idx(lb + 28), idx(lb + 29), idx(lb + 30), idx(lb + 31), idx(lb + 32), idx(lb + 33), idx(lb + 34), idx(lb + 35), idx(lb + 36), idx(lb + 37), idx(lb + 38), idx(lb + 39), idx(lb + 40), idx(lb + 41), idx(lb + 42), idx(lb + 43), idx(lb + 44), idx(lb + 45), idx(lb + 46), idx(lb + 47), idx(lb + 48), idx(lb + 49), idx(lb + 50), idx(lb + 51), idx(lb + 52), idx(lb + 53), idx(lb + 54), idx(lb + 55), idx(lb + 56), idx(lb + 57), idx(lb + 58), idx(lb + 59))
         Case Else:
     End Select
-    getElm = ret
+     Assign getElm, ret
 End Function
 
 Sub setElm(vl, ary, idx)
@@ -595,10 +597,21 @@ Function mkMArySeq(sp, Optional first As Long = 1, Optional step As Long = 1, Op
 End Function
 
 Function uniqueAry(ary)
+    Dim dic As Dictionary
     Set dic = CreateObject("Scripting.Dictionary")
     For Each elm In ary
-        dic(elm) = Empty
+        If Not dic.exists(elm) Then
+            dic.Add elm, Empty
+        End If
     Next
     ret = dic.keys
     uniqueAry = ret
 End Function
+
+Private Sub Assign(ByRef Variable As Variant, ByVal Value As Variant)
+    If IsObject(Value) Then
+        Set Variable = Value
+    Else
+        Variable = Value
+    End If
+End Sub

@@ -119,7 +119,7 @@ Function clcToAry(clc)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
-        ret(i) = clc.item(i)
+        ret(i) = clc.Item(i)
     Next i
     clcToAry = ret
 End Function
@@ -280,7 +280,7 @@ End Function
 
 Function lookupDic(x, dic, Optional default = Empty)
     Dim ret
-    If dic.Exists(x) Then
+    If dic.exists(x) Then
         ret = dic(x)
     Else
         ret = default
