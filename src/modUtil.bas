@@ -7,7 +7,7 @@ Enum AlignDirection
     faRight = -1
 End Enum
 
-Function toString(elm, Optional qt = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
+Function toString(elm, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aryNum As Long
@@ -43,12 +43,7 @@ Function toString(elm, Optional qt = True, Optional fm As String = "", Optional 
             ret = ret & "Empty"
         Else
             If TypeName(elm) = "String" Then
-                If qt Then
-                    tmp = "'" & elm & "'"
-                    'tmp = """" & elm & """"
-                Else
-                    tmp = elm
-                End If
+                tmp = qt & elm & qt
             Else
                 tmp = fmt(elm, fm)
             End If
@@ -73,7 +68,7 @@ Function clcToStr(clc) As String
     Dim ret As String
     tmp1 = clcToAry(clc)
     tmp2 = mapA("toString", tmp1)
-    ret = mcJoin(tmp2, ",", "Collection(", ")")
+    ret = mcJoin(tmp2, ",", "Clc(", ")")
     clcToStr = ret
 End Function
 
@@ -119,7 +114,7 @@ Function clcToAry(clc)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
-        ret(i) = clc.Item(i)
+        Assign ret(i), clc.Item(i)
     Next i
     clcToAry = ret
 End Function

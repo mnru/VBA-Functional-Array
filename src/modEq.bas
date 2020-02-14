@@ -77,3 +77,42 @@ Function eqShape(ary1, ary2) As Boolean
     ret = eqAry(sp1, sp2)
     eqShape = ret
 End Function
+
+Function getEqLevel(ary1, ary2)
+    Dim n1 As Long
+    Dim ret As Long
+    ret = 0
+    If areBothAry(ary1, ary2) Then
+        ret = 1
+        If haveSameDimension(ary1, ary2) Then
+            ret = 2
+            If eqShape(ary1, ary2) Then
+                ret = 3
+                n = getAryNum(ary1)
+                sp = getAryShape(ary1)
+                l1 = getAryShape(ary1, "L")
+                l2 = getAryShape(ary2, "L")
+                bol = True
+                For i = 0 To n - 1
+                    idx = mkIndex(i, sp)
+                    idx1 = calcAry(idx, l1, "+")
+                    idx2 = calcAry(idx, l2, "+")
+                    If getElm(ary1, idx1) <> getElm(ary2, idx2) Then
+                        bol = False
+                        Exit For
+                    End If
+                Next i
+                If bol Then
+                    If eqAry(l1, l2) Then
+                        ret = 6
+                    Else
+                        ret = 5
+                    End If
+                Else
+                    ret = 4
+                End If
+            End If
+        End If
+    End If
+    getEqLevel = ret
+End Function

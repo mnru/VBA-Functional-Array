@@ -619,11 +619,11 @@ Sub checkfmt()
     Call setElm("2", x, Array(2, 2))
     printAry (x)
     outPut
-    Call printAry(x, False)
+    Call printAry(x, "")
     outPut
-    Call printAry(x, True, "0.000", AlignDirection.faRight, 7)
+    Call printAry(x, , "0.000", AlignDirection.faRight, 7)
     outPut
-    Call printAry(x, True)
+    Call printAry(x)
 End Sub
 
 Sub checkMath()

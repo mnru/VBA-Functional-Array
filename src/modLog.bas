@@ -11,7 +11,7 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     Dim ary, fnAry
     Dim etime As Double
     Dim stime As Double
-    Dim secs  As Double
+    Dim secs As Double
     ary = argAry
     fnAry = prmAry(fnc, ary)
     stime = Timer
@@ -21,7 +21,7 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     Call outPut(fnc & " - " & secToHMS(secs), True)
 End Function
 
-Sub printAry(ary, Optional qt As Boolean = True, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0)
+Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0)
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
