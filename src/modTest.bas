@@ -25,7 +25,8 @@ Sub mkTestTbl(Optional tbln = "")
     Call addBtn(y, "'clearResult(""" & tbln & """)'", "clear")
     Range(z) = ary
     ActiveSheet.ListObjects.Add(xlSrcRange, Range(z), , xlYes).Name = tbln
-    Range(tbln & "[assert]").FormulaR1C1 = "=IF([@kind]=""="",IF([@expected]=[@actual],""pass"",""fail""),"""")"
+    Range(tbln & "[assert]").FormulaR1C1 = _
+    "=IF(ISBLANK([@kind]),"""",IF(OR([@kind]=""="",[@kind]=""string""),IF([@expected]=[@actual],""pass"",""fail""),IF(OR([@kind]=TRUE,[@kind]=FALSE),IF(AND([@kind]=[@actual],NOT(ISBLANK([@actual]))),""pass"",""fail""),"""")))"
     Range(tbln).ListObject.TableStyle = "TableStyleLight9"
     Range(tbln & "[function]").Interior.ThemeColor = xlThemeColorAccent4
     Range(tbln & "[function]").Interior.TintAndShade = 0.599993896298105
@@ -33,6 +34,11 @@ Sub mkTestTbl(Optional tbln = "")
     fc1.Interior.Color = 13561798
     Set fc2 = Range(tbln & "[assert]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""fail""")
     fc2.Interior.Color = 13551615
+    With Range(tbln & "[kind]").Validation
+        .Delete
+        .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+        xlBetween, Formula1:="True,False,=,string"
+    End With
 End Sub
 
 Sub clearResult(Optional tbln = "check")
@@ -71,7 +77,7 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
         fnAry = fnAry0
         cNum = lenAry(fnAry)
         For j = 2 To cNum
-            withAssert = rw(numKind) = "="
+            assertKind = rw(numKind)
             expected = rw(numExp)
             el = getAryAt(fnAry, j)
             If TypeName(el) = "String" Then
@@ -97,14 +103,14 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
             varDic(vz) = vl
         End If
         Range(tbln & "[" & "actual" & "]")(i, 1) = toString(vl, , , , , True)
-        Range(tbln & "[" & "statement" & "]")(i, 1) = mkStatement(fnAry0, vz, retIsObj, withAssert, expected, dp)
+        Range(tbln & "[" & "statement" & "]")(i, 1) = mkStatement(fnAry0, vz, retIsObj, assertKind, expected, dp)
     Next i
 End Sub
 
 Function mkTestFnc(tbl, Optional dp As debugPrint = debugPrint.faNone) As String
     Dim ret As String
     Dim x
-    Call evalTestTbl(tbl, dp)
+    'Call evalTestTbl(tbl, dp)
     x = filterA("info", rangeToAry(Range(tbl & "[statement]"), "c"), False, "isempty")
     ret = mcJoin(x, vbLf, "Sub test" & tbl & "_" & vbLf, vbLf & "End sub")
     ret = Replace(ret, vbLf, vbCrLf)
@@ -153,7 +159,7 @@ Function elmToStr(elm)
 End Function
 
 Function fnAryToExp(fnAry0) As String
-    Dim ret As String, fn As String
+    Dim ret As String, fn As String, symbol As String
     Dim tmp
     fn = getAryAt(fnAry0, 1)
     tmp = mapA("elmToStr", dropAry(fnAry0, 1))
@@ -162,7 +168,9 @@ Function fnAryToExp(fnAry0) As String
     ElseIf fn = "l_" Then
         ret = "Array" & mcJoin(tmp, ",", "(", ")")
     ElseIf fn = "calc" Or fn = "comp" Then
-        ret = getAryAt(tmp, 1) & Replace(getAryAt(tmp, 3), """", " ") & getAryAt(tmp, 2)
+        symbol = Replace(getAryAt(tmp, 3), """", " ")
+        If symbol = " % " Then symbol = " mod "
+        ret = getAryAt(tmp, 1) & symbol & getAryAt(tmp, 2)
     ElseIf fn = "math" Or fn = "info" Then
         ret = Replace(getAryAt(tmp, 2), """", "") & "(" & getAryAt(tmp, 1) & ")"
     Else
@@ -171,7 +179,7 @@ Function fnAryToExp(fnAry0) As String
     fnAryToExp = ret
 End Function
 
-Function mkStatement(fnAry0, vz, retIsObj, Optional withAssert, Optional expected, Optional dp As debugPrint = debugPrint.faNone) As String
+Function mkStatement(fnAry0, vz, retIsObj, Optional assertKind, Optional expected, Optional dp As debugPrint = debugPrint.faNone) As String
     Dim ret As String
     Dim fnStr As String
     fnStr = fnAryToExp(fnAry0)
@@ -187,8 +195,18 @@ Function mkStatement(fnAry0, vz, retIsObj, Optional withAssert, Optional expecte
     Else
         ret = vz & " = " & fnStr
     End If
-    If withAssert Then
-        ret = ret & vbLf & "Assert " & vz & " , " & expected
+    If Not IsEmpty(assertKind) Then
+        Select Case assertKind
+            Case "="
+                ret = ret & vbLf & "Assert " & vz & " , " & expected
+            Case "string"
+                ret = ret & vbLf & "Assert toString(" & vz & "),""" & expected & """"
+            Case True
+                ret = ret & vbLf & "AssertTrue " & vz
+            Case False
+                ret = ret & vbLf & "AssertFalse " & vz
+            Case Else
+        End Select
     End If
     mkStatement = ret
 End Function

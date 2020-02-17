@@ -25,7 +25,7 @@ Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optio
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
-Sub printSimpleAry(ary, Optional flush As Long = 1000)
+Sub printSimpleAry(ary, Optional flush As Long = 1000, Optional qt As String = "'")
     Dim i As Long, aryNum As Long
     Dim sp, lsp
     Dim ret As String, dlm As String
@@ -41,7 +41,7 @@ Sub printSimpleAry(ary, Optional flush As Long = 1000)
             idx0 = mkIndex(i, sp)
             idx = calcAry(idx0, lsp, "+")
             vl = getElm(ary, idx)
-            If TypeName(vl) = "String" Then vl = "'" & vl & "'"
+            If TypeName(vl) = "String" Then vl = qt & vl & qt
             dlm = getDlm(sp, idx0)
             ret = ret & vl & dlm
             If i Mod flush = 0 Then

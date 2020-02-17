@@ -11,21 +11,25 @@ Sub printAry(ary, Optional qt As String = "'", Optional fm = "", Optional lcr = 
     Call wr.outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
-Sub printSimpleAry(ary, Optional flush = 1000)
+Sub printSimpleAry(ary, Optional flush As Long = 1000, Optional qt As String = "'")
     Set wr = New LogWriter
     wr.logType = "array"
+    Dim i As Long, aryNum As Long
+    Dim sp, lsp
+    Dim ret As String, dlm As String
+    Dim idx, idx0, vl
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     aryNum = getAryNum(ary)
     If aryNum = 0 Then
-        Call wr.outPut("[]", False)
+        Call outPut("[]", False)
     Else
         ret = "["
         For i = 0 To aryNum - 1
             idx0 = mkIndex(i, sp)
             idx = calcAry(idx0, lsp, "+")
             vl = getElm(ary, idx)
-            If TypeName(vl) = "String" Then vl = "'" & vl & "'"
+            If TypeName(vl) = "String" Then vl = qt & vl & qt
             dlm = getDlm(sp, idx0)
             ret = ret & vl & dlm
             If i Mod flush = 0 Then
@@ -34,7 +38,7 @@ Sub printSimpleAry(ary, Optional flush = 1000)
             End If
         Next i
     End If
-    Call wr.outPut(ret, True)
+    Call outPut(ret, True)
 End Sub
 
 Sub print1DAry(ary, Optional flush = 1000)
