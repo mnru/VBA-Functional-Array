@@ -1,5 +1,6 @@
 Attribute VB_Name = "modUtil"
 Option Base 0
+Option Explicit
 
 Enum AlignDirection
     faLeft = 1
@@ -11,10 +12,9 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aryNum As Long
-    Dim sp, lsp
+    Dim sp, lsp, idx, idx0, vl, dlm
     ret = ""
     If IsArray(elm) Then
-        d = dimAry(elm)
         ret = ret & "["
         sp = getAryShape(elm)
         lsp = getAryShape(elm, "L")
@@ -74,12 +74,12 @@ End Function
 
 Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
     Dim ret As String
-    Dim i As Long
+    Dim i As Long, num As Long, m As Long
     Dim nl As String
     nl = IIf(insheet, vbLf, vbCrLf)
-    n = lenAry(shape)
+    num = lenAry(shape)
     m = 0
-    For i = n To 1 Step -1
+    For i = num To 1 Step -1
         If getAryAt(shape, i) - 1 > getAryAt(idx, i) Then
             m = i
             Exit For
@@ -88,29 +88,32 @@ Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
     Select Case m
         Case 0
             ret = "]"
-        Case n
+        Case num
             ret = ","
-        Case n - 1
+        Case num - 1
             ret = ";" & nl & " "
         Case Else
-            ret = String(n - m, ";") & nl & nl & " "
+            ret = String(num - m, ";") & nl & nl & " "
     End Select
     getDlm = ret
 End Function
 
-Function secToHMS(vl As Double)
+Function secToHMS(vl As Double) As String
+    Dim ret As String
     Dim x1 As Long
-    Dim x2 As Double
+    Dim x0 As Double, x2 As Double, x3 As Double
+    Dim tmp
     x0 = vl
     x1 = Int(x0)
     x2 = x0 - x1
-    x3 = mkIndex(x1, Array(24, 60, 60))
-    x4 = getAryAt(x3, 3) + x2
-    ret = Format(getAryAt(x3, 1), "00") & ":" & Format(getAryAt(x3, 2), "00") & ":" & Format(x4, "00.000")
+    tmp = mkIndex(x1, Array(24, 60, 60))
+    x3 = getAryAt(tmp, 3) + x2
+    ret = Format(getAryAt(tmp, 1), "00") & ":" & Format(getAryAt(tmp, 2), "00") & ":" & Format(x3, "00.000")
     secToHMS = ret
 End Function
 
 Function clcToAry(clc)
+    Dim cnt As Long, i As Long
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
@@ -120,6 +123,7 @@ Function clcToAry(clc)
 End Function
 
 Function flattenAry(ary)
+    Dim elm, el, ret
     Dim clc As Collection
     Set clc = New Collection
     For Each elm In ary
@@ -152,6 +156,8 @@ Function addStr(body As String, Optional prefix As String = "", Optional suffix 
 End Function
 
 Function poly(x, polyAry)
+    Dim lb As Long, ub As Long, i As Long
+    Dim ret
     lb = LBound(polyAry)
     ub = UBound(polyAry)
     ret = polyAry(lb)
@@ -162,18 +168,19 @@ Function poly(x, polyAry)
 End Function
 
 Function polyStr(polyAry) As String
-    Dim i As Long
+    Dim i As Long, num As Long
     Dim ret As String
+    Dim c
     ret = ""
-    n = lenAry(polyAry)
-    For i = 1 To n
+    num = lenAry(polyAry)
+    For i = 1 To num
         c = getAryAt(polyAry, i)
         If c <> 0 Then
             If ret <> "" Then ret = ret & " "
             If c > 0 Then ret = ret & "+"
-            If c <> 1 Or i = n Then ret = ret & c
-            If i < n Then ret = ret & "X"
-            If i < n - 1 Then ret = ret & "^" & n - i
+            If c <> 1 Or i = num Then ret = ret & c
+            If i < num Then ret = ret & "X"
+            If i < num - 1 Then ret = ret & "^" & num - i
         End If
     Next i
     If ret = "" Then ret = getAryAt(polyAry, -1)
@@ -190,6 +197,7 @@ End Function
 
 Function align(str As String, Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0) As String
     Dim ret As String
+    Dim d As Long
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
@@ -262,6 +270,7 @@ Function id_(x)
 End Function
 
 Function mkDic(ParamArray argAry())
+    Dim ary, ret
     ary = argAry
     Set ret = CreateObject("Scripting.Dictionary")
     Dim i As Long
@@ -284,9 +293,8 @@ Function lookupDic(x, dic, Optional default = Empty)
 End Function
 
 Function mkClc(ParamArray argAry())
-    Dim ary
+    Dim ary, elm, clc
     ary = argAry
-    Dim clc
     Set clc = New Collection
     For Each elm In ary
         clc.Add elm

@@ -1,4 +1,7 @@
 Attribute VB_Name = "modFnc"
+Option Base 0
+Option Explicit
+
 Enum Direction
     faLeft = 1
     faRight = -1
@@ -6,6 +9,7 @@ End Enum
 
 Public Function evalA(argAry As Variant) As Variant
     Dim lb As Long
+    Dim ary
     ary = argAry
     Dim ret As Variant
     lb = LBound(ary)
@@ -48,13 +52,13 @@ End Function
 
 Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Variant) As Variant
     Dim ary, fnAry
-    Dim num As Long
+    Dim lNum As Long
     ary = argAry
     fnAry = prmAry(fnc, Empty, ary)
-    num = lenAry(seq)
-    ReDim ret(1 To num)
+    lNum = lenAry(seq)
+    ReDim ret(1 To lNum)
     Dim i As Long
-    For i = 1 To num
+    For i = 1 To lNum
         Call setAryAt(fnAry, 2, getAryAt(seq, i))
         ret(i) = evalA(fnAry)
     Next i
@@ -62,7 +66,7 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
 End Function
 
 Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
-    Dim ary, sp, lsp, fnAry, ret
+    Dim ary, sp, lsp, fnAry, ret, idx, idx0, vl
     Dim num As Long
     ary = argAry
     sp = getAryShape(mAry)
@@ -82,14 +86,14 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
 End Function
 
 Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, ParamArray argAry() As Variant) As Variant
-    Dim num As Long, i As Long
+    Dim lNum As Long, i As Long
     Dim ary, fnAry
     Dim bol As Boolean
     ary = argAry
-    num = lenAry(seq)
+    lNum = lenAry(seq)
     fnAry = prmAry(fnc, Empty, ary)
     i = 0
-    ReDim ret(1 To num)
+    ReDim ret(1 To lNum)
     For Each elm In seq
         Call setAryAt(fnAry, 2, elm)
         bol = evalA(fnAry)
@@ -177,7 +181,7 @@ Function applyFs(vl, fnObjs, Optional argAsAry = False)
 End Function
 
 Function getArity(ary)
-    Dim ret
+    Dim ret, elm
     ret = 0
     For Each elm In ary
         If IsNumeric(elm) Then
@@ -191,6 +195,7 @@ End Function
 
 Function mkF(ParamArray argArys())
     Dim n As Long
+    Dim ary, fnAry, arity
     ary = argArys
     n = getArity(ary)
     arity = takeAry(ary, n)
@@ -199,6 +204,7 @@ Function mkF(ParamArray argArys())
 End Function
 
 Function zipApplyF(fnObj, ParamArray argAry())
+    Dim arys, x, ret
     arys = argAry
     x = zipAry(arys)
     ret = mapA("applyF", x, fnObj, True)
@@ -206,12 +212,13 @@ Function zipApplyF(fnObj, ParamArray argAry())
 End Function
 
 Sub setAryMByF(ary, fnObj)
-    Dim n As Long
+    Dim num As Long
     Dim i As Long
+    Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
-    n = getAryNum(ary)
-    For i = 0 To n - 1
+    num = getAryNum(ary)
+    For i = 0 To num - 1
         idx = mkIndex(i, sp, lsp)
         vl = applyF(i, fnObj)
         Call setElm(vl, ary, idx)
@@ -219,14 +226,14 @@ Sub setAryMByF(ary, fnObj)
 End Sub
 
 Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim n As Long, sn As Long, i As Long, num As Long
-    Dim prm, v, ret
+    Dim lNum As Long, sn As Long, i As Long, num As Long
+    Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
-    n = lenAry(ary)
+    lNum = lenAry(ary)
     sn = Sgn(dir)
     num = 0
-    For i = 1 To n
+    For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then
@@ -240,14 +247,14 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
 End Function
 
 Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim n As Long, sn As Long, i As Long, num As Long
-    Dim prm, v, ret
+    Dim lNum As Long, sn As Long, i As Long, num As Long
+    Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
-    n = lenAry(ary)
+    lNum = lenAry(ary)
     sn = Sgn(dir)
     num = 0
-    For i = 1 To n
+    For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then

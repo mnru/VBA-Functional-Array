@@ -1,4 +1,7 @@
 Attribute VB_Name = "modRng"
+Option Base 0
+Option Explicit
+
 Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Empty) As Variant
     bkn = ActiveWorkbook.Name
     ThisWorkbook.Activate
@@ -44,7 +47,7 @@ Sub layAryAt(ary, r, c, Optional rc = "r", Optional sn = "", Optional bn = "")
 End Sub
 
 Function rangeToAry(rg, Optional rc As String = "r", Optional num = 1)
-    Dim ret
+    Dim ret, tmp
     tmp = rg
     With Application.WorksheetFunction
         Select Case LCase(rc)
@@ -63,7 +66,8 @@ End Function
 
 Function rangeToArys(rg, Optional rc As String = "r")
     Dim ret, tmp
-    tmp = reg
+    Dim num As Long, i As Long
+    tmp = rg
     Select Case LCase(rc)
         Case "r"
             tmp = rg

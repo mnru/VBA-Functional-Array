@@ -1,6 +1,6 @@
 Attribute VB_Name = "modAry"
 Option Base 0
-'Option Explicit
+Option Explicit
 
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
@@ -28,10 +28,11 @@ Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As 
 End Sub
 
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
-    Dim n As Long
+    Dim lNum As Long
+    Dim lsp, bs, idx1, idx2, ret
     lsp = getAryShape(ary, "L")
-    n = lenAry(lsp)
-    bs = mkSameAry(base, n)
+    lNum = lenAry(lsp)
+    bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
     idx2 = calcAry(idx1, lsp, "+")
     ret = getElm(ary, idx2)
@@ -39,10 +40,11 @@ Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
 End Function
 
 Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
-    Dim n As Long
+    Dim num As Long
+    Dim lsp, bs, idx1, idx2
     lsp = getAryShape(ary, "L")
-    n = lenAry(lsp)
-    bs = mkSameAry(base, n)
+    lNum = lenAry(lsp)
+    bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
     idx2 = calcAry(idx1, lsp, "+")
     Call setElm(vl, ary, idx2)
@@ -50,19 +52,20 @@ End Sub
 
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
-    Dim idx As Long
-    idx = 0
+    Dim ret As Long
+    ret = 0
     Do
-        idx = idx + 1
+        ret = ret + 1
         Dim tmp As Long
-        tmp = UBound(ary, idx)
+        tmp = UBound(ary, ret)
     Loop
 Catch:
-    dimAry = idx - 1
+    dimAry = ret - 1
 End Function
 
 Function getAryShape(ary, Optional typ = "N")
-    Dim i As Long
+    Dim i As Long, num As Long
+    Dim tmp
     num = dimAry(ary)
     ReDim ret(0 To num - 1)
     For i = 1 To num
@@ -120,28 +123,29 @@ Function conArys(ParamArray argArys())
     conArys = ret
 End Function
 
-Function mkSameAry(vl, num As Long)
+Function mkSameAry(vl, lNum As Long)
     Dim i As Long
-    ReDim ret(0 To num - 1)
-    For i = 0 To num - 1
+    ReDim ret(0 To lNum - 1)
+    For i = 0 To lNum - 1
         ret(i) = vl
     Next i
     mkSameAry = ret
 End Function
 
-Function mkSeq(num As Long, Optional first As Long = 1, Optional step As Long = 1)
-    ReDim ret(0 To num - 1)
-    For i = 0 To num - 1
+Function mkSeq(lNum As Long, Optional first = 1, Optional step = 1)
+    ReDim ret(0 To lNum - 1)
+    Dim i As Long
+    For i = 0 To lNum - 1
         ret(i) = first + step * i
     Next i
     mkSeq = ret
 End Function
 
 Function dropAry(ary, num As Long)
-    Dim lng As Long, sz As Long, i As Long, lb As Long, ub As Long
+    Dim lNum As Long, sz As Long, i As Long, lb As Long, ub As Long
     Dim ret
-    lng = lenAry(ary)
-    sz = lng - Abs(num)
+    lNum = lenAry(ary)
+    sz = lNum - Abs(num)
     If sz < 0 Then
         Call Err.Raise(1001, "dropAry", "num is larger than array length")
     ElseIf sz = 0 Then
@@ -163,9 +167,9 @@ Function dropAry(ary, num As Long)
 End Function
 
 Function takeAry(ary, num As Long)
-    Dim lng As Long, sz As Long, i As Long, lb As Long
+    Dim lNum As Long, sz As Long, i As Long, lb As Long
     Dim ret
-    lng = lenAry(ary)
+    lNum = lenAry(ary)
     sz = Abs(num)
     If sz < 0 Then
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
@@ -180,7 +184,7 @@ Function takeAry(ary, num As Long)
         ReDim ret(0 To sz - 1)
         ' ub = UBound(ary)
         For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, lng - sz + i, 0)
+            ret(i) = getAryAt(ary, lNum - sz + i, 0)
         Next i
     Else
         ret = Array()
@@ -189,25 +193,25 @@ Function takeAry(ary, num As Long)
 End Function
 
 Function revAry(ary)
-    Dim num As Long, i As Long, lb As Long
-    num = lenAry(ary)
-    ReDim ret(0 To num - 1)
+    Dim lNum As Long, i As Long, lb As Long
+    lNum = lenAry(ary)
+    ReDim ret(0 To lNum - 1)
     lb = LBound(ary)
-    For i = 0 To num - 1
-        ret(i) = getAryAt(ary, num - i - 1, 0)
+    For i = 0 To lNum - 1
+        ret(i) = getAryAt(ary, lNum - i - 1, 0)
     Next i
     revAry = ret
 End Function
 
 Function zip(ParamArray argArys())
-    Dim arys
+    Dim arys, ret
     arys = argArys
     ret = zipAry(arys)
     zip = ret
 End Function
 
 Function zipAry(arys)
-    Dim rNum As Long, cNum As Long, lb As Long, c As Long
+    Dim rNum As Long, cNum As Long, lb As Long, c As Long, r As Long
     Dim ret, v
     rNum = lenAry(arys)
     cNum = lenAry(arys(LBound(arys)))
@@ -224,6 +228,7 @@ Function zipAry(arys)
 End Function
 
 Function prmAry(ParamArray argAry())
+    Dim ret
     'flatten last elm
     Dim ary, ary1, ary2
     ary = argAry
@@ -246,9 +251,9 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
 End Function
 
 Function mkIndex(num As Long, shape, Optional lshape = Empty)
-    Dim n As Long, i As Long, p As Long, r As Long
-    n = lenAry(shape)
-    ReDim ret(0 To n - 1)
+    Dim lNum As Long, i As Long, p As Long, r As Long
+    lNum = lenAry(shape)
+    ReDim ret(0 To lNum - 1)
     r = num
     For i = n To 1 Step -1
         p = getAryAt(shape, i)
@@ -334,6 +339,7 @@ Function getElm(ByRef ary, idx)
 End Function
 
 Sub setElm(vl, ary, idx)
+    Dim lb As Long
     lb = LBound(idx)
     Select Case lenAry(idx)
         Case 1: Assign ary(idx(lb)), vl
@@ -402,6 +408,7 @@ End Sub
 
 Sub setAryMbyS(mAry, sAry)
     Dim i As Long, n As Long
+    Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     n = getAryNum(mAry)
@@ -414,6 +421,7 @@ End Sub
 
 Function getArySbyM(mAry, Optional bs As Long = 0)
     Dim n As Long, i As Long
+    Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     n = getAryNum(mAry)
@@ -427,7 +435,7 @@ Function getArySbyM(mAry, Optional bs As Long = 0)
 End Function
 
 Function reshapeAry(ary, sp, Optional bs As Long = 0)
-    n = lenAry(sp)
+    Dim ret
     ret = mkMAry(sp, bs)
     Call setAryMbyS(ret, ary)
     reshapeAry = ret
@@ -460,7 +468,7 @@ End Function
 
 Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim n As Long, dm As Long, i As Long
-    Dim ret, vl, sp1, sp2, lsp1, lsp2, idx, idx0, idx1, idx2
+    Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
     lsp1 = getAryShape(ary1, "L")
@@ -550,9 +558,9 @@ Function l_(ParamArray argAry() As Variant)
     l_ = ary
 End Function
 
-Sub setMArySeq(ary, Optional first As Long = 1, Optional step As Long = 1)
+Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim num As Long, i As Long
-    Dim lsp, idx
+    Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
     num = getAryNum(ary)
@@ -580,7 +588,8 @@ Function mkMSameAry(vl, sp, Optional bs As Long = 0)
     mkMSameAry = ret
 End Function
 
-Function mkMArySeq(sp, Optional first As Long = 1, Optional step As Long = 1, Optional bs As Long = 0)
+Function mkMArySeq(sp, Optional first = 1, Optional step = 1, Optional bs As Long = 0)
+    Dim ret
     ret = mkMAry(sp, bs)
     Call setMArySeq(ret, first, step)
     mkMArySeq = ret

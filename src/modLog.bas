@@ -1,4 +1,7 @@
 Attribute VB_Name = "modLog"
+Option Base 0
+Option Explicit
+
 Sub outPut(Optional msg As Variant = "", Optional crlf As Boolean = True)
     If crlf Then
         Debug.Print msg
@@ -54,6 +57,9 @@ Sub printSimpleAry(ary, Optional flush As Long = 1000, Optional qt As String = "
 End Sub
 
 Sub print1DAry(ary, Optional flush As Long = 1000)
+    Dim ret As String, dlm As String, elm As String
+    Dim lb1 As Long, ub1 As Long
+    Dim cnt As Long, i1 As Long
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     cnt = 1
@@ -75,6 +81,9 @@ Sub print1DAry(ary, Optional flush As Long = 1000)
 End Sub
 
 Sub print2DAry(ary, Optional flush As Long = 1000)
+    Dim ret As String, dlm As String, elm As String
+    Dim lb1 As Long, ub1 As Long, lb2 As Long, ub2 As Long
+    Dim cnt As Long, i1 As Long, i2 As Long
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
@@ -101,6 +110,9 @@ Sub print2DAry(ary, Optional flush As Long = 1000)
 End Sub
 
 Sub print3DAry(ary, Optional flush As Long = 1000)
+    Dim ret As String, dlm As String, elm As String
+    Dim lb1 As Long, ub1 As Long, lb2 As Long, ub2 As Long, lb3 As Long, ub3 As Long
+    Dim cnt As Long, i1 As Long, i2 As Long, i3 As Long
     ret = "["
     lb1 = LBound(ary, 1): ub1 = UBound(ary, 1)
     lb2 = LBound(ary, 2): ub2 = UBound(ary, 2)
