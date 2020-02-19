@@ -11,18 +11,18 @@ End Enum
 Function toString(elm, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
-    Dim i As Long, aryNum As Long
+    Dim i As Long, aNum As Long
     Dim sp, lsp, idx, idx0, vl, dlm
     ret = ""
     If IsArray(elm) Then
         ret = ret & "["
         sp = getAryShape(elm)
         lsp = getAryShape(elm, "L")
-        aryNum = getAryNum(elm)
-        If aryNum = 0 Then
+        aNum = getAryNum(elm)
+        If aNum = 0 Then
             ret = ret & "]"
         Else
-            For i = 0 To aryNum - 1
+            For i = 0 To aNum - 1
                 idx0 = mkIndex(i, sp)
                 idx = calcAry(idx0, lsp, "+")
                 vl = getElm(elm, idx)
@@ -74,12 +74,12 @@ End Function
 
 Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
     Dim ret As String
-    Dim i As Long, num As Long, m As Long
+    Dim i As Long, lNum As Long, m As Long
     Dim nl As String
     nl = IIf(insheet, vbLf, vbCrLf)
-    num = lenAry(shape)
+    lNum = lenAry(shape)
     m = 0
-    For i = num To 1 Step -1
+    For i = lNum To 1 Step -1
         If getAryAt(shape, i) - 1 > getAryAt(idx, i) Then
             m = i
             Exit For
@@ -88,12 +88,12 @@ Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
     Select Case m
         Case 0
             ret = "]"
-        Case num
+        Case lNum
             ret = ","
-        Case num - 1
+        Case lNum - 1
             ret = ";" & nl & " "
         Case Else
-            ret = String(num - m, ";") & nl & nl & " "
+            ret = String(lNum - m, ";") & nl & nl & " "
     End Select
     getDlm = ret
 End Function
@@ -117,7 +117,7 @@ Function clcToAry(clc)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
-        Assign ret(i), clc.Item(i)
+        Assign_ ret(i), clc.Item(i)
     Next i
     clcToAry = ret
 End Function
@@ -168,19 +168,19 @@ Function poly(x, polyAry)
 End Function
 
 Function polyStr(polyAry) As String
-    Dim i As Long, num As Long
+    Dim i As Long, lNum As Long
     Dim ret As String
     Dim c
     ret = ""
-    num = lenAry(polyAry)
-    For i = 1 To num
+    lNum = lenAry(polyAry)
+    For i = 1 To lNum
         c = getAryAt(polyAry, i)
         If c <> 0 Then
             If ret <> "" Then ret = ret & " "
             If c > 0 Then ret = ret & "+"
-            If c <> 1 Or i = num Then ret = ret & c
-            If i < num Then ret = ret & "X"
-            If i < num - 1 Then ret = ret & "^" & num - i
+            If c <> 1 Or i = lNum Then ret = ret & c
+            If i < lNum Then ret = ret & "X"
+            If i < lNum - 1 Then ret = ret & "^" & lNum - i
         End If
     Next i
     If ret = "" Then ret = getAryAt(polyAry, -1)
@@ -211,7 +211,7 @@ Function align(str As String, Optional lcr As AlignDirection = AlignDirection.fa
     align = ret
 End Function
 
-Function math(x, symbol As String)
+Function math_(x, symbol As String)
     Dim ret
     Select Case LCase(symbol)
         Case "sin": ret = Sin(x)
@@ -225,13 +225,13 @@ Function math(x, symbol As String)
         Case "sgn": ret = Sgn(x)
         Case Else:
     End Select
-    math = ret
+    math_ = ret
 End Function
 
-Function comp(x, y, symbol As String)
+Function comp_(x, y, symbol As String)
     Dim ret
     Select Case symbol
-        Case "=": ret = x = y 'caution assign and eqaul is same symbol
+        Case "=": ret = x = y 'caution Assign_ and eqaul is same symbol
         Case "<>": ret = x <> y
         Case "<": ret = x < y
         Case ">": ret = x > y
@@ -240,10 +240,10 @@ Function comp(x, y, symbol As String)
         Case "<": ret = x < y
         Case Else:
     End Select
-    comp = ret
+    comp_ = ret
 End Function
 
-Function info(x, symbol As String)
+Function info_(x, symbol As String)
     Dim ret
     Select Case LCase(symbol)
         Case "isarray": ret = IsArray(x)
@@ -258,7 +258,7 @@ Function info(x, symbol As String)
         Case "vartype": ret = VarType(x)
         Case Else:
     End Select
-    info = ret
+    info_ = ret
 End Function
 
 Function id_(x)

@@ -67,15 +67,15 @@ End Function
 
 Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
     Dim ary, sp, lsp, fnAry, ret, idx, idx0, vl
-    Dim num As Long
+    Dim aNum As Long
     ary = argAry
     sp = getAryShape(mAry)
     lsp = getAryShape(mAry, "L")
     ret = mkMAry(sp)
     fnAry = prmAry(fnc, Empty, ary)
-    num = getAryNum(mAry)
+    aNum = getAryNum(mAry)
     Dim i As Long
-    For i = 1 To num
+    For i = 1 To aNum
         idx0 = mkIndex(i, sp)
         idx = calcAry(idx0, lsp, "+")
         Call setAryAt(fnAry, 2, getElm(mAry, idx))
@@ -212,13 +212,13 @@ Function zipApplyF(fnObj, ParamArray argAry())
 End Function
 
 Sub setAryMByF(ary, fnObj)
-    Dim num As Long
+    Dim aNum As Long
     Dim i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
     lsp = getAryShape(ary, "L")
-    num = getAryNum(ary)
-    For i = 0 To num - 1
+    aNum = getAryNum(ary)
+    For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)
         vl = applyF(i, fnObj)
         Call setElm(vl, ary, idx)
@@ -226,43 +226,43 @@ Sub setAryMByF(ary, fnObj)
 End Sub
 
 Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim lNum As Long, sn As Long, i As Long, num As Long
+    Dim lNum As Long, sn As Long, i As Long, Num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
     sn = Sgn(dir)
-    num = 0
+    Num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then
-            num = num + 1
+            Num = Num + 1
         Else
             Exit For
         End If
     Next
-    ret = takeAry(ary, sn * num)
+    ret = takeAry(ary, sn * Num)
     takeWhile = ret
 End Function
 
 Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim lNum As Long, sn As Long, i As Long, num As Long
+    Dim lNum As Long, sn As Long, i As Long, Num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
     sn = Sgn(dir)
-    num = 0
+    Num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then
-            num = num + 1
+            Num = Num + 1
         Else
             Exit For
         End If
     Next
-    ret = dropAry(ary, sn * num)
+    ret = dropAry(ary, sn * Num)
     dropWhile = ret
 End Function

@@ -111,7 +111,7 @@ Function mkTestFnc(tbl, Optional dp As debugPrint = debugPrint.faNone) As String
     Dim ret As String
     Dim x
     'Call evalTestTbl(tbl, dp)
-    x = filterA("info", rangeToAry(Range(tbl & "[statement]"), "c"), False, "isempty")
+    x = filterA("info_", rangeToAry(Range(tbl & "[statement]"), "c"), False, "isempty")
     ret = mcJoin(x, vbLf, "Sub test" & tbl & "_" & vbLf, vbLf & "End sub")
     ret = Replace(ret, vbLf, vbCrLf)
     mkTestFnc = ret
@@ -143,11 +143,11 @@ End Sub
 
 Function elmToStr(elm)
     Dim ret As String, vz As String
-    Dim num
+    Dim Num
     If TypeName(elm) = "String" Then
-        num = underBarCnt(elm)
+        Num = underBarCnt(elm)
         vz = getVarStr(CStr(elm))
-        If num = 1 Or num = 2 Then
+        If Num = 1 Or Num = 2 Then
             ret = vz
         Else
             ret = """" & vz & """"
@@ -167,11 +167,11 @@ Function fnAryToExp(fnAry0) As String
         ret = getAryAt(tmp, 1)
     ElseIf fn = "l_" Then
         ret = "Array" & mcJoin(tmp, ",", "(", ")")
-    ElseIf fn = "calc" Or fn = "comp" Then
+    ElseIf fn = "calc" Or fn = "comp_" Then
         symbol = Replace(getAryAt(tmp, 3), """", " ")
         If symbol = " % " Then symbol = " mod "
         ret = getAryAt(tmp, 1) & symbol & getAryAt(tmp, 2)
-    ElseIf fn = "math" Or fn = "info" Then
+    ElseIf fn = "math_" Or fn = "info_" Then
         ret = Replace(getAryAt(tmp, 2), """", "") & "(" & getAryAt(tmp, 1) & ")"
     Else
         ret = fn & mcJoin(tmp, ",", "(", ")")
@@ -226,12 +226,12 @@ End Function
 
 Function getVarStr(str As String) As String
     Dim ret As String
-    Dim num As Long
-    num = underBarCnt(str)
-    If num > 2 Then
+    Dim Num As Long
+    Num = underBarCnt(str)
+    If Num > 2 Then
         ret = Right(str, Len(str) - 2)
     Else
-        ret = Right(str, Len(str) - num)
+        ret = Right(str, Len(str) - Num)
     End If
     getVarStr = ret
 End Function
@@ -251,7 +251,7 @@ End Function
 Function tblRowToFnAry(rw, fncl)
     Dim ary, ret
     ary = dropAry(rw, fncl - 1)
-    ret = dropWhile("info", ary, -1, "isEmpty")
+    ret = dropWhile("info_", ary, -1, "isEmpty")
     tblRowToFnAry = ret
 End Function
 

@@ -1,19 +1,4 @@
 Attribute VB_Name = "modEq"
-Sub testEqAry()
-    n = 10
-    x1 = mkMArySeq(Array(n), , , 0)
-    x2 = mkMArySeq(Array(n), , , 0)
-    x3 = mkMArySeq(Array(n), , , 1)
-    x4 = mkMArySeq(Array(n), , 2, 0)
-    x5 = mkMArySeq(Array(n, n), , 2, 0)
-    x6 = 1
-    printOut (eqAry(x1, x2))
-    printOut (eqAry(x1, x3))
-    printOut (eqAry(x1, x4))
-    printOut (eqAry(x1, x5))
-    printOut (eqAry(x1, x6))
-End Sub
-
 Function areBothAry(ary1, ary2) As Boolean
     Dim ret As Boolean
     ret = IIf(IsArray(ary1) And IsArray(ary2), True, False)
@@ -40,28 +25,29 @@ End Function
 
 Function eqAry(ary1, ary2) As Boolean
     Dim ret As Boolean
+    Dim n1 As Long, n2 As Long, i As Long
     ret = False
     If Not IsArray(ary1) Or Not IsArray(ary2) Then
-        printOut ("at least one of two is not array")
+        outPut ("at least one of two is not array")
     ElseIf dimAry(ary1) > 1 Or dimAry(ary2) > 1 Then
-        printOut ("at least one of two has higher dimension than one")
+        outPut ("at least one of two has higher dimension than one")
     Else
         n1 = lenAry(ary1)
         n2 = lenAry(ary2)
         If n1 <> n2 Then
-            printOut ("two arrays has different length")
+            outPut ("two arrays has different length")
         Else
             For i = 1 To n1
                 If getAryAt(ary1, i) <> getAryAt(ary2, i) Then
-                    printOut ("at least one element has different value")
+                    outPut ("at least one element has different value")
                     Exit For
                 End If
                 If i = n1 Then
                     ret = True
                     If LBound(ary1) = LBound(ary2) Then
-                        printOut ("two arrays have same value and same index")
+                        outPut ("two arrays have same value and same index")
                     Else
-                        printOut ("two arrays have same value but different index")
+                        outPut ("two arrays have same value but different index")
                     End If
                 End If
             Next i
@@ -72,15 +58,18 @@ End Function
 
 Function eqShape(ary1, ary2) As Boolean
     Dim ret As Boolean
+    Dim sp1, sp2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
     ret = eqAry(sp1, sp2)
     eqShape = ret
 End Function
 
-Function getEqLevel(ary1, ary2)
-    Dim n1 As Long
+Function getEqLevel(ary1, ary2) As Long
+    Dim n1 As Long, aNum As Long, i As Long
     Dim ret As Long
+    Dim l1, l2, idx, idx1, idx2
+    Dim bol As Boolean
     ret = 0
     If areBothAry(ary1, ary2) Then
         ret = 1
@@ -88,12 +77,12 @@ Function getEqLevel(ary1, ary2)
             ret = 2
             If eqShape(ary1, ary2) Then
                 ret = 3
-                n = getAryNum(ary1)
+                aNum = getAryNum(ary1)
                 sp = getAryShape(ary1)
                 l1 = getAryShape(ary1, "L")
                 l2 = getAryShape(ary2, "L")
                 bol = True
-                For i = 0 To n - 1
+                For i = 0 To aNum - 1
                     idx = mkIndex(i, sp)
                     idx1 = calcAry(idx, l1, "+")
                     idx2 = calcAry(idx, l2, "+")

@@ -8,11 +8,11 @@ Public Function TLookup(key, tbl As String, targetCol As String, Optional source
     Application.Volatile
     On Error GoTo lnError
     If sourceCol = "" Then sourceCol = Range(tbl & "[#headers]")(1, 1)
-    num = WorksheetFunction.Match(key, Range(tbl & "[" & sourceCol & "]"), 0)
-    If num = 0 Then
+    Num = WorksheetFunction.Match(key, Range(tbl & "[" & sourceCol & "]"), 0)
+    If Num = 0 Then
         ret = otherwise
     Else
-        ret = Range(tbl & "[" & targetCol & "]")(num, 1)
+        ret = Range(tbl & "[" & targetCol & "]")(Num, 1)
     End If
     TLookup = ret
     Workbooks(bkn).Activate
@@ -46,15 +46,15 @@ Sub layAryAt(ary, r, c, Optional rc = "r", Optional sn = "", Optional bn = "")
     End Select
 End Sub
 
-Function rangeToAry(rg, Optional rc As String = "r", Optional num = 1)
+Function rangeToAry(rg, Optional rc As String = "r", Optional Num = 1)
     Dim ret, tmp
     tmp = rg
     With Application.WorksheetFunction
         Select Case LCase(rc)
             Case "r"
-                ret = .Index(tmp, num, 0)
+                ret = .Index(tmp, Num, 0)
             Case "c"
-                ret = .Transpose(.Index(tmp, 0, num))
+                ret = .Transpose(.Index(tmp, 0, Num))
             Case Else
         End Select
     End With
@@ -66,7 +66,7 @@ End Function
 
 Function rangeToArys(rg, Optional rc As String = "r")
     Dim ret, tmp
-    Dim num As Long, i As Long
+    Dim Num As Long, i As Long
     tmp = rg
     Select Case LCase(rc)
         Case "r"
@@ -78,9 +78,9 @@ Function rangeToArys(rg, Optional rc As String = "r")
     If dimAry(tmp) <= 1 Then
         ret = Array(tmp)
     Else
-        num = lenAry(tmp)
-        ReDim ret(1 To num)
-        For i = 1 To num
+        Num = lenAry(tmp)
+        ReDim ret(1 To Num)
+        For i = 1 To Num
             ret(i) = Application.WorksheetFunction.Index(tmp, i, 0)
         Next i
     End If

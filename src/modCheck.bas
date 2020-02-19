@@ -417,14 +417,14 @@ Sub checkReshape()
     a = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6))
     b = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6), 1)
     'e = printTime("reshapeAry0", mkSeq(1000000), Array(100, 100, 100))
-    c = printTime("reshapeAry", mkSeq(1000000), Array(100, 100, 100))
-    f = printTime("reshapeAry", mkSeq(1000000), Array(100, 100, 100), 1)
+    c = printTime("reshapeAry", mkSeq(100000), Array(10, 100, 100))
+    f = printTime("reshapeAry", mkSeq(100000), Array(10, 100, 100), 1)
     d = reshapeAry(mkSeq(27000), Array(30, 30, 30), 1)
     Stop
     printTime "printAry", a
     printTime "printAry", b
     printTime "printAry", c
-    Stop
+    'Stop
     'printTime "printAry", e
     Stop
     printTime "printAry", d
@@ -629,8 +629,8 @@ End Sub
 Sub checkMath()
     Pi = Atn(1) * 4
     x = mapA("calc", mkSeq(101, 0, 1), 2 * Pi / 100, "*")
-    y0 = mapA("math", x, "sin")
-    z0 = mapA("math", x, "cos")
+    y0 = mapA("math_", x, "sin")
+    z0 = mapA("math_", x, "cos")
     y1 = mapA("calc", y0, 2, "^")
     z1 = mapA("calc", z0, 2, "^")
     w = calcAry(y1, z1, "+")
@@ -641,14 +641,14 @@ End Sub
 
 Sub checkWhile()
     x = mkSeq(10)
-    y1 = takeWhile("comp", x, 1, 6, "<")
-    y2 = takeWhile("comp", x, 1, 6, ">")
-    y3 = takeWhile("comp", x, -1, 6, "<=")
-    y4 = takeWhile("comp", x, -1, 6, ">=")
-    y5 = dropWhile("comp", x, 1, 6, "<")
-    y6 = dropWhile("comp", x, 1, 6, ">")
-    y7 = dropWhile("comp", x, -1, 6, "<=")
-    y8 = dropWhile("comp", x, -1, 6, ">=")
+    y1 = takeWhile("comp_", x, 1, 6, "<")
+    y2 = takeWhile("comp_", x, 1, 6, ">")
+    y3 = takeWhile("comp_", x, -1, 6, "<=")
+    y4 = takeWhile("comp_", x, -1, 6, ">=")
+    y5 = dropWhile("comp_", x, 1, 6, "<")
+    y6 = dropWhile("comp_", x, 1, 6, ">")
+    y7 = dropWhile("comp_", x, -1, 6, "<=")
+    y8 = dropWhile("comp_", x, -1, 6, ">=")
     printAry y1
     printAry y2
     printAry y3
@@ -663,7 +663,7 @@ Sub checkInfo()
     x = Sheets("check").Range("e3:j3")
     x0 = rangeToAry(x)
     printAry x0
-    y = dropWhile("info", x0, -1, "isEmpty")
+    y = dropWhile("info_", x0, -1, "isEmpty")
     printAry y
     z = evalA(y)
     outPut z
@@ -689,10 +689,27 @@ Sub checkClcStr()
     clc.Add 2
     clc.Add "abc"
     printAry clc
+    Set clc1 = mkClc("a", "b", 3, clc)
+    Call printAry(clc1)
 End Sub
 
 Sub checkDic()
     Set dic = mkDic("datetime", "date", "time", "date")
     outPut lookupDic("a", dic, "double")
     outPut lookupDic("time", dic, "double")
+End Sub
+
+Sub checkEqAry()
+    n = 10
+    x1 = mkMArySeq(Array(n), , , 0)
+    x2 = mkMArySeq(Array(n), , , 0)
+    x3 = mkMArySeq(Array(n), , , 1)
+    x4 = mkMArySeq(Array(n), , 2, 0)
+    x5 = mkMArySeq(Array(n, n), , 2, 0)
+    x6 = 1
+    outPut (eqAry(x1, x2))
+    outPut (eqAry(x1, x3))
+    outPut (eqAry(x1, x4))
+    outPut (eqAry(x1, x5))
+    outPut (eqAry(x1, x6))
 End Sub
