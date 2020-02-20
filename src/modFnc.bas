@@ -87,7 +87,7 @@ End Function
 
 Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, ParamArray argAry() As Variant) As Variant
     Dim lNum As Long, i As Long
-    Dim ary, fnAry
+    Dim ary, fnAry, elm
     Dim bol As Boolean
     ary = argAry
     lNum = lenAry(seq)
@@ -226,43 +226,43 @@ Sub setAryMByF(ary, fnObj)
 End Sub
 
 Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim lNum As Long, sn As Long, i As Long, Num As Long
+    Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
     sn = Sgn(dir)
-    Num = 0
+    num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then
-            Num = Num + 1
+            num = num + 1
         Else
             Exit For
         End If
     Next
-    ret = takeAry(ary, sn * Num)
+    ret = takeAry(ary, sn * num)
     takeWhile = ret
 End Function
 
 Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
-    Dim lNum As Long, sn As Long, i As Long, Num As Long
+    Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
     sn = Sgn(dir)
-    Num = 0
+    num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
         Call setAryAt(fnAry, 1, v, 0)
         If evalA(fnAry) Then
-            Num = Num + 1
+            num = num + 1
         Else
             Exit For
         End If
     Next
-    ret = dropAry(ary, sn * Num)
+    ret = dropAry(ary, sn * num)
     dropWhile = ret
 End Function

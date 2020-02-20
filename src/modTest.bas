@@ -143,11 +143,11 @@ End Sub
 
 Function elmToStr(elm)
     Dim ret As String, vz As String
-    Dim Num
+    Dim num
     If TypeName(elm) = "String" Then
-        Num = underBarCnt(elm)
+        num = underBarCnt(elm)
         vz = getVarStr(CStr(elm))
-        If Num = 1 Or Num = 2 Then
+        If num = 1 Or num = 2 Then
             ret = vz
         Else
             ret = """" & vz & """"
@@ -200,7 +200,7 @@ Function mkStatement(fnAry0, vz, retIsObj, Optional assertKind, Optional expecte
             Case "="
                 ret = ret & vbLf & "Assert " & vz & " , " & expected
             Case "string"
-                ret = ret & vbLf & "Assert toString(" & vz & "),""" & expected & """"
+                ret = ret & vbLf & "Assert toString(" & vz & ")," & getStrExp(expected)
             Case True
                 ret = ret & vbLf & "AssertTrue " & vz
             Case False
@@ -226,12 +226,12 @@ End Function
 
 Function getVarStr(str As String) As String
     Dim ret As String
-    Dim Num As Long
-    Num = underBarCnt(str)
-    If Num > 2 Then
+    Dim num As Long
+    num = underBarCnt(str)
+    If num > 2 Then
         ret = Right(str, Len(str) - 2)
     Else
-        ret = Right(str, Len(str) - Num)
+        ret = Right(str, Len(str) - num)
     End If
     getVarStr = ret
 End Function
@@ -303,4 +303,11 @@ Public Function evalObjA(argAry As Variant) As Variant
         Case Else:
     End Select
     Set evalObjA = ret
+End Function
+
+Function getStrExp(str)
+    ary = Split(str, vbLf)
+    ary1 = mapA("addStr", ary, """", """")
+    ret = Join(ary1, " & vbCrLf & ")
+    getStrExp = ret
 End Function

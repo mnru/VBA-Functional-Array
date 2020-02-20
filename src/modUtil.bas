@@ -117,7 +117,7 @@ Function clcToAry(clc)
     cnt = clc.Count
     ReDim ret(1 To cnt)
     For i = 1 To cnt
-        Assign_ ret(i), clc.Item(i)
+        assign_ ret(i), clc.Item(i)
     Next i
     clcToAry = ret
 End Function
