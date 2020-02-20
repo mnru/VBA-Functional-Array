@@ -8,7 +8,8 @@ Enum AlignDirection
     faRight = -1
 End Enum
 
-Function toString(elm, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
+Function toString(elm, Optional qt As String = "'", Optional fm As String = "", _
+    Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aNum As Long
@@ -26,7 +27,7 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
                 idx0 = mkIndex(i, sp)
                 idx = calcAry(idx0, lsp, "+")
                 vl = getElm(elm, idx)
-                dlm = getDlm(sp, idx0)
+                dlm = getDlm(sp, idx0, insheet)
                 ret = ret & toString(vl, qt, fm, lcr, width) & dlm
             Next i
         End If

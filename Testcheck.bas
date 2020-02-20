@@ -23,7 +23,7 @@ x = mkMArySeq(sp,3,5)
 sp = Array(2,3,4)
 x = mkMAryseq(sp)
 y = mapMA("calc",x,5,"*")
-Assert toString(y),"[5,10,15,20;" & vbCrLf & " 25,30,35,40;" & vbCrLf & " 45,50,55,60;;" & vbCrLf & "" & vbCrLf & " 65,70,75,80;" & vbCrLf & " 85,90,95,100;" & vbCrLf & " 105,110,115,120]"
+Assert toString(y),"[5,10,15,20;" & vbCrLf & " 25,30,35,40;" & vbCrLf & " 45,50,55,60;;" & vbCrLf & "" & vbCrLf & " 65,70,75,80;" & vbCrLf & " 85,90,95,100;" & vbCrLf & " 105,110,115,120]"
 pi_quarter = atn(1)
 z = pi_quarter * 4
 root2 = sqr(2)

@@ -306,8 +306,9 @@ Public Function evalObjA(argAry As Variant) As Variant
 End Function
 
 Function getStrExp(str)
-    ary = Split(str, vbLf)
+    ary = Split(str, vbCrLf)
     ary1 = mapA("addStr", ary, """", """")
     ret = Join(ary1, " & vbCrLf & ")
+    ret = Replace(ret, vbLf, "")
     getStrExp = ret
 End Function
