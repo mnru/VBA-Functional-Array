@@ -574,12 +574,12 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
 End Sub
 
 Function mkMSameAry(vl, sp, Optional bs As Long = 0)
-    Dim n As Long, aNum As Long, i As Long
+    Dim lNum As Long, aNum As Long, i As Long
     Dim ret, lsp, idx
     ret = mkMAry(sp, bs)
-    n = lenAry(sp)
+    lNum = lenAry(sp)
     sp = getAryShape(ret)
-    lsp = mkSameAry(bs, n)
+    lsp = mkSameAry(bs, lNum)
     aNum = getAryNum(ret)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)

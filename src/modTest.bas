@@ -107,33 +107,33 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
     Next i
 End Sub
 
-Function mkTestFnc(tbl, Optional dp As debugPrint = debugPrint.faNone) As String
+Private Function mkTestFncStr(tbln, Optional dp As debugPrint = debugPrint.faNone) As String
     Dim ret As String
     Dim x
     'Call evalTestTbl(tbl, dp)
-    x = filterA("info_", rangeToAry(Range(tbl & "[statement]"), "c"), False, "isempty")
-    ret = mcJoin(x, vbLf, "Sub test" & tbl & "_" & vbLf, vbLf & "End sub")
+    x = filterA("info_", rangeToAry(Range(tbln & "[statement]"), "c"), False, "isempty")
+    ret = mcJoin(x, vbLf, "Sub test" & tbln & vbLf, vbLf & "End sub")
     ret = Replace(ret, vbLf, vbCrLf)
-    mkTestFnc = ret
+    mkTestFncStr = ret
 End Function
 
-Function mkTestMod(Optional sn = "", Optional bn = "") As String
+Private Function mkTestModStr(Optional sn = "", Optional bn = "") As String
     If bn = "" Then bn = ActiveWorkbook.Name
     If sn = "" Then sn = ActiveSheet.Name
     Dim ret As String
     Dim tbl
     ret = "Attribute VB_Name = ""Test" & sn & """" & vbCrLf
     For Each tbl In Workbooks(bn).Sheets(sn).ListObjects
-        ret = ret & vbCrLf & mkTestFnc(tbl.Name) & vbCrLf
+        ret = ret & vbCrLf & mkTestFncStr(tbl.Name) & vbCrLf
     Next
-    mkTestMod = ret
+    mkTestModStr = ret
 End Function
 
 Sub mkTestFile(Optional sn = "", Optional bn = "")
     If bn = "" Then bn = ActiveWorkbook.Name
     If sn = "" Then sn = ActiveSheet.Name
     Dim str As String
-    str = mkTestMod(sn, bn)
+    str = mkTestModStr(sn, bn)
     pn = ThisWorkbook.Path & "\Test" & sn & ".bas"
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set stm = fso.CreateTextFile(pn)
@@ -141,7 +141,7 @@ Sub mkTestFile(Optional sn = "", Optional bn = "")
     stm.Close
 End Sub
 
-Function elmToStr(elm)
+Private Function elmToStr(elm)
     Dim ret As String, vz As String
     Dim num
     If TypeName(elm) = "String" Then
@@ -158,7 +158,7 @@ Function elmToStr(elm)
     elmToStr = ret
 End Function
 
-Function fnAryToExp(fnAry0) As String
+Private Function fnAryToExp(fnAry0) As String
     Dim ret As String, fn As String, symbol As String
     Dim tmp
     fn = getAryAt(fnAry0, 1)
@@ -179,7 +179,7 @@ Function fnAryToExp(fnAry0) As String
     fnAryToExp = ret
 End Function
 
-Function mkStatement(fnAry0, vz, retIsObj, Optional assertKind, Optional expected, Optional dp As debugPrint = debugPrint.faNone) As String
+Private Function mkStatement(fnAry0, vz, retIsObj, Optional assertKind, Optional expected, Optional dp As debugPrint = debugPrint.faNone) As String
     Dim ret As String
     Dim fnStr As String
     fnStr = fnAryToExp(fnAry0)
@@ -211,7 +211,7 @@ Function mkStatement(fnAry0, vz, retIsObj, Optional assertKind, Optional expecte
     mkStatement = ret
 End Function
 
-Function underBarCnt(str, Optional chr = "_")
+Private Function underBarCnt(str, Optional chr = "_")
     Dim cnt As Long
     cnt = 0
     For i = 1 To Len(str)
@@ -224,7 +224,7 @@ Function underBarCnt(str, Optional chr = "_")
     underBarCnt = cnt
 End Function
 
-Function getVarStr(str As String) As String
+Private Function getVarStr(str As String) As String
     Dim ret As String
     Dim num As Long
     num = underBarCnt(str)
@@ -236,7 +236,7 @@ Function getVarStr(str As String) As String
     getVarStr = ret
 End Function
 
-Function getClmNum(clmnn, tbln, Optional bn = "")
+Private Function getClmNum(clmnn, tbln, Optional bn = "")
     abn = ActiveWorkbook.Name
     If bn = "" Then bn = abn
     Workbooks(bn).Activate
@@ -248,14 +248,14 @@ Function getClmNum(clmnn, tbln, Optional bn = "")
     Workbooks(abn).Activate
 End Function
 
-Function tblRowToFnAry(rw, fncl)
+Private Function tblRowToFnAry(rw, fncl)
     Dim ary, ret
     ary = dropAry(rw, fncl - 1)
     ret = dropWhile("info_", ary, -1, "isEmpty")
     tblRowToFnAry = ret
 End Function
 
-Function evalFnAry(fnAry, Optional retIsObj As Boolean = False)
+Private Function evalFnAry(fnAry, Optional retIsObj As Boolean = False)
     If retIsObj Then
         Set evalFnAry = evalObjA(fnAry)
     Else
@@ -305,7 +305,7 @@ Public Function evalObjA(argAry As Variant) As Variant
     Set evalObjA = ret
 End Function
 
-Function getStrExp(str)
+Private Function getStrExp(str)
     ary = Split(str, vbCrLf)
     ary1 = mapA("addStr", ary, """", """")
     ret = Join(ary1, " & vbCrLf & ")

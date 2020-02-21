@@ -1,4 +1,4 @@
-Attribute VB_Name = "modSelected"
+Attribute VB_Name = "modSelectedNoLog"
 '''''''''''''''''''''''''''''''''''''
 ' selected function from all modules
 '''''''''''''''''''''''''''''''''''''
@@ -1038,32 +1038,3 @@ Function mkClc(ParamArray argAry())
     Next elm
     Set mkClc = clc
 End Function
-
-''''''''''''''''''''
-'from modLog
-''''''''''''''''''''
-Sub outPut(Optional msg As Variant = "", Optional crlf As Boolean = True)
-    If crlf Then
-        Debug.Print msg
-    Else
-        Debug.Print msg;
-    End If
-End Sub
-
-Function printTime(fnc As String, ParamArray argAry() As Variant)
-    Dim ary, fnAry
-    Dim etime As Double
-    Dim stime As Double
-    Dim secs As Double
-    ary = argAry
-    fnAry = prmAry(fnc, ary)
-    stime = Timer
-    printTime = evalA(fnAry)
-    etime = Timer
-    secs = etime - stime
-    Call outPut(fnc & " - " & secToHMS(secs), True)
-End Function
-
-Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0)
-    Call outPut(toString(ary, qt, fm, lcr, width), True)
-End Sub

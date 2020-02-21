@@ -148,11 +148,11 @@ Sub checkRangeToArys()
     dr(1, 1) = 2
     dr(1, 2) = 3
     a = rangeToArys(rg)
-    b = rangeToArys(rg, "c")
+    b = rangeToArys(rg, rowColumn.faColumn)
     Ad = rangeToArys(dary)
-    bd = rangeToArys(dary, "c")
+    bd = rangeToArys(dary, rowColumn.faColumn)
     Adr = rangeToArys(dr)
-    bdr = rangeToArys(dr, "c")
+    bdr = rangeToArys(dr, rowColumn.faColumn)
     printAry (a)
     printAry (b)
     printAry (Ad)
@@ -194,16 +194,16 @@ Sub checkRangeToAry()
     Dim dr(0 To 1, 0 To 2)
     dr(0, 0) = "a"
     dr(0, 1) = "b"
-    dr(0, 2) = "c"
+    dr(0, 2) = rowColumn.faColumn
     dr(1, 0) = 1
     dr(1, 1) = 2
     dr(1, 2) = 3
-    a = rangeToAry(rg, "r", 2)
-    b = rangeToAry(rg, "c", 2)
-    Ad = rangeToAry(dary, "r", 2)
-    bd = rangeToAry(dary, "c", 2)
-    Adr = rangeToAry(dr, "r", 2)
-    bdr = rangeToAry(dr, "c", 2)
+    a = rangeToAry(rg, rowColumn.faRow, 2)
+    b = rangeToAry(rg, rowColumn.faColumn, 2)
+    Ad = rangeToAry(dary, rowColumn.faRow, 2)
+    bd = rangeToAry(dary, rowColumn.faColumn, 2)
+    Adr = rangeToAry(dr, rowColumn.faRow, 2)
+    bdr = rangeToAry(dr, rowColumn.faColumn, 2)
     printAry (a)
     printAry (b)
     printAry (Ad)
