@@ -2,6 +2,12 @@ Attribute VB_Name = "modAry"
 Option Base 0
 Option Explicit
 
+Enum Direction
+    faLeft = 1
+    faRight = -1
+    faCenter = 0
+End Enum
+
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function

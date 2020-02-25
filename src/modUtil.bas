@@ -2,14 +2,8 @@ Attribute VB_Name = "modUtil"
 Option Base 0
 Option Explicit
 
-Enum AlignDirection
-    faLeft = 1
-    faCenter = 0
-    faRight = -1
-End Enum
-
 Function toString(elm, Optional qt As String = "'", Optional fm As String = "", _
-    Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0, _
+    Optional lcr As Direction = Direction.faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aNum As Long
@@ -31,26 +25,26 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
                 ret = ret & toString(vl, qt, fm, lcr, width) & dlm
             Next i
         End If
-    Else
+    ElseIf IsObject(elm) Then
         If TypeName(elm) = "Dictionary" Then
             ret = ret & dicToStr(elm)
         ElseIf TypeName(elm) = "Collection" Then
             ret = ret & clcToStr(elm)
-        ElseIf IsObject(elm) Then
-            ret = ret & "<" & TypeName(elm) & ">"
-        ElseIf IsNull(elm) Then
-            ret = ret & "Null"
-        ElseIf IsEmpty(elm) Then
-            ret = ret & "Empty"
         Else
-            If TypeName(elm) = "String" Then
-                tmp = qt & elm & qt
-            Else
-                tmp = fmt(elm, fm)
-            End If
-            tmp = align(tmp, lcr, width)
-            ret = ret & tmp
+            ret = ret & "<" & TypeName(elm) & ">"
         End If
+    ElseIf IsNull(elm) Then
+        ret = ret & "Null"
+    ElseIf IsEmpty(elm) Then
+        ret = ret & "Empty"
+    Else
+        If TypeName(elm) = "String" Then
+            tmp = qt & elm & qt
+        Else
+            tmp = fmt(elm, fm)
+        End If
+        tmp = align(tmp, lcr, width)
+        ret = ret & tmp
     End If
     toString = ret
 End Function
@@ -189,23 +183,23 @@ Function polyStr(polyAry) As String
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0) As String
+Function fmt(expr, Optional fm As String = "", Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
     Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str As String, Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0) As String
+Function align(str As String, Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
     Dim ret As String
     Dim d As Long
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
-        Select Case LCase(lcr)
-            Case AlignDirection.faRight: ret = space(d) & ret
-            Case AlignDirection.faLeft: ret = ret & space(d)
-            Case AlignDirection.faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
+        Select Case lcr
+            Case Direction.faRight: ret = space(d) & ret
+            Case Direction.faLeft: ret = ret & space(d)
+            Case Direction.faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If

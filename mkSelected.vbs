@@ -6,18 +6,22 @@ Sub main()
   Set fso = CreateObject("Scripting.FileSystemObject")
   parentPath = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
   'parentPath = ThisWorkbook.Path
-  sAry0 = Array("modSelected.bas", 2, 18)
-  sAry1 = Array(Array("modAry.bas", 5, -1), Array("modFnc.bas", 10, -1), Array("modUtil.bas", 11, -1), Array("modLog.bas", 5, 29))
-  tAry = Array("modSelectedNoLog.bas", "modSelected_.bas")
+  sAryEnum = Array(Array("modAry.bas", 5, 10),Array("modRng.bas", 5, 9))
+  sAryProc = Array(Array("modAry.bas", 11, -1), Array("modFnc.bas", 5, -1), Array("modUtil.bas", 5, -1),Array("modRng.bas", 10, -1), Array("modLog.bas", 5, 29))
+  tAry = Array("modSelectedNoLog.bas", "modSelected.bas")
   For Each targetFile In tAry
     targetPath = parentPath & "\" & targetFile
     Set tstm = fso.createtextfile(targetPath)
-    str0 = "Attribute VB_Name = """ & Replace(fso.getbasename(targetPath), "_", "") & """"
+    str0 = "Attribute VB_Name = """ & fso.getbasename(targetPath) & """"
+    str1 = strHead()
     tstm.writeline (str0)
+    tstm.writeline (str1)
     tstm.Close
-    sourcePath = parentPath & "\" & sAry0(0)
-    Call cpFile(targetPath, sourcePath, sAry0(1), sAry0(2), False)
-    For Each sElm In sAry1
+    For Each sElm In sAryEnum
+      sourcePath = parentPath & "\src\" & sElm(0)
+      Call cpFile(targetPath, sourcePath, sElm(1), sElm(2),False)
+    Next
+    For Each sElm In sAryProc
       sourcePath = parentPath & "\src\" & sElm(0)
       If sElm(0) = "modAry.bas" Then
         Call cpFile1(targetPath, sourcePath, sElm(1), sElm(2), True)
@@ -94,4 +98,10 @@ Function getCaseNum(str)
     End If
   End If
   getCaseNum = ret
+End Function
+
+Function strHead()
+  Dim ret
+  ret = Join(Array("","Option Base 0", "Option Explicit","",String(20, "'"), "' enum", String(20, "'")), vbCrLf)
+  strHead = ret
 End Function

@@ -2,11 +2,6 @@ Attribute VB_Name = "modFnc"
 Option Base 0
 Option Explicit
 
-Enum Direction
-    faLeft = 1
-    faRight = -1
-End Enum
-
 Public Function evalA(argAry As Variant) As Variant
     Dim lb As Long
     Dim ary

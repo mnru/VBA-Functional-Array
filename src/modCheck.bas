@@ -641,14 +641,14 @@ End Sub
 
 Sub checkWhile()
     x = mkSeq(10)
-    y1 = takeWhile("comp_", x, 1, 6, "<")
-    y2 = takeWhile("comp_", x, 1, 6, ">")
-    y3 = takeWhile("comp_", x, -1, 6, "<=")
-    y4 = takeWhile("comp_", x, -1, 6, ">=")
-    y5 = dropWhile("comp_", x, 1, 6, "<")
-    y6 = dropWhile("comp_", x, 1, 6, ">")
-    y7 = dropWhile("comp_", x, -1, 6, "<=")
-    y8 = dropWhile("comp_", x, -1, 6, ">=")
+    y1 = takeWhile("comp_", x, faLeft, 6, "<")
+    y2 = takeWhile("comp_", x, faLeft, 6, ">")
+    y3 = takeWhile("comp_", x, faRight, 6, "<=")
+    y4 = takeWhile("comp_", x, faRight, 6, ">=")
+    y5 = dropWhile("comp_", x, faLeft, 6, "<")
+    y6 = dropWhile("comp_", x, faLeft, 6, ">")
+    y7 = dropWhile("comp_", x, faRight, 6, "<=")
+    y8 = dropWhile("comp_", x, faRight, 6, ">=")
     printAry y1
     printAry y2
     printAry y3
