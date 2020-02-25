@@ -3,9 +3,8 @@ Option Base 0
 Option Explicit
 
 Enum Direction
-    faLeft = 1
-    faRight = -1
-    faCenter = 0
+    faDirect = 1
+    faReverse = -1
 End Enum
 
 Function lenAry(ary As Variant, Optional dm = 1) As Long
@@ -147,55 +146,48 @@ Function mkSeq(lNum As Long, Optional first = 1, Optional step = 1)
     mkSeq = ret
 End Function
 
-Function dropAry(ary, num As Long)
-    Dim lNum As Long, sz As Long, i As Long, lb As Long, ub As Long
+Function takeAry(ary, num As Long, Optional dir As Direction = faDirect)
+    Dim lNum As Long, i As Long, lb As Long
     Dim ret
     lNum = lenAry(ary)
-    sz = lNum - Abs(num)
-    If sz < 0 Then
-        Call Err.Raise(1001, "dropAry", "num is larger than array length")
-    ElseIf sz = 0 Then
-        ret = Array()
-    ElseIf num > 0 Then
-        ReDim ret(0 To sz - 1)
-        lb = LBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i + num, 0)
-        Next i
-    Else
-        ReDim ret(0 To sz - 1)
-        ub = UBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i, 0)
-        Next i
-    End If
-    dropAry = ret
-End Function
-
-Function takeAry(ary, num As Long)
-    Dim lNum As Long, sz As Long, i As Long, lb As Long
-    Dim ret
-    lNum = lenAry(ary)
-    sz = Abs(num)
-    If sz < 0 Then
+    If lNum < num Then
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
+    ElseIf dir = 0 Then
+        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
     End If
-    If num > 0 Then
-        ReDim ret(0 To sz - 1)
-        lb = LBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i, 0)
-        Next i
-    ElseIf num < 0 Then
-        ReDim ret(0 To sz - 1)
-        ' ub = UBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, lNum - sz + i, 0)
-        Next i
-    Else
+    If num <= 0 Then
         ret = Array()
+    Else
+        Select Case dir
+            Case faDirect
+                ReDim ret(0 To num - 1)
+                lb = LBound(ary)
+                For i = 0 To num - 1
+                    ret(i) = getAryAt(ary, i, 0)
+                Next i
+            Case faReverse
+                ReDim ret(0 To num - 1)
+                ' ub = UBound(ary)
+                For i = 0 To num - 1
+                    ret(i) = getAryAt(ary, lNum - num + i, 0)
+                Next i
+        End Select
     End If
     takeAry = ret
+End Function
+
+Function dropAry(ary, num As Long, Optional dir As Direction = faDirect)
+    Dim lNum As Long, i As Long, lb As Long, ub As Long
+    Dim ret
+    lNum = lenAry(ary)
+    If lNum < num Then
+        Call Err.Raise(1001, "dropAry", "num is larger than array length")
+    ElseIf dir = 0 Then
+        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
+    Else
+        ret = takeAry(ary, lNum - num, -1 * dir)
+    End If
+    dropAry = ret
 End Function
 
 Function revAry(ary)
@@ -238,7 +230,7 @@ Function prmAry(ParamArray argAry())
     'flatten last elm
     Dim ary, ary1, ary2
     ary = argAry
-    ary1 = dropAry(ary, -1)
+    ary1 = dropAry(ary, 1, faRight)
     ary2 = getAryAt(ary, -1)
     ret = conArys(ary1, ary2)
     prmAry = ret

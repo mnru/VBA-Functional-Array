@@ -237,7 +237,7 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = takeAry(ary, sn * num)
+    ret = takeAry(ary, num, dir)
     takeWhile = ret
 End Function
 
@@ -258,6 +258,6 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = dropAry(ary, sn * num)
+    ret = dropAry(ary, num, dir)
     dropWhile = ret
 End Function

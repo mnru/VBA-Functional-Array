@@ -5,7 +5,7 @@ Sub outPut(Optional msg = "", Optional crlf As Boolean = True)
     Call wr.outPut(msg, crlf)
 End Sub
 
-Sub printAry(ary, Optional qt As String = "'", Optional fm = "", Optional lcr = "r", Optional width = 0)
+Sub printAry(ary, Optional qt As String = "'", Optional fm as String= "", Optional lcr as Aligned= faRight, Optional width as long= 0)
     Set wr = New LogWriter
     wr.logType = "array"
     Call wr.outPut(toString(ary, qt, fm, lcr, width), True)

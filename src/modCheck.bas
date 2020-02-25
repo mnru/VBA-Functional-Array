@@ -72,11 +72,11 @@ Sub checkDrop()
     Next
     x = dropAry(ary, 3)
     y = dropAry(ary, 0)
-    z = dropAry(ary, -3)
+    z = dropAry(ary, 3, faReverse)
     w = dropAry(ary, 9)
     x1 = dropAry(ary1, 3)
     y1 = dropAry(ary1, 0)
-    z1 = dropAry(ary1, -3)
+    z1 = dropAry(ary1, 3, faReverse)
     w1 = dropAry(ary1, 9)
     printAry (x)
     printAry (y)
@@ -96,10 +96,10 @@ Sub checkTake()
     Next
     y = takeAry(ary, 0)
     z = takeAry(ary, 3)
-    w = takeAry(ary, -3)
+    w = takeAry(ary, 3, faReverse)
     y1 = takeAry(ary1, 0)
     z1 = takeAry(ary1, 3)
-    w1 = takeAry(ary1, -3)
+    w1 = takeAry(ary1, 3, faReverse)
     printAry (y)
     printAry (z)
     printAry (w)
@@ -621,7 +621,7 @@ Sub checkfmt()
     outPut
     Call printAry(x, "")
     outPut
-    Call printAry(x, , "0.000", AlignDirection.faRight, 7)
+    Call printAry(x, , "0.000", Alignedirection.faRight, 7)
     outPut
     Call printAry(x)
 End Sub
@@ -641,14 +641,14 @@ End Sub
 
 Sub checkWhile()
     x = mkSeq(10)
-    y1 = takeWhile("comp_", x, faLeft, 6, "<")
-    y2 = takeWhile("comp_", x, faLeft, 6, ">")
-    y3 = takeWhile("comp_", x, faRight, 6, "<=")
-    y4 = takeWhile("comp_", x, faRight, 6, ">=")
-    y5 = dropWhile("comp_", x, faLeft, 6, "<")
-    y6 = dropWhile("comp_", x, faLeft, 6, ">")
-    y7 = dropWhile("comp_", x, faRight, 6, "<=")
-    y8 = dropWhile("comp_", x, faRight, 6, ">=")
+    y1 = takeWhile("comp_", x, faDirect, 6, "<")
+    y2 = takeWhile("comp_", x, faDirect, 6, ">")
+    y3 = takeWhile("comp_", x, faReverse, 6, "<=")
+    y4 = takeWhile("comp_", x, faReverse, 6, ">=")
+    y5 = dropWhile("comp_", x, faDirect, 6, "<")
+    y6 = dropWhile("comp_", x, faDirect, 6, ">")
+    y7 = dropWhile("comp_", x, faReverse, 6, "<=")
+    y8 = dropWhile("comp_", x, faReverse, 6, ">=")
     printAry y1
     printAry y2
     printAry y3

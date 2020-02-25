@@ -2,8 +2,14 @@ Attribute VB_Name = "modUtil"
 Option Base 0
 Option Explicit
 
+Enum Aligned
+    faLeft = 1
+    faRight = -1
+    faCenter = 0
+End Enum
+
 Function toString(elm, Optional qt As String = "'", Optional fm As String = "", _
-    Optional lcr As Direction = Direction.faRight, Optional width As Long = 0, _
+    Optional lcr As Aligned = faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aNum As Long
@@ -183,23 +189,23 @@ Function polyStr(polyAry) As String
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm As String = "", Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
+Function fmt(expr, Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0) As String
     Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str As String, Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
+Function align(str As String, Optional lcr As Aligned = faRight, Optional width As Long = 0) As String
     Dim ret As String
     Dim d As Long
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
         Select Case lcr
-            Case Direction.faRight: ret = space(d) & ret
-            Case Direction.faLeft: ret = ret & space(d)
-            Case Direction.faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
+            Case faRight: ret = space(d) & ret
+            Case faLeft: ret = ret & space(d)
+            Case faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If

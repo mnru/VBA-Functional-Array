@@ -24,7 +24,7 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     Call outPut(fnc & " - " & secToHMS(secs), True)
 End Function
 
-Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As AlignDirection = AlignDirection.faRight, Optional width As Long = 0)
+Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0)
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
