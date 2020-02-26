@@ -7,6 +7,12 @@ Enum Direction
     faReverse = -1
 End Enum
 
+Enum shapeType
+    faNormal = 0
+    faLower = 1
+    faUpper = 2
+End Enum
+
 Function lenAry(ary As Variant, Optional dm = 1) As Long
     lenAry = UBound(ary, dm) - LBound(ary, dm) + 1
 End Function
@@ -35,7 +41,7 @@ End Sub
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2, ret
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -47,7 +53,7 @@ End Function
 Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -68,18 +74,18 @@ Catch:
     dimAry = ret - 1
 End Function
 
-Function getAryShape(ary, Optional typ = "N")
+Function getAryShape(ary, Optional spt As shapeType = faNormal)
     Dim i As Long, num As Long
     Dim tmp
     num = dimAry(ary)
     ReDim ret(0 To num - 1)
     For i = 1 To num
-        Select Case UCase(typ)
-            Case "N"
+        Select Case spt
+            Case faNormal
                 tmp = lenAry(ary, i)
-            Case "L"
+            Case faLower
                 tmp = LBound(ary, i)
-            Case "U"
+            Case faUpper
                 tmp = UBound(ary, i)
             Case Else
         End Select
@@ -223,6 +229,15 @@ Function zipAry(arys)
         ret(c) = v
     Next c
     zipAry = ret
+End Function
+
+Function zipWithIndex(ary, Optional first As Long = 1, Optional step As Long = 1)
+    Dim ret, aryI
+    Dim lNum As Long
+    lNum = lenAry(ary)
+    aryI = mkSeq(lNum, first, step)
+    ret = zip(ary, aryI)
+    zipWithIndex = ret
 End Function
 
 Function prmAry(ParamArray argAry())
@@ -408,7 +423,7 @@ Sub setAryMbyS(mAry, sAry)
     Dim i As Long, aNum As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     aNum = getAryNum(mAry)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)
@@ -421,7 +436,7 @@ Function getArySbyM(mAry, Optional bs As Long = 0)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     aNum = getAryNum(mAry)
     ReDim ret(bs To bs + aNum - 1)
     For i = 0 To aNum - 1
@@ -469,8 +484,8 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
-    lsp1 = getAryShape(ary1, "L")
-    lsp2 = getAryShape(ary2, "L")
+    lsp1 = getAryShape(ary1, faLower)
+    lsp2 = getAryShape(ary2, faLower)
     aNum = getAryNum(ary1)
     dm = lenAry(sp1)
     ret = mkMAry(sp1, bs)
@@ -560,7 +575,7 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     aNum = getAryNum(ary)
     vl = first
     For i = 0 To aNum - 1

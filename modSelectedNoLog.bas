@@ -7,6 +7,17 @@ Option Explicit
 ' enum
 ''''''''''''''''''''
 Enum Direction
+    faDirect = 1
+    faReverse = -1
+End Enum
+
+Enum shapeType
+    faNormal = 0
+    faLower = 1
+    faUpper = 2
+End Enum
+
+Enum Aligned
     faLeft = 1
     faRight = -1
     faCenter = 0
@@ -49,7 +60,7 @@ End Sub
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2, ret
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -61,7 +72,7 @@ End Function
 Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -82,18 +93,18 @@ Catch:
     dimAry = ret - 1
 End Function
 
-Function getAryShape(ary, Optional typ = "N")
+Function getAryShape(ary, Optional spt As shapeType = faNormal)
     Dim i As Long, num As Long
     Dim tmp
     num = dimAry(ary)
     ReDim ret(0 To num - 1)
     For i = 1 To num
-        Select Case UCase(typ)
-            Case "N"
+        Select Case spt
+            Case faNormal
                 tmp = lenAry(ary, i)
-            Case "L"
+            Case faLower
                 tmp = LBound(ary, i)
-            Case "U"
+            Case faUpper
                 tmp = UBound(ary, i)
             Case Else
         End Select
@@ -160,55 +171,48 @@ Function mkSeq(lNum As Long, Optional first = 1, Optional step = 1)
     mkSeq = ret
 End Function
 
-Function dropAry(ary, num As Long)
-    Dim lNum As Long, sz As Long, i As Long, lb As Long, ub As Long
+Function takeAry(ary, num As Long, Optional dir As Direction = faDirect)
+    Dim lNum As Long, i As Long, lb As Long
     Dim ret
     lNum = lenAry(ary)
-    sz = lNum - Abs(num)
-    If sz < 0 Then
-        Call Err.Raise(1001, "dropAry", "num is larger than array length")
-    ElseIf sz = 0 Then
-        ret = Array()
-    ElseIf num > 0 Then
-        ReDim ret(0 To sz - 1)
-        lb = LBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i + num, 0)
-        Next i
-    Else
-        ReDim ret(0 To sz - 1)
-        ub = UBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i, 0)
-        Next i
-    End If
-    dropAry = ret
-End Function
-
-Function takeAry(ary, num As Long)
-    Dim lNum As Long, sz As Long, i As Long, lb As Long
-    Dim ret
-    lNum = lenAry(ary)
-    sz = Abs(num)
-    If sz < 0 Then
+    If lNum < num Then
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
+    ElseIf dir = 0 Then
+        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
     End If
-    If num > 0 Then
-        ReDim ret(0 To sz - 1)
-        lb = LBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, i, 0)
-        Next i
-    ElseIf num < 0 Then
-        ReDim ret(0 To sz - 1)
-        ' ub = UBound(ary)
-        For i = 0 To sz - 1
-            ret(i) = getAryAt(ary, lNum - sz + i, 0)
-        Next i
-    Else
+    If num <= 0 Then
         ret = Array()
+    Else
+        Select Case dir
+            Case faDirect
+                ReDim ret(0 To num - 1)
+                lb = LBound(ary)
+                For i = 0 To num - 1
+                    ret(i) = getAryAt(ary, i, 0)
+                Next i
+            Case faReverse
+                ReDim ret(0 To num - 1)
+                ' ub = UBound(ary)
+                For i = 0 To num - 1
+                    ret(i) = getAryAt(ary, lNum - num + i, 0)
+                Next i
+        End Select
     End If
     takeAry = ret
+End Function
+
+Function dropAry(ary, num As Long, Optional dir As Direction = faDirect)
+    Dim lNum As Long, i As Long, lb As Long, ub As Long
+    Dim ret
+    lNum = lenAry(ary)
+    If lNum < num Then
+        Call Err.Raise(1001, "dropAry", "num is larger than array length")
+    ElseIf dir = 0 Then
+        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
+    Else
+        ret = takeAry(ary, lNum - num, -1 * dir)
+    End If
+    dropAry = ret
 End Function
 
 Function revAry(ary)
@@ -246,12 +250,21 @@ Function zipAry(arys)
     zipAry = ret
 End Function
 
+Function zipWithIndex(ary, Optional first As Long = 1, Optional step As Long = 1)
+    Dim ret, aryI
+    Dim lNum As Long
+    lNum = lenAry(ary)
+    aryI = mkSeq(lNum, first, step)
+    ret = zip(ary, aryI)
+    zipWithIndex = ret
+End Function
+
 Function prmAry(ParamArray argAry())
     Dim ret
     'flatten last elm
     Dim ary, ary1, ary2
     ary = argAry
-    ary1 = dropAry(ary, -1)
+    ary1 = dropAry(ary, 1, faRight)
     ary2 = getAryAt(ary, -1)
     ret = conArys(ary1, ary2)
     prmAry = ret
@@ -319,7 +332,7 @@ Sub setAryMbyS(mAry, sAry)
     Dim i As Long, aNum As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     aNum = getAryNum(mAry)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)
@@ -332,7 +345,7 @@ Function getArySbyM(mAry, Optional bs As Long = 0)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     aNum = getAryNum(mAry)
     ReDim ret(bs To bs + aNum - 1)
     For i = 0 To aNum - 1
@@ -380,8 +393,8 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
-    lsp1 = getAryShape(ary1, "L")
-    lsp2 = getAryShape(ary2, "L")
+    lsp1 = getAryShape(ary1, faLower)
+    lsp2 = getAryShape(ary2, faLower)
     aNum = getAryNum(ary1)
     dm = lenAry(sp1)
     ret = mkMAry(sp1, bs)
@@ -426,7 +439,7 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     aNum = getAryNum(ary)
     vl = first
     For i = 0 To aNum - 1
@@ -545,7 +558,7 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     Dim aNum As Long
     ary = argAry
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     ret = mkMAry(sp)
     fnAry = prmAry(fnc, Empty, ary)
     aNum = getAryNum(mAry)
@@ -691,7 +704,7 @@ Sub setAryMByF(ary, fnObj)
     Dim i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     aNum = getAryNum(ary)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)
@@ -717,7 +730,7 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = takeAry(ary, sn * num)
+    ret = takeAry(ary, num, dir)
     takeWhile = ret
 End Function
 
@@ -738,7 +751,7 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = dropAry(ary, sn * num)
+    ret = dropAry(ary, num, dir)
     dropWhile = ret
 End Function
 
@@ -746,7 +759,7 @@ End Function
 'from modUtil
 ''''''''''''''''''''
 Function toString(elm, Optional qt As String = "'", Optional fm As String = "", _
-    Optional lcr As Direction = Direction.faRight, Optional width As Long = 0, _
+    Optional lcr As Aligned = faRight, Optional width As Long = 0, _
     Optional insheet As Boolean = False) As String
     Dim ret As String, tmp As String
     Dim i As Long, aNum As Long
@@ -755,7 +768,7 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
     If IsArray(elm) Then
         ret = ret & "["
         sp = getAryShape(elm)
-        lsp = getAryShape(elm, "L")
+        lsp = getAryShape(elm, faLower)
         aNum = getAryNum(elm)
         If aNum = 0 Then
             ret = ret & "]"
@@ -926,23 +939,23 @@ Function polyStr(polyAry) As String
     polyStr = ret
 End Function
 
-Function fmt(expr, Optional fm As String = "", Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
+Function fmt(expr, Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0) As String
     Dim ret As String
     ret = Format(expr, fm)
     ret = align(ret, lcr, width)
     fmt = ret
 End Function
 
-Function align(str As String, Optional lcr As Direction = Direction.faRight, Optional width As Long = 0) As String
+Function align(str As String, Optional lcr As Aligned = faRight, Optional width As Long = 0) As String
     Dim ret As String
     Dim d As Long
     ret = CStr(str)
     d = width - Len(ret)
     If d > 0 Then
         Select Case lcr
-            Case Direction.faRight: ret = space(d) & ret
-            Case Direction.faLeft: ret = ret & space(d)
-            Case Direction.faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
+            Case faRight: ret = space(d) & ret
+            Case faLeft: ret = ret & space(d)
+            Case faCenter: ret = space(d \ 2) & ret & space(d - d \ 2)
             Case Else:
         End Select
     End If

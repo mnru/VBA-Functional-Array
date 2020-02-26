@@ -65,7 +65,7 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     Dim aNum As Long
     ary = argAry
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, "L")
+    lsp = getAryShape(mAry, faLower)
     ret = mkMAry(sp)
     fnAry = prmAry(fnc, Empty, ary)
     aNum = getAryNum(mAry)
@@ -211,7 +211,7 @@ Sub setAryMByF(ary, fnObj)
     Dim i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, faLower)
     aNum = getAryNum(ary)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)

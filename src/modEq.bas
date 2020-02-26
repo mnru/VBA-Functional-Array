@@ -79,8 +79,8 @@ Function getEqLevel(ary1, ary2) As Long
                 ret = 3
                 aNum = getAryNum(ary1)
                 sp = getAryShape(ary1)
-                l1 = getAryShape(ary1, "L")
-                l2 = getAryShape(ary2, "L")
+                l1 = getAryShape(ary1, faLower)
+                l2 = getAryShape(ary2, faLower)
                 bol = True
                 For i = 0 To aNum - 1
                     idx = mkIndex(i, sp)

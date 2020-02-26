@@ -18,7 +18,7 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
     If IsArray(elm) Then
         ret = ret & "["
         sp = getAryShape(elm)
-        lsp = getAryShape(elm, "L")
+        lsp = getAryShape(elm, faLower)
         aNum = getAryNum(elm)
         If aNum = 0 Then
             ret = ret & "]"
