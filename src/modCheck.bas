@@ -597,7 +597,7 @@ Sub checkmkSeq()
     ' x1 = printTime("mkSequence", r, c, first, step)
     x2 = printTime("mk2DSeq", r, c, first, step)
     x3 = printTime("mk2DSeq1", r, c, first, step)
-    x4 = printTime("mkMArySeq", Array(r, c), first, step)
+    x4 = printTime("mkMSeq", Array(r, c), first, step)
     ' t1 = Timer
     ' x5 = Application.WorksheetFunction.Sequence(r, c, first, step)
     ' t2 = Timer
@@ -614,7 +614,7 @@ Sub checkCalcMary()
 End Sub
 
 Sub checkfmt()
-    x = mkMArySeq(Array(4, 5), 0.5, -1 / 3)
+    x = mkMSeq(Array(4, 5), 0.5, -1 / 3)
     Call setElm("a", x, Array(1, 1))
     Call setElm("2", x, Array(2, 2))
     printAry (x)
@@ -701,11 +701,11 @@ End Sub
 
 Sub checkEqAry()
     n = 10
-    x1 = mkMArySeq(Array(n), , , 0)
-    x2 = mkMArySeq(Array(n), , , 0)
-    x3 = mkMArySeq(Array(n), , , 1)
-    x4 = mkMArySeq(Array(n), , 2, 0)
-    x5 = mkMArySeq(Array(n, n), , 2, 0)
+    x1 = mkMSeq(Array(n), , , 0)
+    x2 = mkMSeq(Array(n), , , 0)
+    x3 = mkMSeq(Array(n), , , 1)
+    x4 = mkMSeq(Array(n), , 2, 0)
+    x5 = mkMSeq(Array(n, n), , 2, 0)
     x6 = 1
     outPut (eqAry(x1, x2))
     outPut (eqAry(x1, x3))

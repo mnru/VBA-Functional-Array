@@ -465,11 +465,11 @@ Function mkMSameAry(vl, sp, Optional bs As Long = 0)
     mkMSameAry = ret
 End Function
 
-Function mkMArySeq(sp, Optional first = 1, Optional step = 1, Optional bs As Long = 0)
+Function mkMSeq(sp, Optional first = 1, Optional step = 1, Optional bs As Long = 0)
     Dim ret
     ret = mkMAry(sp, bs)
     Call setMArySeq(ret, first, step)
-    mkMArySeq = ret
+    mkMSeq = ret
 End Function
 
 Function uniqueAry(ary)
