@@ -8,7 +8,7 @@ Sub main()
  'parentPath = ThisWorkbook.Path
  sAryEnum = Array(Array("modAry.bas", 5, 15),Array("modUtil.bas", 5, 10),Array("modRng.bas", 5, 9))
  sAryProc = Array(Array("modAry.bas", 16, -1), Array("modFnc.bas", 5, -1), Array("modUtil.bas", 11, -1),Array("modRng.bas", 10, -1), Array("modLog.bas", 5, 29))
- tAry = Array("modSelectedNoLog.bas", "modSelected.bas")
+ tAry = Array("FunctionalArraySelectedNoLog.bas", "FunctionalArraySelected.bas")
  For Each targetFile In tAry
   targetPath = parentPath & "\" & targetFile
   Set tstm = fso.createtextfile(targetPath)
@@ -25,7 +25,7 @@ Sub main()
    sourcePath = parentPath & "\src\" & sElm(0)
    If sElm(0) = "modAry.bas" Then
     Call cpFile1(targetPath, sourcePath, sElm(1), sElm(2), True)
-   ElseIf Not (sElm(0) = "modLog.bas" And targetFile = "modSelectedNoLog.bas") Then
+   ElseIf Not (sElm(0) = "modLog.bas" And targetFile = "FunctionalArraySelectedNoLog.bas") Then
     Call cpFile(targetPath, sourcePath, sElm(1), sElm(2), True)
    End If
   Next
