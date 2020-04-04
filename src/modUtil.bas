@@ -302,3 +302,11 @@ Function mkClc(ParamArray argAry())
     Next elm
     Set mkClc = clc
 End Function
+
+Function l_(ParamArray argAry() As Variant)
+    'works like function array()
+    Dim ary As Variant
+    ary = argAry
+    l_ = ary
+End Function
+

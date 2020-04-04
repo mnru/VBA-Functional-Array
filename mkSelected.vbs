@@ -7,8 +7,8 @@ Sub main()
  parentPath = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
  'parentPath = ThisWorkbook.Path
  sAryEnum = Array(Array("modAry.bas", 5, 15),Array("modUtil.bas", 5, 10),Array("modRng.bas", 5, 9))
- sAryProc = Array(Array("modAry.bas", 16, -1), Array("modFnc.bas", 5, -1), Array("modUtil.bas", 11, -1),Array("modRng.bas", 10, -1), Array("modLog.bas", 5, 29))
- tAry = Array("FunctionalArraySelectedNoLog.bas", "FunctionalArraySelected.bas")
+ sAryProc = Array(Array("modAry.bas", 16, -1), Array("modFnc.bas", 5, -1), Array("modMulti.bas", 2, -1), Array("modUtil.bas", 11, -1),Array("modRng.bas", 10, -1), Array("modLog.bas", 5, 29))
+ tAry = Array("FunctionalArraySelectedNoLog.bas", "FunctionalArraySelected.bas","FunctionalArrayMin.bas")
  For Each targetFile In tAry
   targetPath = parentPath & "\" & targetFile
   Set tstm = fso.createtextfile(targetPath)
@@ -23,10 +23,13 @@ Sub main()
   Next
   For Each sElm In sAryProc
    sourcePath = parentPath & "\src\" & sElm(0)
-   If sElm(0) = "modAry.bas" Then
+   If sElm(0) = "modMulti.bas" Then
     Call cpFile1(targetPath, sourcePath, sElm(1), sElm(2), True)
    ElseIf Not (sElm(0) = "modLog.bas" And targetFile = "FunctionalArraySelectedNoLog.bas") Then
     Call cpFile(targetPath, sourcePath, sElm(1), sElm(2), True)
+		if sElm(0) = "modFnc.bas" and targetFile = "FunctionalArrayMin.bas" then
+			exit for
+		end if 
    End If
   Next
  Next
