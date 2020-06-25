@@ -60,7 +60,6 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     mapA = ret
 End Function
 
-
 Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, ParamArray argAry() As Variant) As Variant
     Dim lNum As Long, i As Long
     Dim ary, fnAry, elm
@@ -154,4 +153,3 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     ret = dropAry(ary, num, dir)
     dropWhile = ret
 End Function
-

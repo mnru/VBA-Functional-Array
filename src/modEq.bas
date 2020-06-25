@@ -105,3 +105,4 @@ Function getEqLevel(ary1, ary2) As Long
     End If
     getEqLevel = ret
 End Function
+

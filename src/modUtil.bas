@@ -232,7 +232,7 @@ End Function
 Function comp_(x, y, symbol As String)
     Dim ret
     Select Case symbol
-        Case "=": ret = x = y 'caution Assign_ and eqaul is same symbol
+        Case "=": ret = x = y                        'caution Assign_ and eqaul is same symbol
         Case "<>": ret = x <> y
         Case "<": ret = x < y
         Case ">": ret = x > y
@@ -309,4 +309,3 @@ Function l_(ParamArray argAry() As Variant)
     ary = argAry
     l_ = ary
 End Function
-
