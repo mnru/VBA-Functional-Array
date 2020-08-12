@@ -16,7 +16,7 @@ End Sub
 
 Sub mkTestTbl(Optional tbln = "")
     If tbln = "" Then tbln = ActiveCell.Value
-    ary = Array("assert", "kind", "statement", "expected", "actual", "variable", "function", "arg1", "arg2", "arg3", "arg4", "arg5")
+    ary = Array("assert", "kind", "actual", "expected", "variable", "function", "arg1", "arg2", "arg3", "arg4", "arg5", "statement")
     n = lenAry(ary)
     x = ActiveCell.Address(False, False)
     y = ActiveCell.Offset(0, 1).Address(False, False)
@@ -30,6 +30,9 @@ Sub mkTestTbl(Optional tbln = "")
     Range(tbln).ListObject.TableStyle = "TableStyleLight9"
     Range(tbln & "[function]").Interior.ThemeColor = xlThemeColorAccent4
     Range(tbln & "[function]").Interior.TintAndShade = 0.599993896298105
+    Range(tbln & "[statement]").Interior.ThemeColor = xlThemeColorAccent4
+    Range(tbln & "[statement]").Interior.TintAndShade = 0.599993896298105
+    
     Set fc1 = Range(tbln & "[assert]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""pass""")
     fc1.Interior.Color = 13561798
     Set fc2 = Range(tbln & "[assert]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""fail""")
@@ -55,6 +58,8 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
     Dim numAct As Long
     Dim numExp As Long
     Dim numKind As Long
+    Dim numStt As Long
+    
     Dim underBarNum1 As Long
     Dim underBarNum2 As Long
     Dim vx As String
@@ -68,12 +73,14 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
     numAct = getClmNum("actual", tbln)
     numExp = getClmNum("expected", tbln)
     numKind = getClmNum("kind", tbln)
+    numStt = getClmNum("statement", tbln)
+    
     rNum = Range(tbln).Rows.Count
     rws = rangeToArys(Range(tbln))
     Dim i As Long, j As Long
     For i = 1 To rNum
         rw = rws(i)
-        fnAry0 = tblRowToFnAry(rw, numFn)
+        fnAry0 = tblRowToFnAry(rw, numFn, numStt)
         fnAry = fnAry0
         cNum = lenAry(fnAry)
         For j = 2 To cNum
@@ -248,10 +255,13 @@ Private Function getClmNum(clmnn, tbln, Optional bn = "")
     Workbooks(abn).Activate
 End Function
 
-Private Function tblRowToFnAry(rw, fncl)
-    Dim ary, ret
-    ary = dropAry(rw, fncl - 1)
-    ret = dropWhile("info_", ary, -1, "isEmpty")
+Private Function tblRowToFnAry(rw, nfnc, nnext)
+    Dim ary0, ary1, ret
+    Dim n0 As Long
+    n0 = lenAry(rw) - nnext + 1
+    ary0 = dropAry(rw, nfnc - 1)
+    ary1 = dropAry(ary0, n0, faReverse)
+    ret = dropWhile("info_", ary1, -1, "isEmpty")
     tblRowToFnAry = ret
 End Function
 
