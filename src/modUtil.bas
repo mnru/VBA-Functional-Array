@@ -59,7 +59,7 @@ Function dicToStr(dic) As String
     Dim tmp1, tmp2
     Dim ret As String
     tmp1 = zip(mapA("tostring", dic.keys), mapA("tostring", dic.items))
-    tmp2 = mapA("mcJoin", tmp1, "=>")
+    tmp2 = mapA("mcJoin", tmp1, ":")
     ret = mcJoin(tmp2, ",", "Dic(", ")")
     dicToStr = ret
 End Function
