@@ -805,7 +805,7 @@ Function dicToStr(dic) As String
     Dim tmp1, tmp2
     Dim ret As String
     tmp1 = zip(mapA("tostring", dic.keys), mapA("tostring", dic.items))
-    tmp2 = mapA("mcJoin", tmp1, "=>")
+    tmp2 = mapA("mcJoin", tmp1, ":")
     ret = mcJoin(tmp2, ",", "Dic(", ")")
     dicToStr = ret
 End Function
@@ -1171,9 +1171,9 @@ Function printTime(fnc As String, ParamArray argAry() As Variant)
     printTime = evalA(fnAry)
     etime = Timer
     secs = etime - stime
-    Call outPut(fnc & " - " & secToHMS(secs), True)
+    Call outPut(secToHMS(secs) & " - " & fnc, True)
 End Function
 
-Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0)
-    Call outPut(toString(ary, qt, fm, lcr, width), True)
-End Sub
+Function printTimeP(fnc As String, ParamArray argAry() As Variant)
+    Dim ary, fnAry, sAry
+    Dim etime As Double
