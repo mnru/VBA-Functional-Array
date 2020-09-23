@@ -13,13 +13,13 @@ End Sub
 
 Function conStr(a, b, dlm): conStr = a & dlm & b: End Function
 
-Sub checkReduce() 'comment for check
+Sub checkReduce()                                'comment for check
     x = reduceA("conStr", Array("a", "b", "c"), "-")
     outPut x
 End Sub
 
 Sub checkFold()
-    x = foldA("calc", mkSeq(5), 100, "-")
+    x = foldA("calc_", mkSeq(5), 100, "-")
     outPut x
 End Sub
 
@@ -119,12 +119,12 @@ End Sub
 Sub checkMapA()
     a = mkSeq(10)
     b = mkSeq(10001, 0, 3)
-    x = printTime("mapA", "calc", a, 1, "+")
+    x = printTime("mapA", "calc_", a, 1, "+")
     printAry (x)
-    y = printTime("mapA", "calc", a, 2, "*")
+    y = printTime("mapA", "calc_", a, 2, "*")
     printAry (y)
     t1 = Time
-    z0 = mapA("calc", b, 1, "+")
+    z0 = mapA("calc_", b, 1, "+")
     t2 = Time
     printAry z0
     outPut "mapA: -" & Format(t2 - t1, "hh:nn:ss")
@@ -179,7 +179,7 @@ Sub checkElm()
     outPut x
     sp = getAryShape(a)
     lsp = getAryShape(a, faLower)
-    n = reduceA("calc", sp, "*")
+    n = reduceA("calc_", sp, "*")
     For i = 0 To n - 1
         idx = mkIndex(i, sp, lsp)
         y = getElm(a, idx)
@@ -256,7 +256,7 @@ Sub checkShape()
     Dim b(0 To 3, 0 To 4, 0 To 5)
     Dim c(1 To 5)
     vl = 1
-    fob = mkF(1, "calc", Empty, 1, "+")
+    fob = mkF(1, "calc_", Empty, 1, "+")
     Call setAryMByF(a, fob)
     Call setAryMByF(b, fob)
     Call setAryMByF(c, fob)
@@ -286,10 +286,10 @@ End Sub
 
 Sub checkApply()
     a = mkSeq(30)
-    e = mapA("applyF", a, mkF(2, "calc", 2, Empty, "^"))
+    e = mapA("applyF", a, mkF(2, "calc_", 2, Empty, "^"))
     printAry (e)
-    fob0 = Array(Array(Array(1), Array("calc", Empty, 3, "+")), Array(Array(2), Array("calc", 100, Empty, "/")))
-    fob1 = Array(mkF(1, "calc", Empty, 3, "+"), mkF(2, "calc", 100, Empty, "/"))
+    fob0 = Array(Array(Array(1), Array("calc_", Empty, 3, "+")), Array(Array(2), Array("calc_", 100, Empty, "/")))
+    fob1 = Array(mkF(1, "calc_", Empty, 3, "+"), mkF(2, "calc_", 100, Empty, "/"))
     b0 = mapA("applyFs", a, fob0)
     b1 = mapA("applyFs", a, fob1)
     printAry (b0)
@@ -297,8 +297,8 @@ Sub checkApply()
 End Sub
 
 Sub checkmkF()
-    a = mkF(1, "calc", Empty, 3, "%")
-    b = mkF(2, 1, "calc", Empty, Empty, "-")
+    a = mkF(1, "calc_", Empty, 3, "%")
+    b = mkF(2, 1, "calc_", Empty, Empty, "-")
     printAry (a)
     printAry (b)
 End Sub
@@ -311,14 +311,14 @@ Sub checkPrmAry()
 End Sub
 
 Sub checkFoldF()
-    fo = mkF(2, 1, "calc", Empty, Empty, "-")
+    fo = mkF(2, 1, "calc_", Empty, Empty, "-")
     sq = mkSeq(5)
     a = foldF(fo, sq, 1)
     outPut a
 End Sub
 
 Sub checkZipApply()
-    fob = mkF(1, 2, "calc", Empty, Empty, "+")
+    fob = mkF(1, 2, "calc_", Empty, Empty, "+")
     z = zipApplyF(fob, mkSeq(5), mkSeq(5, 10, -2))
     printAry (z)
 End Sub
@@ -489,16 +489,16 @@ Sub checkmapMA()
     x1 = reshapeAry(mkSeq(24), Array(2, 3, 4))
     printAry (x1)
     outPut
-    y1 = mapMA("calc", x1, 5, "*")
+    y1 = mapMA("calc_", x1, 5, "*")
     printAry (y1)
     ReDim x2(1 To 4, 1 To 5)
     Call setAryMbyS(x2, mkSeq(20))
     printAry (x2)
     outPut
-    y2 = mapMA("calc", x2, 5, "-")
+    y2 = mapMA("calc_", x2, 5, "-")
     printAry (y2)
-    fob = mkF(2, "calc", 3, Empty, "-")
-    fobs = Array(fob, mkF(1, "calc", Empty, 3, "*"))
+    fob = mkF(2, "calc_", 3, Empty, "-")
+    fobs = Array(fob, mkF(1, "calc_", Empty, 3, "*"))
     y3 = mapMA("ApplyF", x2, fob)
     y4 = mapMA("ApplyFs", x2, fobs)
     printAry (y3)
@@ -628,11 +628,11 @@ End Sub
 
 Sub checkMath()
     Pi = Atn(1) * 4
-    x = mapA("calc", mkSeq(101, 0, 1), 2 * Pi / 100, "*")
+    x = mapA("calc_", mkSeq(101, 0, 1), 2 * Pi / 100, "*")
     y0 = mapA("math_", x, "sin")
     z0 = mapA("math_", x, "cos")
-    y1 = mapA("calc", y0, 2, "^")
-    z1 = mapA("calc", z0, 2, "^")
+    y1 = mapA("calc_", y0, 2, "^")
+    z1 = mapA("calc_", z0, 2, "^")
     w = calcAry(y1, z1, "+")
     Call printAry(y0, , "0.000", , 6)
     Call printAry(z0, , "0.000", , 6)

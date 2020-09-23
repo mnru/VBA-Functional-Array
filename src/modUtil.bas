@@ -59,7 +59,7 @@ Function dicToStr(dic) As String
     Dim tmp1, tmp2
     Dim ret As String
     tmp1 = zip(mapA("tostring", dic.keys), mapA("tostring", dic.items))
-    tmp2 = mapA("mcJoin", tmp1, "=>")
+    tmp2 = mapA("mcJoin", tmp1, ":")
     ret = mcJoin(tmp2, ",", "Dic(", ")")
     dicToStr = ret
 End Function
@@ -232,7 +232,7 @@ End Function
 Function comp_(x, y, symbol As String)
     Dim ret
     Select Case symbol
-        Case "=": ret = x = y 'caution Assign_ and eqaul is same symbol
+        Case "=": ret = x = y                        'caution Assign_ and eqaul is same symbol
         Case "<>": ret = x <> y
         Case "<": ret = x < y
         Case ">": ret = x > y

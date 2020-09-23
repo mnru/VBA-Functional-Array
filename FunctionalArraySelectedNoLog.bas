@@ -57,7 +57,6 @@ Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As 
     assign_ ary(idx), vl
 End Sub
 
-
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
     Dim ret As Long
@@ -95,7 +94,7 @@ Function getAryNum(ary) As Long
     Dim ret As Long
     Dim sp, elm
     sp = getAryShape(ary)
-    'ret = reduceA("calc", sp, "*")
+    'ret = reduceA("calc_", sp, "*")
     ret = 1
     For Each elm In sp
         ret = ret * elm
@@ -260,7 +259,7 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     inAry = ret
 End Function
 
-Function calc(num1 As Variant, num2 As Variant, symbol As String)
+Function calc_(num1 As Variant, num2 As Variant, symbol As String)
     Dim ret
     Select Case symbol
         Case "+": ret = num1 + num2
@@ -272,7 +271,7 @@ Function calc(num1 As Variant, num2 As Variant, symbol As String)
         Case "^": ret = num1 ^ num2
         Case Else
     End Select
-    calc = ret
+    calc_ = ret
 End Function
 
 Function calcAry(ary1, ary2, symbol As String)
@@ -280,7 +279,7 @@ Function calcAry(ary1, ary2, symbol As String)
     lNum = lenAry(ary1)
     ReDim ret(0 To lNum - 1)
     For i = 0 To lNum - 1
-        ret(i) = calc(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
+        ret(i) = calc_(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
     Next i
     calcAry = ret
 End Function
@@ -304,7 +303,6 @@ Sub assign_(ByRef Variable As Variant, ByVal Value As Variant)
         Variable = Value
     End If
 End Sub
-
 
 ''''''''''''''''''''
 'from modFnc
@@ -366,7 +364,6 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     Next i
     mapA = ret
 End Function
-
 
 Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, ParamArray argAry() As Variant) As Variant
     Dim lNum As Long, i As Long
@@ -461,7 +458,6 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
     ret = dropAry(ary, num, dir)
     dropWhile = ret
 End Function
-
 
 ''''''''''''''''''''
 'from modMulti
@@ -570,7 +566,6 @@ Function reshapeAry(ary, sp, Optional bs As Long = 0)
     reshapeAry = ret
 End Function
 
-
 Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim aNum As Long, dm As Long, i As Long
     Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
@@ -587,7 +582,7 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
         idx1 = calcAry(idx, lsp1, "+")
         idx2 = calcAry(idx, lsp2, "+")
         idx0 = calcAry(idx, lsp0, "+")
-        vl = calc(getElm(ary1, idx1), getElm(ary2, idx2), symbol)
+        vl = calc_(getElm(ary1, idx1), getElm(ary2, idx2), symbol)
         Call setElm(vl, ret, idx0)
     Next i
     calcMAry = ret
@@ -610,7 +605,6 @@ Function mkMAry(sp, Optional bs As Long = 0)
     End Select
     mkMAry = ret
 End Function
-
 
 Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim aNum As Long, i As Long
@@ -649,7 +643,6 @@ Function mkMSeq(sp, Optional first = 1, Optional step = 1, Optional bs As Long =
     mkMSeq = ret
 End Function
 
-
 Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
     Dim ary, sp, lsp, fnAry, ret, idx, idx0, vl
     Dim aNum As Long
@@ -670,7 +663,6 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     mapMA = ret
 End Function
 
-
 Sub setAryMByF(ary, fnObj)
     Dim aNum As Long
     Dim i As Long
@@ -684,7 +676,6 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-
 
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     Dim ret, elm
@@ -759,9 +750,6 @@ Function zipApplyF(fnObj, ParamArray argAry())
     ret = mapA("applyF", x, fnObj, True)
     zipApplyF = ret
 End Function
-
-
-
 
 ''''''''''''''''''''
 'from modUtil
@@ -990,7 +978,7 @@ End Function
 Function comp_(x, y, symbol As String)
     Dim ret
     Select Case symbol
-        Case "=": ret = x = y 'caution Assign_ and eqaul is same symbol
+        Case "=": ret = x = y                        'caution Assign_ and eqaul is same symbol
         Case "<>": ret = x <> y
         Case "<": ret = x < y
         Case ">": ret = x > y
@@ -1067,7 +1055,6 @@ Function l_(ParamArray argAry() As Variant)
     ary = argAry
     l_ = ary
 End Function
-
 
 ''''''''''''''''''''
 'from modRng

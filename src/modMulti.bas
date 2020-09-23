@@ -229,7 +229,7 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
         idx1 = calcAry(idx, lsp1, "+")
         idx2 = calcAry(idx, lsp2, "+")
         idx0 = calcAry(idx, lsp0, "+")
-        vl = calc(getElm(ary1, idx1), getElm(ary2, idx2), symbol)
+        vl = calc_(getElm(ary1, idx1), getElm(ary2, idx2), symbol)
         Call setElm(vl, ret, idx0)
     Next i
     calcMAry = ret

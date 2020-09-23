@@ -171,7 +171,7 @@ Private Function fnAryToExp(fnAry0) As String
         ret = getAryAt(tmp, 1)
     ElseIf fn = "l_" Then
         ret = "Array" & mcJoin(tmp, ",", "(", ")")
-    ElseIf fn = "calc" Or fn = "comp_" Then
+    ElseIf fn = "calc_" Or fn = "comp_" Then
         symbol = Replace(getAryAt(tmp, 3), """", " ")
         If symbol = " % " Then symbol = " mod "
         ret = getAryAt(tmp, 1) & symbol & getAryAt(tmp, 2)

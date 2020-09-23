@@ -75,7 +75,7 @@ Function getAryNum(ary) As Long
     Dim ret As Long
     Dim sp, elm
     sp = getAryShape(ary)
-    'ret = reduceA("calc", sp, "*")
+    'ret = reduceA("calc_", sp, "*")
     ret = 1
     For Each elm In sp
         ret = ret * elm
@@ -240,7 +240,7 @@ Function inAry(ary As Variant, elm As Variant) As Boolean
     inAry = ret
 End Function
 
-Function calc(num1 As Variant, num2 As Variant, symbol As String)
+Function calc_(num1 As Variant, num2 As Variant, symbol As String)
     Dim ret
     Select Case symbol
         Case "+": ret = num1 + num2
@@ -252,7 +252,7 @@ Function calc(num1 As Variant, num2 As Variant, symbol As String)
         Case "^": ret = num1 ^ num2
         Case Else
     End Select
-    calc = ret
+    calc_ = ret
 End Function
 
 Function calcAry(ary1, ary2, symbol As String)
@@ -260,7 +260,7 @@ Function calcAry(ary1, ary2, symbol As String)
     lNum = lenAry(ary1)
     ReDim ret(0 To lNum - 1)
     For i = 0 To lNum - 1
-        ret(i) = calc(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
+        ret(i) = calc_(getAryAt(ary1, i, 0), getAryAt(ary2, i, 0), symbol)
     Next i
     calcAry = ret
 End Function
