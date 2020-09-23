@@ -213,7 +213,6 @@ Function reshapeAry(ary, sp, Optional bs As Long = 0)
     reshapeAry = ret
 End Function
 
-
 Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim aNum As Long, dm As Long, i As Long
     Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
@@ -299,7 +298,6 @@ Function mkMAry(sp, Optional bs As Long = 0)
     mkMAry = ret
 End Function
 
-
 Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
@@ -337,7 +335,6 @@ Function mkMSeq(sp, Optional first = 1, Optional step = 1, Optional bs As Long =
     mkMSeq = ret
 End Function
 
-
 Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Variant) As Variant
     Dim ary, sp, lsp, fnAry, ret, idx, idx0, vl
     Dim aNum As Long
@@ -358,7 +355,6 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     mapMA = ret
 End Function
 
-
 Sub setAryMByF(ary, fnObj)
     Dim aNum As Long
     Dim i As Long
@@ -372,7 +368,6 @@ Sub setAryMByF(ary, fnObj)
         Call setElm(vl, ary, idx)
     Next i
 End Sub
-
 
 Public Function foldF(fnObj, seq As Variant, init As Variant) As Variant
     Dim ret, elm
@@ -447,6 +442,3 @@ Function zipApplyF(fnObj, ParamArray argAry())
     ret = mapA("applyF", x, fnObj, True)
     zipApplyF = ret
 End Function
-
-
-

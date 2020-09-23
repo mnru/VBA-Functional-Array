@@ -94,6 +94,35 @@ Function buildPaths(ParamArray prms())
     buildPaths = ret
 End Function
 
+Function getFileAry(sFolder, Optional fileFolder = "file")
+    Dim obj, ret, i
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set fdr = fso.GetFolder(sFolder)
+    Select Case LCase(fileFolder)
+        Case "file"
+            Set obj = fdr.Files
+        Case "folder"
+            Set obj = fdr.SubFolders
+        Case Else
+    End Select
+    num = obj.Count
+    ReDim ret(1 To num)
+    i = 1
+    For Each elm In obj
+        ret(i) = elm.Path
+        i = i + 1
+    Next elm
+    getFileAry = ret
+End Function
+
+Sub testFileAry()
+    Path = ThisWorkbook.Path
+    x = getFileAry(Path)
+    y = getFileAry(Path, "folder")
+    printAry (x)
+    printAry (y)
+End Sub
+
 Sub testDialog()
     x = getFileByDialog(singleFolder)
     printAry (x)

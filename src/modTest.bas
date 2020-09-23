@@ -32,7 +32,6 @@ Sub mkTestTbl(Optional tbln = "")
     Range(tbln & "[function]").Interior.TintAndShade = 0.599993896298105
     Range(tbln & "[statement]").Interior.ThemeColor = xlThemeColorAccent4
     Range(tbln & "[statement]").Interior.TintAndShade = 0.599993896298105
-    
     Set fc1 = Range(tbln & "[assert]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""pass""")
     fc1.Interior.Color = 13561798
     Set fc2 = Range(tbln & "[assert]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""fail""")
@@ -59,7 +58,6 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
     Dim numExp As Long
     Dim numKind As Long
     Dim numStt As Long
-    
     Dim underBarNum1 As Long
     Dim underBarNum2 As Long
     Dim vx As String
@@ -74,7 +72,6 @@ Sub evalTestTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.
     numExp = getClmNum("expected", tbln)
     numKind = getClmNum("kind", tbln)
     numStt = getClmNum("statement", tbln)
-    
     rNum = Range(tbln).Rows.Count
     rws = rangeToArys(Range(tbln))
     Dim i As Long, j As Long

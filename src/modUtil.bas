@@ -309,4 +309,3 @@ Function l_(ParamArray argAry() As Variant)
     ary = argAry
     l_ = ary
 End Function
-

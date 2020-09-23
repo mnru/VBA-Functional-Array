@@ -38,7 +38,6 @@ Sub setAryAt(ByRef ary As Variant, pos As Long, vl As Variant, Optional base As 
     assign_ ary(idx), vl
 End Sub
 
-
 Public Function dimAry(ByVal ary As Variant) As Long
     On Error GoTo Catch
     Dim ret As Long
@@ -285,4 +284,3 @@ Sub assign_(ByRef Variable As Variant, ByVal Value As Variant)
         Variable = Value
     End If
 End Sub
-

@@ -1073,6 +1073,7 @@ End Function
 'from modRng
 ''''''''''''''''''''
 Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Empty) As Variant
+    Dim bkn, num, ret
     bkn = ActiveWorkbook.Name
     ThisWorkbook.Activate
     Application.Volatile
