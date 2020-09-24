@@ -33,9 +33,9 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
         End If
     ElseIf IsObject(elm) Then
         If TypeName(elm) = "Dictionary" Then
-            ret = ret & dicToStr(elm)
+            ret = ret & toStringDic(elm)
         ElseIf TypeName(elm) = "Collection" Then
-            ret = ret & clcToStr(elm)
+            ret = ret & toStringClc(elm)
         Else
             ret = ret & "<" & TypeName(elm) & ">"
         End If
@@ -55,22 +55,22 @@ Function toString(elm, Optional qt As String = "'", Optional fm As String = "", 
     toString = ret
 End Function
 
-Function dicToStr(dic) As String
+Function toStringDic(dic, Optional dlm = ":") As String
     Dim tmp1, tmp2
     Dim ret As String
     tmp1 = zip(mapA("tostring", dic.keys), mapA("tostring", dic.items))
-    tmp2 = mapA("mcJoin", tmp1, ":")
+    tmp2 = mapA("mcJoin", tmp1, dlm)
     ret = mcJoin(tmp2, ",", "Dic(", ")")
-    dicToStr = ret
+    toStringDic = ret
 End Function
 
-Function clcToStr(clc) As String
+Function toStringClc(clc) As String
     Dim tmp1, tmp2
     Dim ret As String
     tmp1 = clcToAry(clc)
     tmp2 = mapA("toString", tmp1)
     ret = mcJoin(tmp2, ",", "Clc(", ")")
-    clcToStr = ret
+    toStringClc = ret
 End Function
 
 Function getDlm(shape, idx, Optional insheet As Boolean = False) As String
@@ -232,7 +232,7 @@ End Function
 Function comp_(x, y, symbol As String)
     Dim ret
     Select Case symbol
-        Case "=": ret = x = y                        'caution Assign_ and eqaul is same symbol
+        Case "=": ret = x = y 'caution Assign_ and eqaul is same symbol
         Case "<>": ret = x <> y
         Case "<": ret = x < y
         Case ">": ret = x > y
