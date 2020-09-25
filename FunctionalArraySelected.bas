@@ -1177,3 +1177,19 @@ End Function
 Function printTimeP(fnc As String, ParamArray argAry() As Variant)
     Dim ary, fnAry, sAry
     Dim etime As Double
+    Dim stime As Double
+    Dim secs As Double
+    ary = argAry
+    sAry = mapA("toString", ary)
+    fnAry = prmAry(fnc, ary)
+    stime = Timer
+    printTimeP = evalA(fnAry)
+    etime = Timer
+    secs = etime - stime
+    Call outPut(secToHMS(secs) & " - " & fnc & mcJoin(sAry, ",", "(", ")"), True)
+End Function
+
+Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0)
+    Call outPut(toString(ary, qt, fm, lcr, width), True)
+End Sub
+
