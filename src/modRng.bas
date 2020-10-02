@@ -30,12 +30,10 @@ lnError:
     Workbooks(bkn).Activate
 End Function
 
-
 Public Sub TSetUp(vl, key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional bkn = "")
     bkn0 = ActiveWorkbook.Name
     If bkn = "" Then bkn = ThisWorkbook.Name
     Workbooks(bkn).Activate
-    
     Application.Volatile
     On Error GoTo lnError
     If sourceCol = "" Then sourceCol = Range(tbl & "[#headers]")(1, 1)
@@ -47,14 +45,15 @@ lnError:
 End Sub
 
 Sub layAryAt(ary, r, c, Optional rc As rowColumn = rowColumn.faRow, Optional sn = "", Optional bn = "")
+    Dim num
     If sn = "" Then sn = ActiveSheet.Name
     If bn = "" Then bn = ActiveWorkbook.Name
-    n = lenAry(ary)
+    num = lenAry(ary)
     Select Case rc
         Case rowColumn.faRow
-            Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(1, n) = ary
+            Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(1, num) = ary
         Case rowColumn.faColumn
-            Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(n, 1) = Application.WorksheetFunction.Transpose(ary)
+            Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(num, 1) = Application.WorksheetFunction.Transpose(ary)
         Case Else
     End Select
 End Sub
