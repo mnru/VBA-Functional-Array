@@ -115,11 +115,16 @@ End Function
 
 Function clcToAry(clc)
     Dim cnt As Long, i As Long
+    Dim ret
     cnt = clc.Count
-    ReDim ret(1 To cnt)
-    For i = 1 To cnt
-        assign_ ret(i), clc.Item(i)
-    Next i
+    If cnt = 0 Then
+        ret = Array()
+    Else
+        ReDim ret(0 To cnt - 1)
+        For i = 1 To cnt
+            assign_ ret(i - 1), clc.Item(i)
+        Next i
+    End If
     clcToAry = ret
 End Function
 

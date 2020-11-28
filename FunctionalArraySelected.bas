@@ -356,10 +356,10 @@ Public Function mapA(fnc As String, seq As Variant, ParamArray argAry() As Varia
     ary = argAry
     fnAry = prmAry(fnc, Empty, ary)
     lNum = lenAry(seq)
-    ReDim ret(1 To lNum)
+    ReDim ret(0 To lNum - 1)
     Dim i As Long
-    For i = 1 To lNum
-        Call setAryAt(fnAry, 2, getAryAt(seq, i))
+    For i = 0 To lNum - 1
+        Call setAryAt(fnAry, 2, getAryAt(seq, i, 0))
         ret(i) = evalA(fnAry)
     Next i
     mapA = ret
@@ -373,9 +373,9 @@ Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, P
     lNum = lenAry(seq)
     fnAry = prmAry(fnc, Empty, ary)
     i = 0
-    ReDim ret(1 To lNum)
+    ReDim ret(0 To lNum - 1)
     For Each elm In seq
-        Call setAryAt(fnAry, 2, elm)
+        Call setAryAt(fnAry, 2, elm, 0)
         bol = evalA(fnAry)
         If Not affirmative Then bol = Not bol
         If bol Then
@@ -383,7 +383,7 @@ Public Function filterA(fnc As String, seq As Variant, affirmative As Boolean, P
             ret(i) = elm
         End If
     Next elm
-    ReDim Preserve ret(1 To i)
+    ReDim Preserve ret(0 To i - 1)
     filterA = ret
 End Function
 
@@ -861,11 +861,16 @@ End Function
 
 Function clcToAry(clc)
     Dim cnt As Long, i As Long
+    Dim ret
     cnt = clc.Count
-    ReDim ret(1 To cnt)
-    For i = 1 To cnt
-        assign_ ret(i), clc.Item(i)
-    Next i
+    If cnt = 0 Then
+        ret = Array()
+    Else
+        ReDim ret(0 To cnt - 1)
+        For i = 1 To cnt
+            assign_ ret(i - 1), clc.Item(i)
+        Next i
+    End If
     clcToAry = ret
 End Function
 
@@ -1083,6 +1088,7 @@ lnError:
 End Function
 
 Public Sub TSetUp(vl, key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional bkn = "")
+    Dim bkn0
     bkn0 = ActiveWorkbook.Name
     If bkn = "" Then bkn = ThisWorkbook.Name
     Workbooks(bkn).Activate

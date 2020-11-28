@@ -31,6 +31,7 @@ lnError:
 End Function
 
 Public Sub TSetUp(vl, key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional bkn = "")
+    Dim bkn0
     bkn0 = ActiveWorkbook.Name
     If bkn = "" Then bkn = ThisWorkbook.Name
     Workbooks(bkn).Activate
