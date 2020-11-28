@@ -6,8 +6,9 @@ Dim sourcePath
 Set fso = CreateObject("Scripting.FileSystemObject")
 parentPath = Replace(WScript.ScriptFullName, WScript.ScriptName, "")
 'parentPath = ThisWorkbook.Path
-sAryEnum = Array(Array("modAry.bas", 5, 15),Array("modUtil.bas", 5, 10),Array("modRng.bas", 5, 9))
-sAryProc = Array(Array("modAry.bas", 16, -1), Array("modFnc.bas", 5, -1), Array("modMulti.bas", 2, -1), Array("modUtil.bas", 11, -1),Array("modRng.bas", 10, -1), Array("modLog.bas", 5, 45))
+'sAryEnum = Array(Array("modAry.bas", 5, 15),Array("modUtil.bas", 5, 10),Array("modRng.bas", 5, 9))
+sAryEnum = Array()
+sAryProc = Array(Array("modAry.bas", 5, -1), Array("modFnc.bas", 5, -1), Array("modMulti.bas", 2, -1), Array("modUtil.bas", 5, -1),Array("modRng.bas", 5, -1), Array("modLog.bas", 5, 45))
 tAry = Array("FunctionalArraySelectedNoLog.bas", "FunctionalArraySelected.bas","FunctionalArrayMin.bas")
 For Each targetFile In tAry
  targetPath = parentPath & "\" & targetFile

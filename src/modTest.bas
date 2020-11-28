@@ -257,8 +257,8 @@ Private Function tblRowToFnAry(rw, nfnc, nnext)
     Dim n0 As Long
     n0 = lenAry(rw) - nnext + 1
     ary0 = dropAry(rw, nfnc - 1)
-    ary1 = dropAry(ary0, n0, faReverse)
-    ret = dropWhile("info_", ary1, -1, "isEmpty")
+    ary1 = dropAry(ary0, n0, "r")
+    ret = dropWhile("info_", ary1, "r", "isEmpty")
     tblRowToFnAry = ret
 End Function
 

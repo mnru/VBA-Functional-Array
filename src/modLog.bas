@@ -39,7 +39,7 @@ Function printTimeP(fnc As String, ParamArray argAry() As Variant)
     Call outPut(secToHMS(secs) & " - " & fnc & mcJoin(sAry, ",", "(", ")"), True)
 End Function
 
-Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr As Aligned = faRight, Optional width As Long = 0)
+Sub printAry(ary, Optional qt As String = "'", Optional fm As String = "", Optional lcr = "r", Optional width As Long = 0)
     Call outPut(toString(ary, qt, fm, lcr, width), True)
 End Sub
 
@@ -49,7 +49,7 @@ Sub printSimpleAry(ary, Optional flush As Long = 1000, Optional qt As String = "
     Dim ret As String, dlm As String
     Dim idx, idx0, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, "L")
+    lsp = getAryShape(ary, "l")
     aryNum = getAryNum(ary)
     If aryNum = 0 Then
         Call outPut("[]", False)

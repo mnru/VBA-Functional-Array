@@ -2,11 +2,6 @@ Attribute VB_Name = "modRng"
 Option Base 0
 Option Explicit
 
-Enum rowColumn
-    faRow = 1
-    faColumn = 2
-End Enum
-
 Public Function TLookup(key, tbl As String, targetCol As String, Optional sourceCol As String = "", Optional otherwise = Empty, Optional bkn = "") As Variant
     Dim num, ret, bkn0
     bkn0 = ActiveWorkbook.Name
@@ -45,31 +40,31 @@ lnError:
     Debug.Print Err.Description
 End Sub
 
-Sub layAryAt(ary, r, c, Optional rc As rowColumn = rowColumn.faRow, Optional sn = "", Optional bn = "")
+Sub layAryAt(ary, r, c, Optional rc = "r", Optional sn = "", Optional bn = "")
     Dim num
     If sn = "" Then sn = ActiveSheet.Name
     If bn = "" Then bn = ActiveWorkbook.Name
     num = lenAry(ary)
-    Select Case rc
-        Case rowColumn.faRow
+    Select Case LCase(rc)
+        Case "r"
             Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(1, num) = ary
-        Case rowColumn.faColumn
+        Case "c"
             Workbooks(bn).Worksheets(sn).Cells(r, c).Resize(num, 1) = Application.WorksheetFunction.Transpose(ary)
         Case Else
     End Select
 End Sub
 
-Function rangeToAry(rg, Optional rc As rowColumn = rowColumn.faRow, Optional num = 1)
+Function rangeToAry(rg, Optional rc = "r", Optional num = 1)
     Dim ret, tmp
     tmp = rg
     If Not IsArray(tmp) Then
         ret = Array(tmp)
     Else
         With Application.WorksheetFunction
-            Select Case rc
-                Case rowColumn.faRow
+            Select Case LCase(rc)
+                Case "r"
                     ret = .Index(tmp, num, 0)
-                Case rowColumn.faColumn
+                Case "c"
                     ret = .Transpose(.Index(tmp, 0, num))
                 Case Else
             End Select
@@ -81,14 +76,14 @@ Function rangeToAry(rg, Optional rc As rowColumn = rowColumn.faRow, Optional num
     rangeToAry = ret
 End Function
 
-Function rangeToArys(rg, Optional rc As rowColumn = rowColumn.faRow)
+Function rangeToArys(rg, Optional rc = "r")
     Dim ret, tmp
     Dim num As Long, i As Long
     tmp = rg
     If Not IsArray(tmp) Then
         ret = Array(tmp)
     Else
-        If rc = rowColumn.faColumn Then
+        If rc = "c" Then
             tmp = Application.WorksheetFunction.Transpose(tmp)
         End If
         If dimAry(tmp) <= 1 Then

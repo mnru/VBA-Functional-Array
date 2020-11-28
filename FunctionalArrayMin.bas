@@ -6,28 +6,6 @@ Option Explicit
 ''''''''''''''''''''
 ' enum
 ''''''''''''''''''''
-Enum Direction
-    faDirect = 1
-    faReverse = -1
-End Enum
-
-Enum shapeType
-    faNormal = 0
-    faLower = 1
-    faUpper = 2
-End Enum
-
-Enum Aligned
-    faLeft = 1
-    faRight = -1
-    faCenter = 0
-End Enum
-
-Enum rowColumn
-    faRow = 1
-    faColumn = 2
-End Enum
-
 
 ''''''''''''''''''''
 'from modAry
@@ -70,18 +48,18 @@ Catch:
     dimAry = ret - 1
 End Function
 
-Function getAryShape(ary, Optional spt As shapeType = faNormal)
+Function getAryShape(ary, Optional nlu = "n")
     Dim i As Long, num As Long
     Dim tmp
     num = dimAry(ary)
     ReDim ret(0 To num - 1)
     For i = 1 To num
-        Select Case spt
-            Case faNormal
+        Select Case LCase(nlu)
+            Case "n"
                 tmp = lenAry(ary, i)
-            Case faLower
+            Case "l"
                 tmp = LBound(ary, i)
-            Case faUpper
+            Case "u"
                 tmp = UBound(ary, i)
             Case Else
         End Select
@@ -148,26 +126,24 @@ Function mkSeq(lNum As Long, Optional first = 1, Optional step = 1)
     mkSeq = ret
 End Function
 
-Function takeAry(ary, num As Long, Optional dir As Direction = faDirect)
+Function takeAry(ary, num As Long, Optional lr = "l")
     Dim lNum As Long, i As Long, lb As Long
     Dim ret
     lNum = lenAry(ary)
     If lNum < num Then
         Call Err.Raise(1001, "takeAry", "num is larger than array length")
-    ElseIf dir = 0 Then
-        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
     End If
     If num <= 0 Then
         ret = Array()
     Else
-        Select Case dir
-            Case faDirect
+        Select Case LCase(lr)
+            Case "l"
                 ReDim ret(0 To num - 1)
                 lb = LBound(ary)
                 For i = 0 To num - 1
                     ret(i) = getAryAt(ary, i, 0)
                 Next i
-            Case faReverse
+            Case "r"
                 ReDim ret(0 To num - 1)
                 ' ub = UBound(ary)
                 For i = 0 To num - 1
@@ -178,16 +154,50 @@ Function takeAry(ary, num As Long, Optional dir As Direction = faDirect)
     takeAry = ret
 End Function
 
-Function dropAry(ary, num As Long, Optional dir As Direction = faDirect)
-    Dim lNum As Long, i As Long, lb As Long, ub As Long
+Function signLR(lr)
+    Dim ret
+    If TypeName(lr) <> "String" Then
+        Call Err.Raise(1001, "takeAry,DropAry,TakeWhile,DropWhile requires parameter lr(character 'l' or 'r')")
+        Exit Function
+    End If
+    Select Case LCase(lr)
+        Case "l"
+            ret = 1
+        Case "r"
+            ret = -1
+        Case Else
+            Call Err.Raise(1001, "takeAry,DropAry,TakeWhile,DropWhile requires parameter lr(character 'l' or 'r')")
+    End Select
+    signLR = ret
+End Function
+
+Function changeLR(lr)
+Dim ret
+    If TypeName(lr) <> "String" Then
+        Call Err.Raise(1001, "takeAry,DropAry,TakeWhile,DropWhile requires parameter lr(character 'l' or 'r')")
+        Exit Function
+    End If
+    Select Case LCase(lr)
+        Case "l"
+            ret = "r"
+        Case "r"
+            ret = "l"
+        Case Else
+            Call Err.Raise(1001, "takeAry,DropAry,TakeWhile,DropWhile requires parameter lr(character 'l' or 'r')")
+    End Select
+    changeLR = ret
+End Function
+
+
+Function dropAry(ary, num As Long, Optional lr = "l")
+    Dim lNum As Long, i As Long, lb As Long, ub As Long, lr0
     Dim ret
     lNum = lenAry(ary)
     If lNum < num Then
         Call Err.Raise(1001, "dropAry", "num is larger than array length")
-    ElseIf dir = 0 Then
-        Call Err.Raise(1001, "takeAry", "faCenter is not valid")
     Else
-        ret = takeAry(ary, lNum - num, -1 * dir)
+        lr0 = changeLR(lr)
+        ret = takeAry(ary, lNum - num, lr0)
     End If
     dropAry = ret
 End Function
@@ -241,7 +251,7 @@ Function prmAry(ParamArray argAry())
     'flatten last elm
     Dim ary, ary1, ary2
     ary = argAry
-    ary1 = dropAry(ary, 1, faRight)
+    ary1 = dropAry(ary, 1, "r")
     ary2 = getAryAt(ary, -1)
     ret = conArys(ary1, ary2)
     prmAry = ret
@@ -417,13 +427,13 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
     reduceA = ret
 End Function
 
-Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
+Function takeWhile(fnc As String, ary, lr, ParamArray argAry())
     Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
-    sn = Sgn(dir)
+    sn = signLR(lr)
     num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
@@ -434,17 +444,17 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = takeAry(ary, num, dir)
+    ret = takeAry(ary, num, lr)
     takeWhile = ret
 End Function
 
-Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
+Function dropWhile(fnc As String, ary, lr, ParamArray argAry())
     Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
-    sn = Sgn(dir)
+    sn = signLR(lr)
     num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
@@ -455,6 +465,6 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = dropAry(ary, num, dir)
+    ret = dropAry(ary, num, lr)
     dropWhile = ret
 End Function

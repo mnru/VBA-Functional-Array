@@ -2,7 +2,7 @@ Attribute VB_Name = "modMulti"
 Function getMAryAt(ary As Variant, pos As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2, ret
-    lsp = getAryShape(ary, faLower)
+    lsp = getAryShape(ary, "l")
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -14,7 +14,7 @@ End Function
 Sub setMAryAt(ByRef ary As Variant, pos As Variant, vl As Variant, Optional base As Long = 1)
     Dim lNum As Long
     Dim lsp, bs, idx1, idx2
-    lsp = getAryShape(ary, faLower)
+    lsp = getAryShape(ary, "l")
     lNum = lenAry(lsp)
     bs = mkSameAry(base, lNum)
     idx1 = calcAry(pos, bs, "-")
@@ -182,7 +182,7 @@ Sub setAryMbyS(mAry, sAry)
     Dim i As Long, aNum As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, faLower)
+    lsp = getAryShape(mAry, "l")
     aNum = getAryNum(mAry)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)
@@ -195,7 +195,7 @@ Function getArySbyM(mAry, Optional bs As Long = 0)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, faLower)
+    lsp = getAryShape(mAry, "l")
     aNum = getAryNum(mAry)
     ReDim ret(bs To bs + aNum - 1)
     For i = 0 To aNum - 1
@@ -218,8 +218,8 @@ Function calcMAry(ary1, ary2, symbol As String, Optional bs As Long = 0)
     Dim ret, vl, sp1, sp2, lsp1, lsp2, lsp0, idx, idx0, idx1, idx2
     sp1 = getAryShape(ary1)
     sp2 = getAryShape(ary2)
-    lsp1 = getAryShape(ary1, faLower)
-    lsp2 = getAryShape(ary2, faLower)
+    lsp1 = getAryShape(ary1, "l")
+    lsp2 = getAryShape(ary2, "l")
     aNum = getAryNum(ary1)
     dm = lenAry(sp1)
     ret = mkMAry(sp1, bs)
@@ -302,7 +302,7 @@ Sub setMArySeq(ary, Optional first = 1, Optional step = 1)
     Dim aNum As Long, i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, faLower)
+    lsp = getAryShape(ary, "l")
     aNum = getAryNum(ary)
     vl = first
     For i = 0 To aNum - 1
@@ -340,7 +340,7 @@ Public Function mapMA(fnc As String, mAry As Variant, ParamArray argAry() As Var
     Dim aNum As Long
     ary = argAry
     sp = getAryShape(mAry)
-    lsp = getAryShape(mAry, faLower)
+    lsp = getAryShape(mAry, "l")
     ret = mkMAry(sp)
     fnAry = prmAry(fnc, Empty, ary)
     aNum = getAryNum(mAry)
@@ -360,7 +360,7 @@ Sub setAryMByF(ary, fnObj)
     Dim i As Long
     Dim sp, lsp, idx, vl
     sp = getAryShape(ary)
-    lsp = getAryShape(ary, faLower)
+    lsp = getAryShape(ary, "l")
     aNum = getAryNum(ary)
     For i = 0 To aNum - 1
         idx = mkIndex(i, sp, lsp)

@@ -112,13 +112,13 @@ Public Function reduceA(fnc As String, seq As Variant, ParamArray argAry() As Va
     reduceA = ret
 End Function
 
-Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
+Function takeWhile(fnc As String, ary, lr, ParamArray argAry())
     Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
-    sn = Sgn(dir)
+    sn = signLR(lr)
     num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
@@ -129,17 +129,17 @@ Function takeWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = takeAry(ary, num, dir)
+    ret = takeAry(ary, num, lr)
     takeWhile = ret
 End Function
 
-Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
+Function dropWhile(fnc As String, ary, lr, ParamArray argAry())
     Dim lNum As Long, sn As Long, i As Long, num As Long
     Dim prm, v, ret, fnAry
     prm = argAry
     fnAry = prmAry(fnc, Empty, prm)
     lNum = lenAry(ary)
-    sn = Sgn(dir)
+    sn = signLR(lr)
     num = 0
     For i = 1 To lNum
         v = getAryAt(ary, sn * i)
@@ -150,6 +150,6 @@ Function dropWhile(fnc As String, ary, dir As Direction, ParamArray argAry())
             Exit For
         End If
     Next
-    ret = dropAry(ary, num, dir)
+    ret = dropAry(ary, num, lr)
     dropWhile = ret
 End Function

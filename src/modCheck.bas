@@ -72,11 +72,11 @@ Sub checkDrop()
     Next
     x = dropAry(ary, 3)
     y = dropAry(ary, 0)
-    z = dropAry(ary, 3, faReverse)
+    z = dropAry(ary, 3, "r")
     w = dropAry(ary, 9)
     x1 = dropAry(ary1, 3)
     y1 = dropAry(ary1, 0)
-    z1 = dropAry(ary1, 3, faReverse)
+    z1 = dropAry(ary1, 3, "r")
     w1 = dropAry(ary1, 9)
     printAry (x)
     printAry (y)
@@ -96,10 +96,10 @@ Sub checkTake()
     Next
     y = takeAry(ary, 0)
     z = takeAry(ary, 3)
-    w = takeAry(ary, 3, faReverse)
+    w = takeAry(ary, 3, "r")
     y1 = takeAry(ary1, 0)
     z1 = takeAry(ary1, 3)
-    w1 = takeAry(ary1, 3, faReverse)
+    w1 = takeAry(ary1, 3, "r")
     printAry (y)
     printAry (z)
     printAry (w)
@@ -148,11 +148,11 @@ Sub checkRangeToArys()
     dr(1, 1) = 2
     dr(1, 2) = 3
     a = rangeToArys(rg)
-    b = rangeToArys(rg, rowColumn.faColumn)
+    b = rangeToArys(rg, "c")
     Ad = rangeToArys(dary)
-    bd = rangeToArys(dary, rowColumn.faColumn)
+    bd = rangeToArys(dary, "c")
     Adr = rangeToArys(dr)
-    bdr = rangeToArys(dr, rowColumn.faColumn)
+    bdr = rangeToArys(dr, "c")
     printAry (a)
     printAry (b)
     printAry (Ad)
@@ -178,7 +178,7 @@ Sub checkElm()
     x = getElm(a, Array(0, 1, 2, 3))
     outPut x
     sp = getAryShape(a)
-    lsp = getAryShape(a, faLower)
+    lsp = getAryShape(a, "l")
     n = reduceA("calc_", sp, "*")
     For i = 0 To n - 1
         idx = mkIndex(i, sp, lsp)
@@ -194,16 +194,16 @@ Sub checkRangeToAry()
     Dim dr(0 To 1, 0 To 2)
     dr(0, 0) = "a"
     dr(0, 1) = "b"
-    dr(0, 2) = rowColumn.faColumn
+    dr(0, 2) = "c"
     dr(1, 0) = 1
     dr(1, 1) = 2
     dr(1, 2) = 3
-    a = rangeToAry(rg, rowColumn.faRow, 2)
-    b = rangeToAry(rg, rowColumn.faColumn, 2)
-    Ad = rangeToAry(dary, rowColumn.faRow, 2)
-    bd = rangeToAry(dary, rowColumn.faColumn, 2)
-    Adr = rangeToAry(dr, rowColumn.faRow, 2)
-    bdr = rangeToAry(dr, rowColumn.faColumn, 2)
+    a = rangeToAry(rg, "r", 2)
+    b = rangeToAry(rg, "c", 2)
+    Ad = rangeToAry(dary, "r", 2)
+    bd = rangeToAry(dary, "c", 2)
+    Adr = rangeToAry(dr, "r", 2)
+    bdr = rangeToAry(dr, "c", 2)
     printAry (a)
     printAry (b)
     printAry (Ad)
@@ -266,15 +266,15 @@ Sub checkShape()
     printAry (x)
     printAry (y)
     printAry (z)
-    x = getAryShape(a, faUpper)
-    y = getAryShape(b, faUpper)
-    z = getAryShape(c, faUpper)
+    x = getAryShape(a, "u")
+    y = getAryShape(b, "u")
+    z = getAryShape(c, "u")
     printAry (x)
     printAry (y)
     printAry (z)
-    x = getAryShape(a, faLower)
-    y = getAryShape(b, faLower)
-    z = getAryShape(c, faLower)
+    x = getAryShape(a, "l")
+    y = getAryShape(b, "l")
+    z = getAryShape(c, "l")
     printAry (x)
     printAry (y)
     printAry (z)
@@ -449,7 +449,7 @@ Sub checkSequence()
     ' Stop
 End Sub
 
-Sub checkMaryAccessor()
+Sub checkMAryAccessor()
     x = reshapeAry(mkSeq(100), Array(2, 3, 4))
     printAry x
     y = getMAryAt(x, Array(1, 1, 1))
@@ -621,7 +621,7 @@ Sub checkfmt()
     outPut
     Call printAry(x, "")
     outPut
-    Call printAry(x, , "0.000", Alignedirection.faRight, 7)
+    Call printAry(x, , "0.000", "r", 7)
     outPut
     Call printAry(x)
 End Sub
@@ -641,14 +641,14 @@ End Sub
 
 Sub checkWhile()
     x = mkSeq(10)
-    y1 = takeWhile("comp_", x, faDirect, 6, "<")
-    y2 = takeWhile("comp_", x, faDirect, 6, ">")
-    y3 = takeWhile("comp_", x, faReverse, 6, "<=")
-    y4 = takeWhile("comp_", x, faReverse, 6, ">=")
-    y5 = dropWhile("comp_", x, faDirect, 6, "<")
-    y6 = dropWhile("comp_", x, faDirect, 6, ">")
-    y7 = dropWhile("comp_", x, faReverse, 6, "<=")
-    y8 = dropWhile("comp_", x, faReverse, 6, ">=")
+    y1 = takeWhile("comp_", x, "l", 6, "<")
+    y2 = takeWhile("comp_", x, "l", 6, ">")
+    y3 = takeWhile("comp_", x, "r", 6, "<=")
+    y4 = takeWhile("comp_", x, "r", 6, ">=")
+    y5 = dropWhile("comp_", x, "l", 6, "<")
+    y6 = dropWhile("comp_", x, "l", 6, ">")
+    y7 = dropWhile("comp_", x, "r", 6, "<=")
+    y8 = dropWhile("comp_", x, "r", 6, ">=")
     printAry y1
     printAry y2
     printAry y3
@@ -663,7 +663,7 @@ Sub checkInfo()
     x = Sheets("check").Range("e3:j3")
     x0 = rangeToAry(x)
     printAry x0
-    y = dropWhile("info_", x0, -1, "isEmpty")
+    y = dropWhile("info_", x0, "r", "isEmpty")
     printAry y
     z = evalA(y)
     outPut z
