@@ -178,9 +178,18 @@ Function polyStr(polyAry) As String
         If c <> 0 Then
             If ret <> "" Then ret = ret & " "
             If c > 0 Then ret = ret & "+"
-            If c <> 1 Or i = lNum Then ret = ret & c
-            If i < lNum Then ret = ret & "X"
-            If i < lNum - 1 Then ret = ret & "^" & lNum - i
+            If i = lNum Then
+                ret = ret & c
+            Else
+                If c = 1 Then
+                    ret = ret & "X"
+                ElseIf c = -1 Then
+                    ret = ret & "-X"
+                Else
+                    ret = ret & c & "X"
+                End If
+                If i < lNum - 1 Then ret = ret & "^" & lNum - i
+            End If
         End If
     Next i
     If ret = "" Then ret = getAryAt(polyAry, -1)

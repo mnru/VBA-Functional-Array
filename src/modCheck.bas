@@ -1,725 +1,325 @@
 Attribute VB_Name = "modCheck"
-Sub checkconAry()
-    ' DebugLog.setLog
-    ary1 = Array(1, 2, 3)
-    ary2 = Array(4, 5, 6, 7)
-    ary3 = Array(8, 9, 10)
-    x1 = conArys(ary1, ary2)
-    x2 = conArys(ary1, ary2, ary3)
-    printAry x1
-    printAry x2
-    Stop
+Enum debugPrint
+    faNone = 0
+    faDebugPrint = 1
+    faPrintAry = 2
+End Enum
+
+Sub addBtn(rn, mn, Optional cn = "run", Optional sn = "", Optional bn = "")
+    If sn = "" Then sn = ActiveSheet.Name
+    If bn = "" Then bn = ThisWorkbook.Name
+    Set rg = Workbooks(bn).Sheets(sn).Range(rn)
+    Set btn = Workbooks(bn).Sheets(sn).Buttons.Add(rg.Left, rg.Top, rg.width, rg.Height)
+    btn.OnAction = mn
+    btn.Caption = cn
 End Sub
 
-Function conStr(a, b, dlm): conStr = a & dlm & b: End Function
-
-Sub checkReduce()                                'comment for check
-    x = reduceA("conStr", Array("a", "b", "c"), "-")
-    outPut x
+Sub mkCheckTbl(Optional tbln = "", Optional argnum As Long = 5)
+    If tbln = "" Then tbln = ActiveCell.Value
+    ary0 = Array("check", "assert", "actual", "expected", "variable", "function")
+    ary1 = mkSeq(argnum)
+    ary2 = mapA("addStr", ary1, "arg")
+    ary3 = Array("statement")
+    ary = conArys(ary0, ary2, ary3)
+    n = lenAry(ary)
+    x = ActiveCell.Address(False, False)
+    y = ActiveCell.Offset(0, 1).Address(False, False)
+    z = ActiveCell.Offset(1, 0).Resize(1, n).Address(False, False)
+    Call addBtn(x, "'evalCheckTbl(""" & tbln & """)'", "eval")
+    Call addBtn(y, "'clearResult(""" & tbln & """)'", "clear")
+    Range(z) = ary
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range(z), , xlYes).Name = tbln
+    Range(tbln & "[check]").FormulaR1C1 = _
+    "=IF(ISBLANK([@assert]),"""",IF(OR([@assert]=""="",[@assert]=""string""),IF([@expected]=[@actual],""pass"",""fail""),IF(OR([@assert]=TRUE,[@assert]=FALSE),IF(AND([@assert]=[@actual],NOT(ISBLANK([@actual]))),""pass"",""fail""),"""")))"
+    Range(tbln).ListObject.TableStyle = "TableStyleLight9"
+    Range(tbln & "[function]").Interior.ThemeColor = xlThemeColorAccent4
+    Range(tbln & "[function]").Interior.TintAndShade = 0.599993896298105
+    Range(tbln & "[statement]").Interior.ThemeColor = xlThemeColorAccent4
+    Range(tbln & "[statement]").Interior.TintAndShade = 0.599993896298105
+    Set fc1 = Range(tbln & "[check]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""pass""")
+    fc1.Interior.Color = 13561798
+    Set fc2 = Range(tbln & "[check]").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""fail""")
+    fc2.Interior.Color = 13551615
+    With Range(tbln & "[assert]").Validation
+        .Delete
+        .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+        xlBetween, Formula1:="True,False,=,string"
+    End With
 End Sub
 
-Sub checkFold()
-    x = foldA("calc_", mkSeq(5), 100, "-")
-    outPut x
+Sub clearResult(Optional tbln = "check")
+    Range(tbln & "[actual]").ClearContents
+    Range(tbln & "[statement]").ClearContents
 End Sub
 
-Sub checkCollection()
-    Dim clc As Collection
-    Set clc = New Collection
-    ary1 = Array(1, 2, 3)
-    ary2 = Array("a", "b", "c")
-    For Each elm In ary1
-        clc.Add elm
-    Next
-    For Each elm In ary2
-        clc.Add elm
-    Next
-    x = clcToAry(clc)
-    printAry x
-End Sub
-
-Sub checkSeq()
-    printAry mkSameAry(12, 5)
-    printAry mkSeq(5)
-    printAry mkSeq(3, 5, -1)
-    printAry mkSeq(15, 3, 2)
-    printAry mkSeq(5, 9, 2)
-    printAry mkSeq(3, -3, -2)
-End Sub
-
-Sub checkToString()
-    a = "abc"
-    b = Time
-    c = "123"
-    x = Array(1, Array(1 / 3, 2.5, 3), Array(2, Array(3)), Array(1, 2))
-    y = Array(Array(True, False, True), Array(4, 5, 6))
-    z = Application.WorksheetFunction.Transpose(y)
-    w = Range("A1:C2")
-    outPut toString(a)
-    outPut toString(b)
-    outPut toString(c)
-    outPut toString(x)
-    outPut toString(y)
-    outPut toString(z)
-    outPut toString(w)
-End Sub
-
-Sub checkDrop()
-    ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    Dim ary1(1 To 9)
-    For i = 1 To 9
-        ary1(i) = i
-    Next
-    x = dropAry(ary, 3)
-    y = dropAry(ary, 0)
-    z = dropAry(ary, 3, "r")
-    w = dropAry(ary, 9)
-    x1 = dropAry(ary1, 3)
-    y1 = dropAry(ary1, 0)
-    z1 = dropAry(ary1, 3, "r")
-    w1 = dropAry(ary1, 9)
-    printAry (x)
-    printAry (y)
-    printAry (z)
-    printAry (w)
-    printAry (x1)
-    printAry (y1)
-    printAry (z1)
-    printAry (w1)
-End Sub
-
-Sub checkTake()
-    ary = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    Dim ary1(1 To 9)
-    For i = 1 To 9
-        ary1(i) = i
-    Next
-    y = takeAry(ary, 0)
-    z = takeAry(ary, 3)
-    w = takeAry(ary, 3, "r")
-    y1 = takeAry(ary1, 0)
-    z1 = takeAry(ary1, 3)
-    w1 = takeAry(ary1, 3, "r")
-    printAry (y)
-    printAry (z)
-    printAry (w)
-    printAry (y1)
-    printAry (z1)
-    printAry (w1)
-End Sub
-
-Sub checkCon()
-    a = mkSeq(10000)
-    b = mkSeq(10000, 2, 2)
-    c = mkSeq(10000, 3, 3)
-    Call printTime("conarys", a, b, c)
-    printAry (conArys(a, b, c))
-End Sub
-
-Sub checkMapA()
-    a = mkSeq(10)
-    b = mkSeq(10001, 0, 3)
-    x = printTime("mapA", "calc_", a, 1, "+")
-    printAry (x)
-    y = printTime("mapA", "calc_", a, 2, "*")
-    printAry (y)
-    t1 = Time
-    z0 = mapA("calc_", b, 1, "+")
-    t2 = Time
-    printAry z0
-    outPut "mapA: -" & Format(t2 - t1, "hh:nn:ss")
-End Sub
-
-Sub checkRgt()
-    rg = Range("A1:A2")
-    outPut TypeName(rg)
-    outPut IsArray(rg)
-End Sub
-
-Sub checkRangeToArys()
-    Dim rg As Range
-    Set rg = Range("A1:C2")
-    dary = rg
-    Dim dr(0 To 1, 0 To 2)
-    dr(0, 0) = "a"
-    dr(0, 1) = "b"
-    dr(0, 2) = "c"
-    dr(1, 0) = 1
-    dr(1, 1) = 2
-    dr(1, 2) = 3
-    a = rangeToArys(rg)
-    b = rangeToArys(rg, "c")
-    Ad = rangeToArys(dary)
-    bd = rangeToArys(dary, "c")
-    Adr = rangeToArys(dr)
-    bdr = rangeToArys(dr, "c")
-    printAry (a)
-    printAry (b)
-    printAry (Ad)
-    printAry (bd)
-    printAry (Adr)
-    printAry (bdr)
-End Sub
-
-Sub checkElm()
-    Dim a(0 To 1, 0 To 2, 0 To 3, 0 To 4)
-    Dim i As Long
-    vl = 1
-    For i = 0 To 1
-        For j = 0 To 2
-            For k = 0 To 3
-                For l = 0 To 4
-                    a(i, j, k, l) = vl
-                    vl = vl + 1
-                Next l
-            Next k
+Sub evalCheckTbl(Optional tbln = "check", Optional dp As debugPrint = debugPrint.faNone)
+    Set varDic = CreateObject("Scripting.Dictionary")
+    Dim cNum As Long
+    Dim rNum As Long
+    Dim numFn As Long
+    Dim numVar As Long
+    Dim numAct As Long
+    Dim numExp As Long
+    Dim numKind As Long
+    Dim numStt As Long
+    Dim underBarNum1 As Long
+    Dim underBarNum2 As Long
+    Dim vx As String
+    Dim el
+    Dim vz0 As String
+    Dim vz As String
+    Dim vl
+    Dim fnAry
+    numFn = getClmNum("function", tbln)
+    numVar = getClmNum("variable", tbln)
+    numAct = getClmNum("actual", tbln)
+    numExp = getClmNum("expected", tbln)
+    numKind = getClmNum("assert", tbln)
+    numStt = getClmNum("statement", tbln)
+    rNum = Range(tbln).Rows.Count
+    rws = rangeToArys(Range(tbln))
+    Dim i As Long, j As Long
+    For i = 1 To rNum
+        rw = rws(i)
+        fnAry0 = tblRowToFnAry(rw, numFn, numStt)
+        fnAry = fnAry0
+        cNum = lenAry(fnAry)
+        For j = 2 To cNum
+            assertKind = rw(numKind)
+            expected = rw(numExp)
+            el = getAryAt(fnAry, j)
+            If TypeName(el) = "String" Then
+                underBarNum1 = underBarCnt(el)
+                vx = getVarStr(CStr(el))
+                Select Case underBarNum1
+                    Case 1, 2
+                        Call setAryAt(fnAry, j, varDic(vx))
+                    Case Is > 2
+                        Call setAryAt(fnAry, j, Right(el, Len(el) - 2))
+                    Case Else
+                End Select
+            End If
         Next j
+        vz0 = rw(numVar)
+        vz = getVarStr(vz0)
+        retIsObj = underBarCnt(vz0) = 2
+        If retIsObj Then
+            Set vl = evalFnAry(fnAry, True)
+            Set varDic(vz) = vl
+        Else
+            vl = evalFnAry(fnAry)
+            varDic(vz) = vl
+        End If
+        Range(tbln & "[" & "actual" & "]")(i, 1) = toString(vl, , , , , True)
+        Range(tbln & "[" & "statement" & "]")(i, 1) = mkStatement(fnAry0, vz, retIsObj, assertKind, expected, dp)
     Next i
-    x = getElm(a, Array(0, 1, 2, 3))
-    outPut x
-    sp = getAryShape(a)
-    lsp = getAryShape(a, "l")
-    n = reduceA("calc_", sp, "*")
-    For i = 0 To n - 1
-        idx = mkIndex(i, sp, lsp)
-        y = getElm(a, idx)
-        outPut y & ","
-    Next i
 End Sub
 
-Sub checkRangeToAry()
-    Dim rg As Range
-    Set rg = Range("A1:C2")
-    dary = rg
-    Dim dr(0 To 1, 0 To 2)
-    dr(0, 0) = "a"
-    dr(0, 1) = "b"
-    dr(0, 2) = "c"
-    dr(1, 0) = 1
-    dr(1, 1) = 2
-    dr(1, 2) = 3
-    a = rangeToAry(rg, "r", 2)
-    b = rangeToAry(rg, "c", 2)
-    Ad = rangeToAry(dary, "r", 2)
-    bd = rangeToAry(dary, "c", 2)
-    Adr = rangeToAry(dr, "r", 2)
-    bdr = rangeToAry(dr, "c", 2)
-    printAry (a)
-    printAry (b)
-    printAry (Ad)
-    printAry (bd)
-    printAry (Adr)
-    printAry (bdr)
-End Sub
-
-Sub checkAt()
-    a = Array(1, 2, 3, 4, 5, 6)
-    Dim b(1 To 6)
-    For i = 1 To 6
-        b(i) = i
-    Next
-    outPut getAryAt(a, 2)
-    outPut getAryAt(b, 2)
-    outPut getAryAt(a, -2)
-    outPut getAryAt(b, -2)
-    Call setAryAt(a, 2, -3)
-    Call setAryAt(b, 2, -3)
-    Call setAryAt(a, -2, -5)
-    Call setAryAt(b, -2, -5)
-    printAry (a)
-    printAry (b)
-    a = Array(1, 2, 3, 4, 5, 6)
-    For i = 1 To 6
-        b(i) = i
-    Next
-    outPut getAryAt(a, 2, 0)
-    outPut getAryAt(b, 2, 0)
-    outPut getAryAt(a, -2, 0)
-    outPut getAryAt(b, -2, 0)
-    Call setAryAt(a, 2, -3, 0)
-    Call setAryAt(b, 2, -3, 0)
-    Call setAryAt(a, -2, -5, 0)
-    Call setAryAt(b, -2, -5, 0)
-    printAry (a)
-    printAry (b)
-End Sub
-
-Sub checkadd()
-    x = Array(Empty, Empty)
-    outPut lenAry(x)
-    printAry (x)
-End Sub
-
-Sub checkShape()
-    Dim a(1 To 3, 1 To 4, 1 To 5)
-    ' Dim a(1 To 3, 1 To 4)
-    Dim b(0 To 3, 0 To 4, 0 To 5)
-    Dim c(1 To 5)
-    vl = 1
-    fob = mkF(1, "calc_", Empty, 1, "+")
-    Call setAryMByF(a, fob)
-    Call setAryMByF(b, fob)
-    Call setAryMByF(c, fob)
-    x = getAryShape(a)
-    y = getAryShape(b)
-    z = getAryShape(c)
-    printAry (x)
-    printAry (y)
-    printAry (z)
-    x = getAryShape(a, "u")
-    y = getAryShape(b, "u")
-    z = getAryShape(c, "u")
-    printAry (x)
-    printAry (y)
-    printAry (z)
-    x = getAryShape(a, "l")
-    y = getAryShape(b, "l")
-    z = getAryShape(c, "l")
-    printAry (x)
-    printAry (y)
-    printAry (z)
-    Call printTime("printAry", a)
-    Call printTime("printAry", b)
-    Call printTime("printAry", c)
-    Stop
-End Sub
-
-Sub checkApply()
-    a = mkSeq(30)
-    e = mapA("applyF", a, mkF(2, "calc_", 2, Empty, "^"))
-    printAry (e)
-    fob0 = Array(Array(Array(1), Array("calc_", Empty, 3, "+")), Array(Array(2), Array("calc_", 100, Empty, "/")))
-    fob1 = Array(mkF(1, "calc_", Empty, 3, "+"), mkF(2, "calc_", 100, Empty, "/"))
-    b0 = mapA("applyFs", a, fob0)
-    b1 = mapA("applyFs", a, fob1)
-    printAry (b0)
-    printAry (b1)
-End Sub
-
-Sub checkmkF()
-    a = mkF(1, "calc_", Empty, 3, "%")
-    b = mkF(2, 1, "calc_", Empty, Empty, "-")
-    printAry (a)
-    printAry (b)
-End Sub
-
-Sub checkPrmAry()
-    a = Array(1, 2, 3, Array(4, 5, 6), Array(7, 8, 9))
-    b = prmAry(a)
-    printAry (a)
-    printAry (b)
-End Sub
-
-Sub checkFoldF()
-    fo = mkF(2, 1, "calc_", Empty, Empty, "-")
-    sq = mkSeq(5)
-    a = foldF(fo, sq, 1)
-    outPut a
-End Sub
-
-Sub checkZipApply()
-    fob = mkF(1, 2, "calc_", Empty, Empty, "+")
-    z = zipApplyF(fob, mkSeq(5), mkSeq(5, 10, -2))
-    printAry (z)
-End Sub
-
-Sub checkZip()
-    x = zip(Array(1, 2, 3, 4), Array(2, 3, 4, 5), Array(3, 4, 5, 6))
-    printAry (x)
-    a = mkSeq(5)
-    b = mkSeq(5, 10, -2)
-    c = zip(a, b)
-    printAry (c)
-    d = Array(Array(1, 2), Array(3, 4), Array(5, 6))
-    e = Array(7, 8, 9)
-    f = Array("a", "b", "c")
-    y = zip(d, e, f)
-    printAry (y)
-    Stop
-End Sub
-
-Sub checkAry()
-    Dim x(1 To 3, 1 To 3) As String
-    For i = 1 To 3
-        For j = 1 To 3
-            x(i, j) = chr(65 + (i - 1) + (j - 1) * 3)
-        Next j
-    Next i
-    Set y = Range("a1:c2")
-    z = Range("a1:c2")
-    outPut TypeName(x)
-    printAry (x)
-    outPut TypeName(y)
-    printAry (y)
-    outPut TypeName(z)
-    printAry (z)
-End Sub
-
-Sub checkZipArrayTime()
-    a = mkSeq(10)
-    b = mkSeq(10, 20, -2)
-    c = mkSeq(10, 100, -10)
-    ' a = mkSeq(100000)
-    ' b = mkSeq(100000, 200000, -2)
-    ' c = mkSeq(100000, 1000000, -10)
-    x = Array(a, b, c)
-    y = printTime("zipary", x)
-    z = printTime("zip", a, b, c)
-    Call printTime("conarys", x)
-    printAry x
-    printAry y
-    printAry z
-    'Stop
-End Sub
-
-Sub checkGetAryNum()
-    Dim a(3, 4, 5)
-    Dim b(1 To 3, 1 To 4, 1 To 5)
-    x = getAryNum(a)
-    y = getAryNum(b)
-    outPut x
-    outPut y
-End Sub
-
-Sub checkMAry()
-    Dim a(3, 4)
-    Dim b(1 To 3, 1 To 4)
-    c = mkSeq(60, 1, 2)
-    Call setAryMbyS(a, c)
-    Call setAryMbyS(b, c)
-    printAry (a)
-    outPut
-    printAry (b)
-    Range("a1").Resize(4, 5) = a
-    Range("a6").Resize(3, 4) = b
-End Sub
-
-Sub checkFlatten()
-    Dim a(3, 4, 5)
-    b = mkSeq(120)
-    Call setAryMbyS(a, b)
-    x = flattenAry(a)
-    y = getArySbyM(a)
-    printAry (a)
-    printAry (b)
-    printAry (x)
-    printAry (y)
-    outPut
-    Dim f(2, 3)
-    g = mkSeq(12, 11)
-    Call setAryMbyS(f, g)
-    d = Array(1, 2, Array(3, 4, Array(5, 6), 7, Array(8), f), 9, 1)
-    w = flattenAry(d)
-    printAry (w)
-End Sub
-
-Sub checkReshape()
-    a = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6))
-    b = reshapeAry(mkSeq(720, 1, 2), Array(3, 4, 5, 6), 1)
-    'e = printTime("reshapeAry0", mkSeq(1000000), Array(100, 100, 100))
-    c = printTime("reshapeAry", mkSeq(100000), Array(10, 100, 100))
-    f = printTime("reshapeAry", mkSeq(100000), Array(10, 100, 100), 1)
-    d = reshapeAry(mkSeq(27000), Array(30, 30, 30), 1)
-    Stop
-    printTime "printAry", a
-    printTime "printAry", b
-    printTime "printAry", c
-    'Stop
-    'printTime "printAry", e
-    Stop
-    printTime "printAry", d
-End Sub
-
-Sub checkSequence()
-    t1 = Time
-    r = 20
-    c = 100
-    y = reshapeAry(mkSeq(r * c), Array(r, c))
-    t2 = Time
-    outPut Format(t2 - t1, "hh:mm;ss")
-    Call printTime("printAry", y)
-    Stop
-    Call printTime("print2DAry", y)
-    Stop
-    ' t3 = Time
-    ' x = Application.WorksheetFunction.Sequence(500, 100)
-    ' t4 = Time
-    ' output Format(t4 - t3, "hh:mm;ss")
-    ' Call printTime("printAry", x)
-    ' Stop
-End Sub
-
-Sub checkMAryAccessor()
-    x = reshapeAry(mkSeq(100), Array(2, 3, 4))
-    printAry x
-    y = getMAryAt(x, Array(1, 1, 1))
-    outPut y
-    z = getMAryAt(x, Array(1, 1, 1), 0)
-    outPut z
-    Call setMAryAt(x, Array(1, 1, 1), -1)
-    Call setMAryAt(x, Array(1, 1, 1), -2, 0)
-    printAry x
-    ' x0 = Application.WorksheetFunction.Sequence(4, 5)
-    ' printAry x0
-    ' y0 = getMAryAt(x0, Array(1, 1))
-    ' outPut y0
-    ' z0 = getMAryAt(x0, Array(1, 1), 0)
-    ' outPut z0
-    ' Call setMAryAt(x0, Array(1, 1), -1)
-    ' Call setMAryAt(x0, Array(1, 1), -2, 0)
-    ' printAry x0
-End Sub
-
-Sub checkl_()
-    Dim x As Variant
-    Dim y As Variant
-    Dim z As Variant
-    x = Array(Array(Array(10, 11), Array(20, 21)), Array(Array(30, 31)), Array(Array(40, 41), Array(50, 51), Array(60, 61)))
-    y = l_(l_(l_(10, 11), l_(20, 21)), l_(l_(30, 31)), l_(l_(40, 41), l_(50, 51), l_(60, 61)))
-    z = l_()
-    printAry (x)
-    printAry (y)
-    printAry (z)
-    outPut TypeName(x)
-    outPut TypeName(y)
-    outPut TypeName(z)
-End Sub
-
-Sub checkmapMA()
-    x1 = reshapeAry(mkSeq(24), Array(2, 3, 4))
-    printAry (x1)
-    outPut
-    y1 = mapMA("calc_", x1, 5, "*")
-    printAry (y1)
-    ReDim x2(1 To 4, 1 To 5)
-    Call setAryMbyS(x2, mkSeq(20))
-    printAry (x2)
-    outPut
-    y2 = mapMA("calc_", x2, 5, "-")
-    printAry (y2)
-    fob = mkF(2, "calc_", 3, Empty, "-")
-    fobs = Array(fob, mkF(1, "calc_", Empty, 3, "*"))
-    y3 = mapMA("ApplyF", x2, fob)
-    y4 = mapMA("ApplyFs", x2, fobs)
-    printAry (y3)
-    printAry (y4)
-End Sub
-
-Sub checkSpill()
-    r = 20
-    c = 100
-    x = reshapeAry(mkSeq(r * c), Array(r, c))
-    'x = Application.WorksheetFunction.Sequence(2000, 10000)
-    'Call LogSetting.setAllFlg(True, True)
-    printTime "print2DAry", x
-End Sub
-
-Sub checkSimpleAry()
-    r = 500
-    c = 100
-    ' r = 1048576
-    ' c = 16384
-    x = reshapeAry(mkSeq(r * c), Array(r, c))
-    printTime "print2DAry", x
-    Stop
-    printTime "printSimpleAry", x
-    Stop
-    printTime "printAry", x
-    Stop
-    ' Call LogSetting.setAllFileFlg(True)
-    printTime "print2DAry", x
-    Stop
-    printTime "printSimpleAry", x
-    Stop
-    printTime "printAry", x
-    Stop
-    'Call LogSetting.setDic(False, True, "array")
-    printTime "print2DAry", x
-    Stop
-    printTime "printSimpleAry", x
-    Stop
-    printTime "printAry", x
-End Sub
-
-Sub check3DArray()
-    d = 10
-    r = 10
-    c = 10
-    x = reshapeAry(mkSeq(d * r * c), Array(d, r, c))
-    ' LogSetting.setAllFileFlg (True)
-    ' Call LogSetting.setDic(False, True, "array")
-    printTime "print3DAry", x
-    printTime "print3DAry", x
-    printTime "print3DAry", x
-End Sub
-
-Sub check1DArray()
-    x = mkSeq(1000000)
-    ' Call LogSetting.setAllFlg(True, True)
-    printTime "print1DAry", x
-End Sub
-
-Sub checkPoly()
-    outPut poly(-2, Array(1, 2, 3))
-    outPut (polyStr(Array(2, -3, 4, 5)))
-    outPut polyStr(Array(2, 3.2, 0, 5))
-    outPut polyStr(Array(1, 3, 0, 0))
-    outPut polyStr(Array(1, 1, 0, 1))
-    outPut polyStr(Array(0, 0, 1, 0))
-    outPut polyStr(Array(5))
-    outPut polyStr(Array(1))
-    outPut polyStr(Array(0))
-    x = Array(1, 2, 1, -2, 0, 2, 0)
-    outPut polyStr(x)
-    outPut poly(3, x)
-    y = revAry(x)
-    outPut polyStr(y)
-    outPut poly(3, y)
-End Sub
-
-Function mk2DSeq1(r, c, Optional first As Long = 1, Optional step As Long = 1, Optional bs As Long = 0)
-    sp = Array(r, c)
-    ret = mkMAry(sp, bs)
-    Call set2DArySeq(ret, first, step)
-    mk2DSeq1 = ret
+Private Function mkCheckFncStr(tbln, Optional dp As debugPrint = debugPrint.faNone) As String
+    Dim ret As String
+    Dim x
+    'Call evalCheckTbl(tbl, dp)
+    x = filterA("info_", rangeToAry(Range(tbln & "[statement]"), "c"), False, "isempty")
+    ret = mcJoin(x, vbLf, "Sub Check" & tbln & vbLf, vbLf & "End sub")
+    ret = Replace(ret, vbLf, vbCrLf)
+    mkCheckFncStr = ret
 End Function
 
-Function mkSequence(r, n, Optional first = 1, Optional step = 1) As Variant()
-    ret = Application.WorksheetFunction.Sequence(r, n, first, step)
-    mkSequence = ret
+Private Function mkCheckModStr(Optional sn = "", Optional bn = "") As String
+    If bn = "" Then bn = ActiveWorkbook.Name
+    If sn = "" Then sn = ActiveSheet.Name
+    Dim ret As String
+    Dim tbl
+    ret = "Attribute VB_Name = ""Check" & sn & """" & vbCrLf
+    For Each tbl In Workbooks(bn).Sheets(sn).ListObjects
+        ret = ret & vbCrLf & mkCheckFncStr(tbl.Name) & vbCrLf
+    Next
+    mkCheckModStr = ret
 End Function
 
-Sub checkmkSeq()
-    r = 1000
-    c = 10000
-    first = -100
-    step = 7
-    ' x1 = printTime("mkSequence", r, c, first, step)
-    x2 = printTime("mk2DSeq", r, c, first, step)
-    x3 = printTime("mk2DSeq1", r, c, first, step)
-    x4 = printTime("mkMSeq", Array(r, c), first, step)
-    ' t1 = Timer
-    ' x5 = Application.WorksheetFunction.Sequence(r, c, first, step)
-    ' t2 = Timer
-    ' outPut ("worksheetfunction" & " - " & secToHMS(t2 - t1))
-    Stop
+Sub mkCheckFile(Optional sn = "", Optional bn = "")
+    If bn = "" Then bn = ActiveWorkbook.Name
+    If sn = "" Then sn = ActiveSheet.Name
+    Dim str As String
+    str = mkCheckModStr(sn, bn)
+    pn = ThisWorkbook.Path & "\Check" & sn & ".bas"
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set stm = fso.CreateTextFile(pn)
+    stm.Write (str)
+    stm.Close
 End Sub
 
-Sub checkCalcMary()
-    x = mk2DSeq(4, 5, -10)
-    y = mk2DSeq(4, 5, 5, -1, 1)
-    z = calcMAry(x, y, "*")
-    w = mapMA("fmt", z, "0000")
-    printAry (w)
-End Sub
+Private Function elmToStr(elm)
+    Dim ret As String, vz As String
+    Dim num
+    If TypeName(elm) = "String" Then
+        num = underBarCnt(elm)
+        vz = getVarStr(CStr(elm))
+        If num = 1 Or num = 2 Then
+            ret = vz
+        Else
+            ret = """" & vz & """"
+        End If
+    Else
+        ret = CStr(elm)
+    End If
+    elmToStr = ret
+End Function
 
-Sub checkfmt()
-    x = mkMSeq(Array(4, 5), 0.5, -1 / 3)
-    Call setElm("a", x, Array(1, 1))
-    Call setElm("2", x, Array(2, 2))
-    printAry (x)
-    outPut
-    Call printAry(x, "")
-    outPut
-    Call printAry(x, , "0.000", "r", 7)
-    outPut
-    Call printAry(x)
-End Sub
+Private Function fnAryToExp(fnAry0) As String
+    Dim ret As String, fn As String, symbol As String
+    Dim tmp
+    fn = getAryAt(fnAry0, 1)
+    tmp = mapA("elmToStr", dropAry(fnAry0, 1))
+    If fn = "id_" Then
+        ret = getAryAt(tmp, 1)
+    ElseIf fn = "l_" Then
+        ret = "Array" & mcJoin(tmp, ",", "(", ")")
+    ElseIf fn = "calc_" Or fn = "comp_" Then
+        symbol = Replace(getAryAt(tmp, 3), """", " ")
+        If symbol = " % " Then symbol = " mod "
+        ret = getAryAt(tmp, 1) & symbol & getAryAt(tmp, 2)
+    ElseIf fn = "math_" Or fn = "info_" Then
+        ret = Replace(getAryAt(tmp, 2), """", "") & "(" & getAryAt(tmp, 1) & ")"
+    Else
+        ret = fn & mcJoin(tmp, ",", "(", ")")
+    End If
+    fnAryToExp = ret
+End Function
 
-Sub checkMath()
-    Pi = Atn(1) * 4
-    x = mapA("calc_", mkSeq(101, 0, 1), 2 * Pi / 100, "*")
-    y0 = mapA("math_", x, "sin")
-    z0 = mapA("math_", x, "cos")
-    y1 = mapA("calc_", y0, 2, "^")
-    z1 = mapA("calc_", z0, 2, "^")
-    w = calcAry(y1, z1, "+")
-    Call printAry(y0, , "0.000", , 6)
-    Call printAry(z0, , "0.000", , 6)
-    Call printAry(w, , "0.000", , 6)
-End Sub
+Private Function mkStatement(fnAry0, vz, retIsObj, Optional assertassert, Optional expected, Optional dp As debugPrint = debugPrint.faNone) As String
+    Dim ret As String
+    Dim fnStr As String
+    fnStr = fnAryToExp(fnAry0)
+    If vz = "" Then
+        Select Case dp
+            Case faNone: ret = ""
+            Case faDebugPrint: ret = "Debug.Print " & fnStr
+            Case faPrintAry: ret = "printAry " & fnStr
+            Case Else
+        End Select
+    ElseIf retIsObj Then
+        ret = "Set " & vz & " = " & fnStr
+    Else
+        ret = vz & " = " & fnStr
+    End If
+    If Not IsEmpty(assertassert) Then
+        Select Case assertassert
+            Case "="
+                ret = ret & vbLf & "Assert " & vz & " , " & expected
+            Case "string"
+                ret = ret & vbLf & "Assert toString(" & vz & ")," & getStrExp(expected)
+            Case True
+                ret = ret & vbLf & "AssertTrue " & vz
+            Case False
+                ret = ret & vbLf & "AssertFalse " & vz
+            Case Else
+        End Select
+    End If
+    mkStatement = ret
+End Function
 
-Sub checkWhile()
-    x = mkSeq(10)
-    y1 = takeWhile("comp_", x, "l", 6, "<")
-    y2 = takeWhile("comp_", x, "l", 6, ">")
-    y3 = takeWhile("comp_", x, "r", 6, "<=")
-    y4 = takeWhile("comp_", x, "r", 6, ">=")
-    y5 = dropWhile("comp_", x, "l", 6, "<")
-    y6 = dropWhile("comp_", x, "l", 6, ">")
-    y7 = dropWhile("comp_", x, "r", 6, "<=")
-    y8 = dropWhile("comp_", x, "r", 6, ">=")
-    printAry y1
-    printAry y2
-    printAry y3
-    printAry y4
-    printAry y5
-    printAry y6
-    printAry y7
-    printAry y8
-End Sub
+Private Function underBarCnt(str, Optional chr = "_")
+    Dim cnt As Long
+    cnt = 0
+    For i = 1 To Len(str)
+        If Mid(str, i, 1) = chr Then
+            cnt = cnt + 1
+        Else
+            Exit For
+        End If
+    Next i
+    underBarCnt = cnt
+End Function
 
-Sub checkInfo()
-    x = Sheets("check").Range("e3:j3")
-    x0 = rangeToAry(x)
-    printAry x0
-    y = dropWhile("info_", x0, "r", "isEmpty")
-    printAry y
-    z = evalA(y)
-    outPut z
-End Sub
+Private Function getVarStr(str As String) As String
+    Dim ret As String
+    Dim num As Long
+    num = underBarCnt(str)
+    If num > 2 Then
+        ret = Right(str, Len(str) - 2)
+    Else
+        ret = Right(str, Len(str) - num)
+    End If
+    getVarStr = ret
+End Function
 
-Sub checkDicStr()
-    Set dic = CreateObject("Scripting.Dictionary")
-    dic.Add "right", 1
-    dic.Add "left", 2
-    a = dic.keys
-    b = dic.items
-    c = zip(mapA("addStr", a, "'", "'"), b)
-    d = mapA("mcjoin", c, ":")
-    outPut TypeName(dic)
-    str1 = mcJoin(d, ",", "Dic(", ")")
-    Debug.Print str1
-    printAry dic
-End Sub
+Private Function getClmNum(clmnn, tbln, Optional bn = "")
+    abn = ActiveWorkbook.Name
+    If bn = "" Then bn = abn
+    Workbooks(bn).Activate
+    Dim ret
+    With Application.WorksheetFunction
+        ret = .Match(clmnn, Range(tbln & "[#headers]"), False)
+    End With
+    getClmNum = ret
+    Workbooks(abn).Activate
+End Function
 
-Sub checkClcStr()
-    Set clc = New Collection
-    clc.Add 1
-    clc.Add 2
-    clc.Add "abc"
-    printAry clc
-    Set clc1 = mkClc("a", "b", 3, clc)
-    Call printAry(clc1)
-End Sub
+Private Function tblRowToFnAry(rw, nfnc, nnext)
+    Dim ary0, ary1, ret
+    Dim n0 As Long
+    n0 = lenAry(rw) - nnext + 1
+    ary0 = dropAry(rw, nfnc - 1)
+    ary1 = dropAry(ary0, n0, "r")
+    ret = dropWhile("info_", ary1, "r", "isEmpty")
+    tblRowToFnAry = ret
+End Function
 
-Sub checkDic()
-    Set dic = mkDic("datetime", "date", "time", "date")
-    outPut lookupDic("a", dic, "double")
-    outPut lookupDic("time", dic, "double")
-End Sub
+Private Function evalFnAry(fnAry, Optional retIsObj As Boolean = False)
+    If retIsObj Then
+        Set evalFnAry = evalObjA(fnAry)
+    Else
+        evalFnAry = evalA(fnAry)
+    End If
+End Function
 
-Sub checkEqAry()
-    n = 10
-    x1 = mkMSeq(Array(n), , , 0)
-    x2 = mkMSeq(Array(n), , , 0)
-    x3 = mkMSeq(Array(n), , , 1)
-    x4 = mkMSeq(Array(n), , 2, 0)
-    x5 = mkMSeq(Array(n, n), , 2, 0)
-    x6 = 1
-    outPut (eqAry(x1, x2))
-    outPut (eqAry(x1, x3))
-    outPut (eqAry(x1, x4))
-    outPut (eqAry(x1, x5))
-    outPut (eqAry(x1, x6))
-End Sub
+Public Function evalObjA(argAry As Variant) As Variant
+    Dim lb As Long
+    ary = argAry
+    Dim ret As Variant
+    lb = LBound(ary)
+    Select Case lenAry(ary)
+        Case 1: Set ret = Application.Run(ary(lb))
+        Case 2: Set ret = Application.Run(ary(lb), ary(lb + 1))
+        Case 3: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2))
+        Case 4: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3))
+        Case 5: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4))
+        Case 6: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5))
+        Case 7: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6))
+        Case 8: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7))
+        Case 9: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8))
+        Case 10: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9))
+        Case 11: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10))
+        Case 12: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11))
+        Case 13: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12))
+        Case 14: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13))
+        Case 15: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14))
+        Case 16: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15))
+        Case 17: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16))
+        Case 18: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17))
+        Case 19: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18))
+        Case 20: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19))
+        Case 21: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20))
+        Case 22: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21))
+        Case 23: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22))
+        Case 24: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23))
+        Case 25: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24))
+        Case 26: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25))
+        Case 27: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25), ary(lb + 26))
+        Case 28: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25), ary(lb + 26), ary(lb + 27))
+        Case 29: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25), ary(lb + 26), ary(lb + 27), ary(lb + 28))
+        Case 30: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25), ary(lb + 26), ary(lb + 27), ary(lb + 28), ary(lb + 29))
+        Case 31: Set ret = Application.Run(ary(lb), ary(lb + 1), ary(lb + 2), ary(lb + 3), ary(lb + 4), ary(lb + 5), ary(lb + 6), ary(lb + 7), ary(lb + 8), ary(lb + 9), ary(lb + 10), ary(lb + 11), ary(lb + 12), ary(lb + 13), ary(lb + 14), ary(lb + 15), ary(lb + 16), ary(lb + 17), ary(lb + 18), ary(lb + 19), ary(lb + 20), ary(lb + 21), ary(lb + 22), ary(lb + 23), ary(lb + 24), ary(lb + 25), ary(lb + 26), ary(lb + 27), ary(lb + 28), ary(lb + 29), ary(lb + 30))
+        Case Else:
+    End Select
+    Set evalObjA = ret
+End Function
 
-Sub checkZipWithIndex()
-    x = Array("a", "b", "c", "d", "e")
-    y = zipWithIndex(x)
-    z = zipWithIndex(x, 0)
-    w = zipWithIndex(x, -1, 2)
-    printAry y
-    printAry z
-    printAry w
-End Sub
+Private Function getStrExp(str)
+    ary = Split(str, vbCrLf)
+    ary1 = mapA("addStr", ary, """", """")
+    ret = Join(ary1, " & vbCrLf & ")
+    ret = Replace(ret, vbLf, "")
+    getStrExp = ret
+End Function

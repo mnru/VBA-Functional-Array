@@ -164,7 +164,7 @@ Function signLR(lr)
 End Function
 
 Function changeLR(lr)
-Dim ret
+    Dim ret
     If TypeName(lr) <> "String" Then
         Call Err.Raise(1001, "takeAry,DropAry,TakeWhile,DropWhile requires parameter lr(character 'l' or 'r')")
         Exit Function
@@ -179,7 +179,6 @@ Dim ret
     End Select
     changeLR = ret
 End Function
-
 
 Function dropAry(ary, num As Long, Optional lr = "l")
     Dim lNum As Long, i As Long, lb As Long, ub As Long, lr0
